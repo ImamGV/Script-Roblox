@@ -1,9 +1,13 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Bacon-Library/refs/heads/main/bacon.txt"))()
+local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
+
 local Tabs = {
 Main = Library:CreateWindow("Main"),
-Buy = Library:CreateWindow("Buy")
+BuyCrate = Library:CreateWindow("Buy Crate"),
+BuyEmote = Library:CreateWindow("Buy Emote"),
+Open = Library:CreateWindow("Opening"),
 }
-Library:CreateToggle(Tabs.Main, "Auto Talk Skill", false, function(v)
+Library:CreateToggle(Tabs.Main, "Auto Emote Skill", false, function(v)
 _G.AutoTalkSkill = v
 while _G.AutoTalkSkill do
 local args = {
@@ -57,17 +61,230 @@ else
 InstanceInteract:Disconnect()
 end
 end)
---[[Library:CreateToggle(Tabs.Main, "Highlight Survivors", false, function(v)
-print("coming")
+Library:CreateToggle(Tabs.Main, "Anti Banana", false, function(v)
+if v then
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "BananaPeel"then
+v.CanTouch = false
+end
+end
+AntiBanana = workspace.DescendantAdded:Connect(function(v)
+if v.Name == "BananaPeel"then
+v.CanTouch = false
+end
 end)
-local toggle = lib:CreateToggle(window, "Highlight Killers", false, function(v)
-print("coming")
+else
+AntiBanana:Disconnect()
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Name == "BananaPeel"then
+v.CanTouch = true
+end
+end
+end
 end)
-local toggle = lib:CreateToggle(window, "Teleport to Safe Place", false, function(v)
+Library:CreateToggle(Tabs.Main, "Killers Survivors", false, function(v)
+if v then
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Parent.Name == "KillerFolder" then
+LibESP:AddESP(v, "", Color3.new(1), 15, "KillerESP")
+end
+end
+KillerESP = workspace.DescendantAdded:Connect(function(v)
+if v.Parent.Name == "KillerFolder" then
+LibESP:AddESP(v, "", Color3.new(1), 15, "KillerESP")
+end
 end)
-local toggle = lib:CreateButton(window, "Teleport to Map", function()
+else
+KillerESP:Disconnect()
+LibESP:Delete("KillerESP")
+end
 end)
-local window = lib:CreateWindow("Buy")]]
+Library:CreateToggle(Tabs.Main, "Highlight Players", false, function(v)
+if v then
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Parent.Name == "PlayersFolder" then
+LibESP:AddESP(v, v.Name, Color3.new(0,1), 15, "PlayersESP")
+end
+end
+PlayersESP = workspace.DescendantAdded:Connect(function(v)
+if v.Parent.Name == "PlayersFolder" then
+LibESP:AddESP(v, v.Name, Color3.new(0,1), 15, "PlayersESP")
+end
+end)
+else
+PlayersESP:Disconnect()
+LibESP:Delete("PlayersESP")
+end
+end)
+Library:CreateButton(Tabs.Main, "Godmode", function()
+game.Players.LocalPlayer.Character.Humanoid.Health = 0
+wait(1)
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Parent.Name == "Map" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.KillerSpawn.KillerSpawn.CFrame
+end
+end
+end)
+Library:CreateToggle(Tabs.BuyEmote, "Auto Buy Scream (150$)", false, function(v)
+_G.AutoBuyScream = v
+while _G.AutoBuyScream do
+local Event = game:GetService("ReplicatedStorage").BuyEmoteEvent
+Event:FireServer(table.unpack({
+    "2"
+}))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyEmote, "Auto Buy Cough (300$)", false, function(v)
+_G.AutoBuyCough = v
+while _G.AutoBuyCough do
+local Event = game:GetService("ReplicatedStorage").BuyEmoteEvent
+Event:FireServer(table.unpack({
+    "3"
+}))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyEmote, "Auto Buy Dance (500$)", false, function(v)
+_G.AutoBuyDance = v
+while _G.AutoBuyDance do
+local Event = game:GetService("ReplicatedStorage").BuyEmoteEvent
+Event:FireServer(table.unpack({
+    "4"
+}))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyEmote, "Auto Buy Helicopter (1000$)", false, function(v)
+_G.AutoBuyHelicopter = v
+while _G.AutoBuyHelicopter do
+local Event = game:GetService("ReplicatedStorage").BuyEmoteEvent
+Event:FireServer(table.unpack({
+    "5"
+}))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyEmote, "Auto Buy Fart (2500$)", false, function(v)
+_G.AutoBuyFart = v
+while _G.AutoBuyFart do
+local Event = game:GetService("ReplicatedStorage").BuyEmoteEvent
+Event:FireServer(table.unpack({
+    "6"
+}))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyEmote, "Auto Buy Money (5000$)", false, function(v)
+_G.AutoBuyMoney = v
+while _G.AutoBuyMoney do
+local Event = game:GetService("ReplicatedStorage").BuyEmoteEvent
+Event:FireServer(table.unpack({
+    "7"
+}))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyEmote, "Auto Buy Explode (10000$)", false, function(v)
+_G.AutoBuyExplode = v
+while _G.AutoBuyExplode do
+local Event = game:GetService("ReplicatedStorage").BuyEmoteEvent
+Event:FireServer(table.unpack({
+    "8"
+}))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyEmote, "Auto Buy Devils Curse (25000$)", false, function(v)
+_G.AutoBuyDevilsCurse = v
+while _G.AutoBuyDevilsCurse do
+local Event = game:GetService("ReplicatedStorage").BuyEmoteEvent
+Event:FireServer(table.unpack({
+    9
+}))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyCrate, "Auto Buy Common Crate (50$)", false, function(v)
+_G.AutoBuyCommonCrate = v
+while _G.AutoBuyCommonCrate do
+local args = {
+	"Common"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("BuyCrateEvent"):FireServer(unpack(args))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyCrate, "Auto Buy Rare Crate (150$)", false, function(v)
+_G.AutoBuyRareCrate = v
+while _G.AutoBuyRareCrate do
+local args = {
+	"Rare"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("BuyCrateEvent"):FireServer(unpack(args))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyCrate, "Auto Buy Golden Crate (300$)", false, function(v)
+_G.AutoBuyGoldenCrate = v
+while _G.AutoBuyGoldenCrate do
+local args = {
+	"Golden"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("BuyCrateEvent"):FireServer(unpack(args))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.BuyCrate, "Auto Buy Diamond Crate (500$)", false, function(v)
+_G.AutoBuyDiamondCrate = v
+while _G.AutoBuyDiamondCrate do
+local args = {
+	"Diamond"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("BuyCrateEvent"):FireServer(unpack(args))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.Open, "Auto Open Common Crate", false, function(v)
+_G.AutoOpenCommonCrate = v
+while _G.AutoOpenCommonCrate do
+local args = {
+	"Common"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("OpenCrateEvent"):FireServer(unpack(args))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.Open, "Auto Open Rare Crate", false, function(v)
+_G.AutoOpenRareCrate = v
+while _G.AutoOpenRareCrate do
+local args = {
+	"Rare"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("OpenCrateEvent"):FireServer(unpack(args))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.Open, "Auto Open Golden Crate", false, function(v)
+_G.AutoOpenGoldenCrate = v
+while _G.AutoOpenGoldenCrate do
+local args = {
+	"Golden"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("OpenCrateEvent"):FireServer(unpack(args))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.Open, "Auto Open Diamond Crate", false, function(v)
+_G.AutoOpenDiamondCrate = v
+while _G.AutoOpenDiamondCrate do
+local args = {
+	"Diamond"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("OpenCrateEvent"):FireServer(unpack(args))
+wait()
+end
+end)
 for _,v in ipairs(game.CoreGui:GetDescendants()) do
 if v:IsA("Frame") and v.Name == "TopBar" then
 v.Size = UDim2.new(0,240,0,50)
@@ -79,7 +296,7 @@ local LOL1 = Instance.new("UIStroke", v)
 LOL1.Color = Color3.new(1)
 local LOL2 = Instance.new("UIStroke", v.Container)
 LOL2.Color = Color3.new(1)
-local LOL3 = Instance.new("UIStroke", v.Container.xd_button_yey)
+local LOL3 = Instance.new("UIStroke", v.Container:FindFirstChild("xd_button_yey"))
 LOL3.Color = Color3.new(1)
 end
 end
