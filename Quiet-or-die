@@ -1,1 +1,85 @@
-
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Bacon-Library/refs/heads/main/bacon.txt"))()
+local Tabs = {
+Main = Library:CreateWindow("Main"),
+Buy = Library:CreateWindow("Buy")
+}
+Library:CreateToggle(Tabs.Main, "Auto Talk Skill", false, function(v)
+_G.AutoTalkSkill = v
+while _G.AutoTalkSkill do
+local args = {
+	1
+}
+game:GetService("ReplicatedStorage"):WaitForChild("AbilityEvent"):FireServer(unpack(args))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.Main, "Auto Push Skill (Gamepass)", false, function(v)
+_G.AutoPushSkill = v
+while _G.AutoPushSkill do
+local args = {
+	2
+}
+game:GetService("ReplicatedStorage"):WaitForChild("AbilityEvent"):FireServer(unpack(args))
+wait()
+end
+end)
+Library:CreateToggle(Tabs.Main, "Infinity Jump", false, function(v)
+_G.InfinityJump = v
+game:GetService("UserInputService").JumpRequest:connect(function()
+if _G.InfinityJump then
+game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+end
+end)
+end)
+Library:CreateToggle(Tabs.Main, "Super Speed", false, function(v)
+_G.SuperSpeed = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.SuperSpeed then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 30
+else
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end
+end)
+end)
+Library:CreateToggle(Tabs.Main, "Instance Interact", false, function(v)
+if v then
+for _,v in ipairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end
+InstanceInteract = workspace.DescendantAdded:Connect(function(v)
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end)
+else
+InstanceInteract:Disconnect()
+end
+end)
+--[[Library:CreateToggle(Tabs.Main, "Highlight Survivors", false, function(v)
+print("coming")
+end)
+local toggle = lib:CreateToggle(window, "Highlight Killers", false, function(v)
+print("coming")
+end)
+local toggle = lib:CreateToggle(window, "Teleport to Safe Place", false, function(v)
+end)
+local toggle = lib:CreateButton(window, "Teleport to Map", function()
+end)
+local window = lib:CreateWindow("Buy")]]
+for _,v in ipairs(game.CoreGui:GetDescendants()) do
+if v:IsA("Frame") and v.Name == "TopBar" then
+v.Size = UDim2.new(0,240,0,50)
+v.TopLabel.TextSize = "20"
+v.TopLabel.Size = UDim2.new(0,240,0,50)
+v.BackgroundColor3 = Color3.new()
+v.Container.BackgroundColor3 = Color3.new(0.1,0.1,0.1)
+local LOL1 = Instance.new("UIStroke", v)
+LOL1.Color = Color3.new(1)
+local LOL2 = Instance.new("UIStroke", v.Container)
+LOL2.Color = Color3.new(1)
+local LOL3 = Instance.new("UIStroke", v.Container.xd_button_yey)
+LOL3.Color = Color3.new(1)
+end
+end
