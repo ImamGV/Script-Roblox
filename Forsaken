@@ -73,3 +73,18 @@ SurvivalESP:Disconnect()
 LibESP:Delete("Survival_ESP")
 end
 end)
+for _,v in ipairs(game.CoreGui:GetDescendants()) do
+if v:IsA("Frame") and v.Name == "TopBar" then
+v.Size = UDim2.new(0,240,0,50)
+v.TopLabel.TextSize = "20"
+v.TopLabel.Size = UDim2.new(0,240,0,50)
+v.BackgroundColor3 = Color3.new()
+v.Container.BackgroundColor3 = Color3.new(0.1,0.1,0.1)
+local LOL1 = Instance.new("UIStroke", v)
+LOL1.Color = Color3.new(1)
+local LOL2 = Instance.new("UIStroke", v.Container)
+LOL2.Color = Color3.new(1)
+local LOL3 = Instance.new("UIStroke", v.Container:FindFirstChild("xd_button_yey"))
+LOL3.Color = Color3.new(1)
+end
+end
