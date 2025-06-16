@@ -106,39 +106,18 @@ end
 end)
 Library:CreateToggle(Tabs.Main, "Highlight Killers", false, function(v)
 if v then
-for _,v in ipairs(workspace:GetDescendants()) do
-if v.Parent.Name == "KillerFolder" then
-LibESP:AddESP(v, v.Name, Color3.new(1), 15, "KillerESP")
+KillerESP = game:GetService("RunService").RenderStepped:Connect(function()
+for _,v in ipairs(workspace.KillerFolder:GetDescendants()) do
+if v.Parent.Name == "KillerFolder" and v:IsA("Model") and v:FindFirstChild("Head") then
+LibESP:AddESP(v, "", Color3.new(1), 15, "KillerESP")
 end
-end
-KillerESP = workspace.DescendantAdded:Connect(function(v)
-if v.Parent.Name == "KillerFolder" then
-LibESP:AddESP(v, v.Name, Color3.new(1), 15, "KillerESP")
 end
 end)
 else
 KillerESP:Disconnect()
-LibESP:Delete("KillerESP")
 end
 end)
-Library:CreateToggle(Tabs.Main, "Highlight Players", false, function(v)
-if v then
-for _,v in ipairs(workspace:GetDescendants()) do
-if v.Parent.Name == "PlayersFolder" then
-LibESP:AddESP(v, v.Name, Color3.new(0,1), 15, "PlayersESP")
-end
-end
-PlayersESP = workspace.DescendantAdded:Connect(function(v)
-if v.Parent.Name == "PlayersFolder" then
-LibESP:AddESP(v, v.Name, Color3.new(0,1), 15, "PlayersESP")
-end
-end)
-else
-PlayersESP:Disconnect()
-LibESP:Delete("PlayersESP")
-end
-end)
-Library:CreateButton(Tabs.Main, "Godmode", function()
+Library:CreateButton(Tabs.Main, "Godmode (Not Available Skill When Godmode)", function()
 game.Players.LocalPlayer.Character.Humanoid.Health = 0
 wait(1)
 for _,v in ipairs(workspace:GetDescendants()) do
