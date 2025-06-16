@@ -1,0 +1,22 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Bacon-Library/refs/heads/main/bacon.txt"))()
+local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/ToggleUI/main/Main"))()
+local Tabs = {
+Main = Library:CreateWindow("Main"),
+}
+local functiom InfinityStamina(v)
+Work = v
+local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+InfStamina = game:GetService("RunService").Heartbeat:Connect(function()
+if not Work then
+InfStamina:Disconnect()
+StaminaScript.StaminaLossDisabled = nil
+return
+end
+StaminaScript.StaminaLossDisabled = function() 
+end
+end)
+end
+Library:CreateToggle(Tabs.Main, "Infinity Stamina", false, function(v)
+InfinityStamina(v)
+end)
