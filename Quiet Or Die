@@ -306,6 +306,16 @@ game:GetService("ReplicatedStorage"):WaitForChild("OpenCrateEvent"):FireServer(u
 wait()
 end
 end)
+Library:CreateToggle(Tabs.Open, "Auto Open Special Crate", false, function(v)
+_G.AutoOpenSpecialCrate = v
+while _G.AutoOpenSpecialCrate do
+local args = {
+	"Special"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("OpenCrateEvent"):FireServer(unpack(args))
+wait()
+end
+end)
 for _,v in ipairs(game.CoreGui:GetDescendants()) do
 if v:IsA("Frame") and v.Name == "TopBar" then
 v.Size = UDim2.new(0,240,0,50)
