@@ -50,8 +50,6 @@ _G.SuperSpeed = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.SuperSpeed then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 30
-else
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
 end
 end)
 end)
