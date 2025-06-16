@@ -17,6 +17,16 @@ game:GetService("ReplicatedStorage"):WaitForChild("AbilityEvent"):FireServer(unp
 wait()
 end
 end)
+Library:CreateToggle(Tabs.Main, "Auto Identify Skill", false, function(v)
+_G.AutoIdentifySkill = v
+while _G.AutoIdentifySkill do
+local args = {
+	3
+}
+game:GetService("ReplicatedStorage"):WaitForChild("AbilityEvent"):FireServer(unpack(args))
+wait()
+end
+end)
 Library:CreateToggle(Tabs.Main, "Auto Push Skill (Gamepass)", false, function(v)
 _G.AutoPushSkill = v
 while _G.AutoPushSkill do
@@ -61,6 +71,17 @@ else
 InstanceInteract:Disconnect()
 end
 end)
+Library:CreateToggle(Tabs.Main, "Auto Revive Players", false, function(v)
+_G.AutoRevivePlayers = v
+while _G.AutoRevivePlayers do wait(0.1)
+for _,v in ipairs(workspace.PlayersFolder:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+fireproximityprompt(v)
+end
+end
+wait(0.1)
+end
+end)
 Library:CreateToggle(Tabs.Main, "Anti Banana", false, function(v)
 if v then
 for _,v in ipairs(workspace:GetDescendants()) do
@@ -82,7 +103,7 @@ end
 end
 end
 end)
-Library:CreateToggle(Tabs.Main, "Killers Survivors", false, function(v)
+Library:CreateToggle(Tabs.Main, "Highlight Killers", false, function(v)
 if v then
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Parent.Name == "KillerFolder" then
