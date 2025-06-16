@@ -1,7 +1,6 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Bacon-Library/refs/heads/main/bacon.txt"))()
 local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
-local Toggle = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/ToggleUI/main/Main"))()
-Toggle:Add()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/ToggleUI/main/Main"))()
 local Tabs = {
 Main = Library:CreateWindow("Main"),
 BuyCrate = Library:CreateWindow("Buy Crate"),
