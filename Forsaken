@@ -20,3 +20,56 @@ end
 Library:CreateToggle(Tabs.Main, "Infinity Stamina", false, function(v)
 InfinityStamina(v)
 end)
+game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end
+end)
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+end
+end)
+end)
+Library:CreateToggle(Tabs.Main, "Disabled Slow & Stun", false, function(v)
+_G.NoStun = V
+end)
+Library:CreateToggle(Tabs.Main, "Killer ESP", false, function(v)
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+end
+end
+KillersESP = workspace.Players.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+end
+end)
+else
+KillersESP:Disconnect()
+LibESP:Delete("Killers_ESP")
+end
+end)
+Library:CreateToggle(Tabs.Main, "Survivors ESP", false, function(v)
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
+end
+SurvivalESP = workspace.Players.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
+end)
+else
+SurvivalESP:Disconnect()
+LibESP:Delete("Survival_ESP")
+end
+end)
