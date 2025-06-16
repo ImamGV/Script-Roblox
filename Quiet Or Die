@@ -107,12 +107,12 @@ Library:CreateToggle(Tabs.Main, "Highlight Killers", false, function(v)
 if v then
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Parent.Name == "KillerFolder" then
-LibESP:AddESP(v, "", Color3.new(1), 15, "KillerESP")
+LibESP:AddESP(v, v.Name, Color3.new(1), 15, "KillerESP")
 end
 end
 KillerESP = workspace.DescendantAdded:Connect(function(v)
 if v.Parent.Name == "KillerFolder" then
-LibESP:AddESP(v, "", Color3.new(1), 15, "KillerESP")
+LibESP:AddESP(v, v.Name, Color3.new(1), 15, "KillerESP")
 end
 end)
 else
