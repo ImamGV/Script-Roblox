@@ -4,7 +4,7 @@ local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV
 local Tabs = {
 Main = Library:CreateWindow("Main"),
 }
-local functiom InfinityStamina(v)
+local function InfinityStamina(v)
 Work = v
 local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
 InfStamina = game:GetService("RunService").Heartbeat:Connect(function()
