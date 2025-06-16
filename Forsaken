@@ -82,13 +82,11 @@ elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP
 LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
 end
 end
-end
 ItemsESP = workspace.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
 LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
 elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
 LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
-end
 end
 end)
 else
