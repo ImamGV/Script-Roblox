@@ -21,14 +21,14 @@ Library:CreateToggle(Tabs.Main, "Infinity Stamina", false, function(v)
 InfinityStamina(v)
 end)
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 24 then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 24
 end
 end)
 game.Players.LocalPlayer.CharacterAdded:Connect(function()
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 24 then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 24
 end
 end)
 end)
@@ -96,12 +96,11 @@ end
 end)
 Library:CreateToggle(Tabs.Main, "Speed Boost (Fair)", false, function(v)
 _G.SpeedBoost = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.SpeedBoost then
+while _G.SpeedBoost do
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.25
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+wait()
 end
-end)
 end)
 Library:CreateToggle(Tabs.Main, "Fullbright", false, function(v)
 _G.Fullbright = v
