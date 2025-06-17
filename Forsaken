@@ -94,6 +94,15 @@ ItemsESP:Disconnect()
 LibESP:Delete("Items_ESP")
 end
 end)
+Library:CreateToggle(Tabs.Main, "Speed Boost (Fair)", false, function(v)
+_G.SpeedBoost = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.SpeedBoost then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.25
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+end
+end)
+end)
 Library:CreateToggle(Tabs.Main, "Fullbright", false, function(v)
 _G.Fullbright = v
 _G.NoFog = v
