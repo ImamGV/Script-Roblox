@@ -129,7 +129,6 @@ end)
 Library:CreateToggle(Tabs.Main, "Auto Generator", false, function(v)
 _G.AutoGenerator = v
 while _G.AutoGenerator do
-if _G.AutoGenerator then
 for _,v in ipairs(workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetDescendants()) do
 if v.Name == "Remotes" and v.Parent.Name == "Generator" then
 v.RE:FireServer()
