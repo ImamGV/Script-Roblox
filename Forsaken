@@ -2,7 +2,7 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamG
 local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
 
 local Tabs = {
-Main = Library:CreateWindow("Fogotten"),
+Main = Library:CreateWindow("Forsaken"),
 }
 local function InfinityStamina(v)
 Work = v
@@ -128,13 +128,13 @@ end)
 end)
 Library:CreateToggle(Tabs.Main, "Auto Generator", false, function(v)
 _G.AutoGenerator = v
-game:GetService("RunService").RenderStepped:Connect(function()
+while _G.AutoGenerator do
 if _G.AutoGenerator then
-for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
+for _,v in ipairs(workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetDescendants()) do
 if v.Name == "Remotes" and v.Parent.Name == "Generator" then
 v.RE:FireServer()
 end
 end
+wait(1.5)
 end
-end)
 end)
