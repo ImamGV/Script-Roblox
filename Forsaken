@@ -94,6 +94,23 @@ ItemsESP:Disconnect()
 LibESP:Delete("Items_ESP")
 end
 end)
+Library:CreateToggle(Tabs.Main, "Generator ESP", false, function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+end
+end
+GeneratorESP = workspace.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+end
+end)
+else
+GeneratorESP:Disconnect()
+LibESP:Delete("Generator_ESP")
+end
+end)
 Library:CreateToggle(Tabs.Main, "Speed Boost (Fair)", false, function(v)
 _G.SpeedBoost = v
 while _G.SpeedBoost do
@@ -128,12 +145,13 @@ end)
 end)
 Library:CreateToggle(Tabs.Main, "Auto Generator", false, function(v)
 _G.AutoGenerator = v
-while _G.AutoGenerator do
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoGenerator then
 for _,v in ipairs(workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):GetDescendants()) do
 if v.Name == "Remotes" and v.Parent.Name == "Generator" then
 v.RE:FireServer()
 end
 end
-wait(1.5)
 end
+end)
 end)
