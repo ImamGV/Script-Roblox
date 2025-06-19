@@ -1,7 +1,3 @@
-pcall(function()
-workspace.StreamingEnabled = false
-workspace.SimulationRadius = math.huge
-end)
 local function Castle()
 for i = 1, 10 do
 game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(Vector3.new(57, 3, -9000))
@@ -33,13 +29,11 @@ end
 Castle()
 wait(1)
 Castle()
-wait(5)
-for _,v in ipairs(workspace:GetDescendants()) do
-if v.Parent.Name == "ConductorSeat" and v.Name == "VehicleSeat" then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+wait(2.5)
+local function TP(pos)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+wait()
 end
-end
-wait(1)
 game:GetService("RunService").RenderStepped:Connect(function()
 for _, v in ipairs(workspace.RuntimeItems:GetChildren()) do
 if workspace.RuntimeItems:FindFirstChild("Bond") and v.Name == "Bond" then
@@ -50,39 +44,22 @@ end
 end
 end
 end)
-wait(1)
-function Tween(Pos)
-Distance = (Pos.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-if game.Players.LocalPlayer.Character.Humanoid.Sit == true then game.Players.LocalPlayer.Character.Humanoid.Sit = false end
-pcall(function() tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,TweenInfo.new(Distance/2500, Enum.EasingStyle.Linear),{CFrame = Pos}) end)
-tween:Play()
-TweenPart = true
-spawn(function()
-while TweenPart do
-part.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y + 0.25, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
-wait()
-end
-end)
-if Distance <= 50 then
-tween:Cancel()
-TweenPart = false
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Pos
-end
-wait()
-if workspace.RuntimeItems:FindFirstChild("Bond") then
-tween:Cancel()
-end
-end
-game:GetService("RunService").RenderStepped:Connect(function()
-if not workspace.RuntimeItems:FindFirstChild("Bond") and (CFrame.new(-381.3519287109375, -48.02812194824219, -49156.0546875).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 50 then
-Tween(CFrame.new(-381.3519287109375, -48.02812194824219, -49156.0546875))
-wait()
-end
-end)
-game:GetService("RunService").RenderStepped:Connect(function()
-game:GetService("ReplicatedStorage").Remotes.EndDecision:FireServer(false)
-end)
-
-
-
-
+TP(CFrame.new(-523.1744384765625, 37.08740234375, 21961.041015625))
+wait(5)
+TP(CFrame.new(-151.964111328125, 45.153926849365234, 19959.537109375))
+wait(3)
+TP(CFrame.new(-85.4542465209961, 42.197139739990234, 6843.71875))
+wait(3)
+TP(CFrame.new(-41.6243896484375, 87.76177215576172, 4186.3623046875))
+wait(3)
+TP(CFrame.new(-649.4472045898438, 206.067138671875, -1452.1182861328125))
+wait(3)
+TP(CFrame.new(-129.93858337402344, 125.67707061767578, -9387.765625))
+wait(3)
+TP(CFrame.new(-76.80664825439453, 53.67536163330078, -19763.232421875))
+wait(3)
+TP(CFrame.new(-588.1868286132812, 160.6824188232422, -25285.921875))
+wait(3)
+TP(CFrame.new(-84.56250762939453, 163.73077392578125, -33290.8828125))
+wait(5)
+TP(CFrame.new(-378.22967529296875, 37.362457275390625, -48878.03125))
