@@ -2,6 +2,7 @@ pcall(function()
 workspace.StreamingEnabled = false
 workspace.SimulationRadius = math.huge
 end)
+local function Castle()
 for i = 1, 10 do
 game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(Vector3.new(57, 3, -9000))
 task.wait(0.1)
@@ -28,6 +29,10 @@ end
 else
 print("Not found MaximGun")
 end
+end
+Castle()
+wait(1)
+Castle()
 wait(5)
 for _,v in ipairs(workspace:GetDescendants()) do
 if v.Parent.Name == "ConductorSeat" and v.Name == "VehicleSeat" then
