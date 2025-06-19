@@ -1,0 +1,83 @@
+pcall(function()
+workspace.StreamingEnabled = false
+workspace.SimulationRadius = math.huge
+end)
+for i = 1, 10 do
+game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(Vector3.new(57, 3, -9000))
+task.wait(0.1)
+end
+local VampireCastle = workspace:FindFirstChild("VampireCastle")
+if VampireCastle and VampireCastle.PrimaryPart then
+for _, item in ipairs(workspace.RuntimeItems:GetDescendants()) do
+if item:IsA("Model") and item.Name == "MaximGun" then
+if (item.PrimaryPart.Position - VampireCastle.PrimaryPart.Position).Magnitude <= 500 then
+MaximGun = item
+break
+end
+end
+end
+if MaximGun then
+local Seat = MaximGun:FindFirstChild("VehicleSeat")
+if Seat then
+game.Players.LocalPlayer.Character:PivotTo(Seat.CFrame)
+Seat:Sit(game.Players.LocalPlayer.Character:WaitForChild("Humanoid"))
+else
+print("Not found seat")
+end
+end
+else
+print("Not found MaximGun")
+end
+wait(5)
+for _,v in ipairs(workspace:GetDescendants()) do
+if v.Parent.Name == "ConductorSeat" and v.Name == "VehicleSeat" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+end
+end
+wait(1)
+game:GetService("RunService").RenderStepped:Connect(function()
+for _, v in ipairs(workspace.RuntimeItems:GetChildren()) do
+if workspace.RuntimeItems:FindFirstChild("Bond") and v.Name == "Bond" then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.Part.Position.X, v.Part.Position.Y + 3, v.Part.Position.Z)
+if (v:FindFirstChild("Part").Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 25 then
+game:GetService("ReplicatedStorage").Shared.Network.RemotePromise.Remotes.C_ActivateObject:FireServer(v)
+end
+end
+end
+end)
+wait(1)
+function Tween(Pos)
+Distance = (Pos.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+if game.Players.LocalPlayer.Character.Humanoid.Sit == true then game.Players.LocalPlayer.Character.Humanoid.Sit = false end
+pcall(function() tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,TweenInfo.new(Distance/2500, Enum.EasingStyle.Linear),{CFrame = Pos}) end)
+tween:Play()
+TweenPart = true
+spawn(function()
+while TweenPart do
+part.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y + 0.25, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
+wait()
+end
+end)
+if Distance <= 50 then
+tween:Cancel()
+TweenPart = false
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Pos
+end
+wait()
+if workspace.RuntimeItems:FindFirstChild("Bond") then
+tween:Cancel()
+end
+end
+game:GetService("RunService").RenderStepped:Connect(function()
+if not workspace.RuntimeItems:FindFirstChild("Bond") and (CFrame.new(-381.3519287109375, -48.02812194824219, -49156.0546875).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude > 50 then
+Tween(CFrame.new(-381.3519287109375, -48.02812194824219, -49156.0546875))
+wait()
+end
+end)
+game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("ReplicatedStorage").Remotes.EndDecision:FireServer(false)
+end)
+
+
+
+
