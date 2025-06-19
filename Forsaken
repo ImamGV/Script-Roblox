@@ -169,6 +169,7 @@ game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
 end
 end)
 end)
+
 Library:CreateToggle(Tabs.Premium, "Fly Gui", false, function(v)
 if v then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Bacon-Library/refs/heads/main/Fly Gui"))()
@@ -176,6 +177,23 @@ else
 for _,v in ipairs(game.CoreGui:GetDescendants()) do
 if v.Name == "FlyGui" then
 v:Destroy()
+end
+end
+end
+end)
+Library:CreateToggle(Tabs.Premium, "No Accessories", false, function(v)
+local Char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+local HRP = Char:FindFirstChild("HumanoidRootPart")
+if HRP then
+if v then
+if not PHP then
+PHP = HRP.CustomPhysicalProperties
+end
+HRP.CustomPhysicalProperties = PhysicalProperties.new(100, originalPHProps.Friction, originalPHProps.Elasticity, originalPHProps.FrictionWeight, originalPHProps.ElasticityWeight)
+else
+if PHP then
+HRP.CustomPhysicalProperties = PHP
+PHP = nil
 end
 end
 end
