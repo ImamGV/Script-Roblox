@@ -78,6 +78,7 @@ if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
 end
 end
+wait()
 end
 end)
 
@@ -238,16 +239,6 @@ Fly.TextColor3 = Color3.new(1,1,1)
 local UiStroke = Instance.new("UIStroke", Frame)
 UiStroke.Color = Color3.new(1,0,0)
 local UiCorner = Instance.new("UICorner", Frame)
-Fly.MouseButton1Click:Connect(function()
-v = not v
-if v then
-Fly(true)
-Fly.Text = "FLY : ON"
-else
-Fly(false)
-Fly.Text = "FLY : OFF"
-end
-end)
 else
 for _,v in ipairs(game.CoreGui:GetDescendants()) do
 if v.Name == "FlyGui" then
@@ -277,6 +268,16 @@ local UiStroke = Instance.new("UIStroke", Frame)
 UiStroke.Color = Color3.new(1,0,0)
 local UiCorner = Instance.new("UICorner", Frame)
 --// Code Button \\
+Fly.MouseButton1Click:Connect(function()
+v = not v
+if v then
+Fly(true)
+Fly.Text = "FLY : ON"
+else
+Fly(false)
+Fly.Text = "FLY : OFF"
+end
+end)
 ToggleUI.MouseButton1Click:Connect(function()
 for _,v in ipairs(game.CoreGui:GetDescendants()) do
 if v:IsA("Frame") and v.Name == "TopBar" then
