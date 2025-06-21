@@ -198,31 +198,3 @@ end
 end
 end
 end)
-local ScreenGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
-ScreenGui.Name = "Toggle"
-ScreenGui.ResetOnSpawn = false
-local Frame = Instance.new("Frame", ScreenGui)
-Frame.Position = UDim2.new(0.875, 0, 0.29, 0)
-Frame.BackgroundColor3 = Color3.new(0,0,0)
-Frame.BackgroundTransparency = 0
-Frame.Size = UDim2.new(0.1,0,0.1,0)
-local ToggleUI = Instance.new("TextButton", Frame)
-ToggleUI.Position = UDim2.new(0,0,0,0)
-ToggleUI.BackgroundColor3 = Color3.new(0,0,0)
-ToggleUI.BackgroundTransparency = 1
-ToggleUI.Size = UDim2.new(1,0,1,0)
-ToggleUI.Text = "Toggle UI"
-ToggleUI.TextSize = "20"
-ToggleUI.Font = "FredokaOne"
-ToggleUI.TextColor3 = Color3.new(1,1,1)
-local UiStroke = Instance.new("UIStroke", Frame)
-UiStroke.Color = Color3.new(1,0,0)
-local UiCorner = Instance.new("UICorner", Frame)
---// Code Button \\
-ToggleUI.MouseButton1Click:Connect(function()
-for _,v in ipairs(game.CoreGui:GetDescendants()) do
-if v:IsA("Frame") and v.Name == "TopBar" then
-v.Visible = not v.Visible
-end
-end
-end)
