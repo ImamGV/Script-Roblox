@@ -219,7 +219,7 @@ local UiStroke10 = Instance.new("UIStroke", Frame2)
 local Uiv = Instance.new("UICorner", Frame2)
 UiStroke10.Color = Color3.new(1)
 ToggleUI.MouseButton1Click:Connect(function()
-for _,v in ipairs(game.CoreGui:GetDescendants()) do
+for _,v in ipairs(game.Players.PlayerGui:GetDescendants()) do
 if v:IsA("Frame") and v.Name == "TopBar" then
 v.Visible = not v.Visible
 end
