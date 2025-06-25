@@ -198,15 +198,15 @@ end
 end
 end
 end)
-local ScreenGui2 = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer.PlayerGui)
-ScreenGui2.Name = "HelpGUI"
-ScreenGui2.ResetOnSpawn = true
-local Frame2 = Instance.new("Frame", ScreenGui2)
-Frame2.Position = UDim2.new(0.875, 0, 0.3, 0)
-Frame2.BackgroundColor3 = Color3.new(0,0,0)
-Frame2.BackgroundTransparency = 0
-Frame2.Size = UDim2.new(0.1,0,0.1,0)
-local ToggleUI = Instance.new("TextButton", Frame2)
+local ScreenGui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer.PlayerGui)
+ScreenGui.Name = "ToggleGUI"
+ScreenGui.ResetOnSpawn = false
+local Frame = Instance.new("Frame", ScreenGui)
+Frame.Position = UDim2.new(0.875, 0, 0.3, 0)
+Frame.BackgroundColor3 = Color3.new(0,0,0)
+Frame.BackgroundTransparency = 0
+Frame.Size = UDim2.new(0.1,0,0.1,0)
+local ToggleUI = Instance.new("TextButton", Frame)
 ToggleUI.Position = UDim2.new(0,0,0,0)
 ToggleUI.BackgroundColor3 = Color3.new(0,0,0)
 ToggleUI.BackgroundTransparency = 1
@@ -215,11 +215,11 @@ ToggleUI.Text = "Toggle UI"
 ToggleUI.TextSize = "25"
 ToggleUI.Font = "FredokaOne"
 ToggleUI.TextColor3 = Color3.new(1,1,1)
-local UiStroke10 = Instance.new("UIStroke", Frame2)
-local Uiv = Instance.new("UICorner", Frame2)
+local UiStroke10 = Instance.new("UIStroke", Frame)
+local Uiv = Instance.new("UICorner", Frame)
 UiStroke10.Color = Color3.new(1)
 ToggleUI.MouseButton1Click:Connect(function()
-for _,v in ipairs(game.Players.PlayerGui:GetDescendants()) do
+for _,v in ipairs(game.CoreGui:GetDescendants()) do
 if v:IsA("Frame") and v.Name == "TopBar" then
 v.Visible = not v.Visible
 end
