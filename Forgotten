@@ -91,7 +91,7 @@ elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end
-KillersESP = workspace.Players.DescendantAdded:Connect(function(v)
+KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
@@ -110,7 +110,7 @@ if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Sur
 LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end
-SurvivalESP = workspace.Players.DescendantAdded:Connect(function(v)
+SurvivalESP = workspace.Players.Survivors.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
@@ -129,7 +129,7 @@ elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP
 LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
 end
 end
-ItemsESP = workspace.DescendantAdded:Connect(function(v)
+ItemsESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
 LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
 elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
@@ -148,7 +148,7 @@ if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_
 LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end
-GeneratorESP = workspace.DescendantAdded:Connect(function(v)
+GeneratorESP = workspace.Map.Ingame.Map.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
