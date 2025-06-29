@@ -60,7 +60,7 @@ Window:AddTabSection({
 })
 
 local Main = Window:AddTab({
-	Title = "Main",
+	Title = "Generator",
 	Section = "Main",
 	Icon = "rbxassetid://11963373994"
 })
@@ -84,7 +84,17 @@ end
 end)
 end
 end})
-
+Window:AddButton({
+Title = "Button",
+Description = "I wonder what this does",
+Tab = Main,
+Callback = function() 
+Window:Notify({
+			Title = "hi",
+			Description = "i'm a notification", 
+			Duration = 5
+		})
+end})
 Window:AddButton({
 	Title = "Button",
 	Description = "I wonder what this does",
