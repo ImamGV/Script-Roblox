@@ -46,7 +46,7 @@ local Themes = {
 		Shadow = Color3.fromRGB(0, 0, 0),
 		Outline = Color3.fromRGB(40, 40, 40),
 		Icon = Color3.fromRGB(220, 220, 220),
-	}
+	},
 }
 Window:SetTheme(Themes.Dark)
 --// Tab Section
@@ -71,6 +71,13 @@ local Players = Window:AddTab({
 	Section = "Main",
 	Icon = "rbxassetid://11963373994"
 })
+
+local Visual = Window:AddTab({
+	Title = "Visual",
+	Section = "Main",
+	Icon = "rbxassetid://11963373994"
+})
+
 --// Generator Tab
 Window:AddSection({ Name = "Generator", Tab = Main })
 Window:AddToggle({
@@ -81,7 +88,7 @@ Callback = function(v)
 _G.AutoGenerator = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AutoGenerator then
-for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
 if v.Name == "Instances" and v.Parent.Name == "Generator" then
 if v.Parent.Progress.Value < 100 and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Generator") then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Generator.Generator.Position
@@ -97,7 +104,7 @@ Title = "Fix A Generator",
 Description = "press to fix a generator",
 Tab = Main,
 Callback = function() 
-for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
 if v.Name == "Instances" and v.Parent.Name == "Generator" then
 if v.Parent.Progress.Value < 100 and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Generator") then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Generator.Generator.Position
@@ -113,12 +120,13 @@ Duration = 5
 end})
 --// Players Tab
 
-Window:AddSection({ Name = "Players & LocalPlayer", Tab = Main })
+Window:AddSection({ Name = "Players & LocalPlayer", Tab = Players })
 Window:AddSlider({
 Title = "Speed Value",
 Tab = Player,
-MaxValue = 100,
-MinValue = 30,
+Description = "",
+MaxValue = 200,
+AllowDecimals = true,
 Callback = function(v) 
 _G.SpeedValue = v
 end})
@@ -130,15 +138,16 @@ Callback = function(v)
 _G.SpeedBoost = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.SpeedBoost then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SpeedValue or 25
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25 + _G.SpeedValue
 end
 end)
 end})
 Window:AddSlider({
 Title = "JumpPower",
 Tab = Player,
+Description = "",
 MaxValue = 200,
-MinValue = 50,
+AllowDecimals = true,
 Callback = function(v) 
 _G.JumpValue = v
 end})
@@ -150,24 +159,26 @@ Callback = function(v)
 _G.JumpBoost = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.JumpBoost then
-game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpValue or 50
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50 + _G.JumpValue
+else
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
 end
 end)
 end})
 Window:AddSlider({
 Title = "Fly Speed Value",
-Tab = Player,
+Description = "",
+Tab = Players,
+AllowDecimals = true,
 MaxValue = 100,
-MinValue = 30,
-Callback = function(v) 
+Callback = function(v)
 _G.FlySpeedValue = v
-end})
+end}) 
 Window:AddToggle({
 Title = "Fly",
 Description = "if turn on it will fly",
 Tab = Players,
 Callback = function(v) 
-local function Fly(v)
 _G.StartFly = v
 if _G.StartFly == false then
 if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
@@ -185,16 +196,16 @@ game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
 game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.CFrame = Workspace.CurrentCamera.CoordinateFrame
 game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
 if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X > 0 then
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * _G.FlySpeedValue)
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * 15 + _G.FlySpeedValue)
 end
 if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X < 0 then
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * _G.FlySpeedValue)
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * 15 + _G.FlySpeedValue)
 end
 if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z > 0 then
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * _G.FlySpeedValue)
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * 15 + _G.FlySpeedValue)
 end
 if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z < 0 then
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * _G.FlySpeedValue)
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * 15 + _G.FlySpeedValue)
 end
 elseif game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") == nil and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") == nil then
 local bv = Instance.new("BodyVelocity")
@@ -233,8 +244,125 @@ Title = "Infinity Stamina",
 Description = "if turn on it will infinity stamina",
 Tab = Players,
 Callback = function(v) 
-InfinityStamina(true)
+InfinityStamina(v)
 end})
+--// Visual Tab
+Window:AddSection({ Name = "Camera", Tab = Visual })
+Window:AddSlider({
+Title = "FOV Value",
+Tab = Visual,
+Description = "",
+MaxValue = 50,
+AllowDecimals = true,
+Callback = function(v) 
+_G.FOVValue = v
+end})
+Window:AddToggle({
+Title = "FOV",
+Description = "if turn on it will FOV boost",
+Tab = Visual,
+Callback = function(v) 
+_G.FOVBoost = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.FOVBoost then
+workspace.Camera.FieldOfView = 70 + _G.FOVValue
+end
+end)
+end})
+Window:AddSection({ Name = "ESP", Tab = Visual })
+Window:AddToggle({
+Title = "Killers ESP",
+Description = "Killers ESP",
+Tab = Visual,
+Callback = function(v) 
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+end
+end
+KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+end
+end)
+else
+KillersESP:Disconnect()
+LibESP:Delete("Killers_ESP")
+end
+end})
+Window:AddToggle({
+Title = "Survivors ESP",
+Description = "Survivors ESP",
+Tab = Visual,
+Callback = function(v) 
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
+end
+SurvivalESP = workspace.Players.Survivors.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
+end)
+else
+SurvivalESP:Disconnect()
+LibESP:Delete("Survival_ESP")
+end
+end})
+Window:AddToggle({
+Title = "Items ESP",
+Description = "Items ESP",
+Tab = Visual,
+Callback = function(v) 
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
+elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
+end
+end
+ItemsESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
+elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
+end
+end)
+else
+ItemsESP:Disconnect()
+LibESP:Delete("Items_ESP")
+end
+end})
+Window:AddToggle({
+Title = "Generator ESP",
+Description = "Generator ESP",
+Tab = Visual,
+Callback = function(v) 
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+end
+end
+GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+end
+end)
+else
+GeneratorESP:Disconnect()
+LibESP:Delete("Generator_ESP")
+end
+end})
+
 
 --[[
 Window:AddSlider({
