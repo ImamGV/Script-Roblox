@@ -71,7 +71,20 @@ Window:AddToggle({
 	Tab = Main,
 	Callback = function(v) 
 _G.AutoGenerator = v
-end}) 
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoGenerator then
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Instances" and v.Parent.Name == "Generator" then
+if v.Parent.Progress.Value < 100 then
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Generator.Generator.Position
+v.Parent.Remotes.RE:FireServer()
+end
+end
+end
+end)
+end
+end})
+
 Window:AddButton({
 	Title = "Button",
 	Description = "I wonder what this does",
