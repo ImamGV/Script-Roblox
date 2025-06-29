@@ -75,7 +75,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AutoGenerator then
 for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Instances" and v.Parent.Name == "Generator" then
-if v.Parent.Progress.Value < 100 then
+if v.Parent.Progress.Value < 100 and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Generator") then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Generator.Generator.Position
 v.Parent.Remotes.RE:FireServer()
 end
