@@ -140,7 +140,7 @@ Callback = function(v)
 _G.SpeedBoost = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.SpeedBoost then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25 + _G.SpeedValue
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed + _G.SpeedValue
 end
 end)
 end})
@@ -210,6 +210,19 @@ workspace.Camera.FieldOfView = 70 + _G.FOVValue
 end
 end)
 end})
+Window:AddToggle({
+Title = "Auto Day",
+Description = "if turn on it will auto day",
+Tab = Visual,
+Callback = function(v) 
+_G.AutoDay = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoDay then
+game.Lighting.ClockTime = 12
+end
+end)
+end})
+
 Window:AddToggle({
 Title = "OP | Auto View Killers",
 Description = "if turn on it will auto view killers",
