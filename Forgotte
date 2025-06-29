@@ -189,7 +189,6 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
 game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
 end
 end
-task.spawn(function()
 while _G.StartFly do
 if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
 game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
@@ -226,7 +225,6 @@ bg.D = 50
 end
 task.wait()
 end
-end)
 end})
 local function InfinityStamina(v)
 Work = v
@@ -270,6 +268,21 @@ if _G.FOVBoost then
 workspace.Camera.FieldOfView = 70 + _G.FOVValue
 end
 end)
+end})
+local function AutoViewKiller(v)
+Work = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if Work then
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.X, game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.Y, game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.Z))
+end
+end)
+end
+Window:AddToggle({
+Title = "OP | Auto View Killers",
+Description = "if turn on it will auto view killers",
+Tab = Visual,
+Callback = function(v) 
+AutoViewKiller(v)
 end})
 Window:AddSection({ Name = "ESP", Tab = Visual })
 Window:AddToggle({
@@ -354,7 +367,7 @@ if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_
 LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end
-GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+GeneratorESP = workspace.Map.Ingame.Map.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
