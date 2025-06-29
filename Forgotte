@@ -49,6 +49,7 @@ local Themes = {
 	}
 }
 Window:SetTheme(Themes.Dark)
+--// Tab Section
 Window:AddTabSection({
 	Name = "Main",
 	Order = 1,
@@ -58,18 +59,25 @@ Window:AddTabSection({
 	Name = "Settings",
 	Order = 2,
 })
-
+--// Tab
 local Main = Window:AddTab({
 	Title = "Generator",
 	Section = "Main",
 	Icon = "rbxassetid://11963373994"
 })
+
+local Players = Window:AddTab({
+	Title = "Players",
+	Section = "Main",
+	Icon = "rbxassetid://11963373994"
+})
+--// Generator Tab
 Window:AddSection({ Name = "Generator", Tab = Main })
 Window:AddToggle({
-	Title = "Auto Fix Generator",
-	Description = "if you turn on then it auto-generator",
-	Tab = Main,
-	Callback = function(v) 
+Title = "Auto Fix Generator",
+Description = "if you turn on then it auto-generator",
+Tab = Main,
+Callback = function(v) 
 _G.AutoGenerator = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AutoGenerator then
@@ -81,38 +89,160 @@ v.Parent.Remotes.RE:FireServer()
 end
 end
 end
-end)
 end
+end)
 end})
 Window:AddButton({
-Title = "Button",
-Description = "I wonder what this does",
+Title = "Fix A Generator",
+Description = "press to fix a generator",
 Tab = Main,
 Callback = function() 
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Instances" and v.Parent.Name == "Generator" then
+if v.Parent.Progress.Value < 100 and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Generator") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Generator.Generator.Position
+v.Parent.Remotes.RE:FireServer()
+end
+end
+end
 Window:Notify({
-			Title = "hi",
-			Description = "i'm a notification", 
-			Duration = 5
-		})
+Title = "Forgotten",
+Description = "complete fix a generator", 
+Duration = 5
+})
 end})
-Window:AddButton({
-	Title = "Button",
-	Description = "I wonder what this does",
-	Tab = Main,
-	Callback = function() 
-		Window:Notify({
-			Title = "hi",
-			Description = "i'm a notification", 
-			Duration = 5
-		})
-	end,
-}) 
+--// Players Tab
 
+Window:AddSection({ Name = "Players & LocalPlayer", Tab = Main })
 Window:AddSlider({
-	Title = "Slider",
+Title = "Speed Value",
+Tab = Player,
+MaxValue = 100,
+MinValue = 30,
+Callback = function(v) 
+_G.SpeedValue = v
+end})
+Window:AddToggle({
+Title = "Speed",
+Description = "if turn on it will speed boost",
+Tab = Players,
+Callback = function(v) 
+_G.SpeedBoost = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.SpeedBoost then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SpeedValue or 25
+end
+end)
+end})
+Window:AddSlider({
+Title = "JumpPower",
+Tab = Player,
+MaxValue = 200,
+MinValue = 50,
+Callback = function(v) 
+_G.JumpValue = v
+end})
+Window:AddToggle({
+Title = "Jump",
+Description = "if turn on it will jump boost",
+Tab = Players,
+Callback = function(v) 
+_G.JumpBoost = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.JumpBoost then
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpValue or 50
+end
+end)
+end})
+Window:AddSlider({
+Title = "Fly Speed Value",
+Tab = Player,
+MaxValue = 100,
+MinValue = 30,
+Callback = function(v) 
+_G.FlySpeedValue = v
+end})
+Window:AddToggle({
+Title = "Fly",
+Description = "if turn on it will fly",
+Tab = Players,
+Callback = function(v) 
+local function Fly(v)
+_G.StartFly = v
+if _G.StartFly == false then
+if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler:Destroy()
+game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
+game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+end
+end
+task.spawn(function()
+while _G.StartFly do
+if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
+game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
+game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
+game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.CFrame = Workspace.CurrentCamera.CoordinateFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X > 0 then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * _G.FlySpeedValue)
+end
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X < 0 then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * _G.FlySpeedValue)
+end
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z > 0 then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * _G.FlySpeedValue)
+end
+if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z < 0 then
+game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * _G.FlySpeedValue)
+end
+elseif game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") == nil and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") == nil then
+local bv = Instance.new("BodyVelocity")
+local bg = Instance.new("BodyGyro")
+
+bv.Name = "VelocityHandler"
+bv.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
+bv.MaxForce = Vector3.new(0,0,0)
+bv.Velocity = Vector3.new(0,0,0)
+
+bg.Name = "GyroHandler"
+bg.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
+bg.MaxTorque = Vector3.new(0,0,0)
+bg.P = 1000
+bg.D = 50
+end
+task.wait()
+end
+end)
+end})
+local function InfinityStamina(v)
+Work = v
+local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+InfStamina = game:GetService("RunService").Heartbeat:Connect(function()
+if not Work then
+InfStamina:Disconnect()
+StaminaScript.StaminaLossDisabled = nil
+return
+end
+StaminaScript.StaminaLossDisabled = function() 
+end
+end)
+end
+Window:AddToggle({
+Title = "Infinity Stamina",
+Description = "if turn on it will infinity stamina",
+Tab = Players,
+Callback = function(v) 
+InfinityStamina(true)
+end})
+
+--[[
+Window:AddSlider({
+Title = "Slider",
 	Description = "Sliding",
 	Tab = Main,
 	MaxValue = 100,
+        MinValue = 30
 	Callback = function(Amount) 
 		warn(Amount);
 	end,
@@ -159,7 +289,7 @@ Window:AddKeybind({
 		warn("Key Set")
 	end,
 }) 
-
+]]--
 --// Tab [SETTINGS]
 local Keybind = nil
 local Settings = Window:AddTab({
