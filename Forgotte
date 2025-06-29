@@ -90,11 +90,11 @@ Callback = function(v)
 _G.AutoGenerator = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AutoGenerator then
-for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
-if v.Name == "Instances" and v.Parent.Name == "Generator" then
-if v.Parent.Progress.Value < 100 and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Generator") then
-game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Generator.Generator.Position
-v.Parent.Remotes.RE:FireServer()
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" then
+if v.Progress.Value < 100 and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Generator") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Instances.Generator.Generator.Position
+v.Remotes.RE:FireServer()
 end
 end
 end
@@ -167,70 +167,11 @@ game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
 end
 end)
 end})
-Window:AddSlider({
-Title = "Fly Speed Value",
-Description = "",
-Tab = Players,
-AllowDecimals = true,
-MaxValue = 100,
-Callback = function(v)
-_G.FlySpeedValue = v
-end}) 
-Window:AddToggle({
-Title = "Fly",
-Description = "if turn on it will fly",
-Tab = Players,
-Callback = function(v) 
-_G.StartFly = v
-if _G.StartFly == false then
-if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler:Destroy()
-game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
-game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
-end
-end
-while _G.StartFly do
-if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
-game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
-game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
-game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.CFrame = Workspace.CurrentCamera.CoordinateFrame
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
-if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X > 0 then
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * 15 + _G.FlySpeedValue)
-end
-if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X < 0 then
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + game.Workspace.CurrentCamera.CFrame.RightVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().X * 15 + _G.FlySpeedValue)
-end
-if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z > 0 then
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * 15 + _G.FlySpeedValue)
-end
-if require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z < 0 then
-game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - game.Workspace.CurrentCamera.CFrame.LookVector * (require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule")):GetMoveVector().Z * 15 + _G.FlySpeedValue)
-end
-elseif game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") == nil and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") == nil then
-local bv = Instance.new("BodyVelocity")
-local bg = Instance.new("BodyGyro")
-
-bv.Name = "VelocityHandler"
-bv.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
-bv.MaxForce = Vector3.new(0,0,0)
-bv.Velocity = Vector3.new(0,0,0)
-
-bg.Name = "GyroHandler"
-bg.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
-bg.MaxTorque = Vector3.new(0,0,0)
-bg.P = 1000
-bg.D = 50
-end
-task.wait()
-end
-end})
 local function InfinityStamina(v)
-Work = v
+InfinityStamina = v
 local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
 InfStamina = game:GetService("RunService").Heartbeat:Connect(function()
-if not Work then
+if not InfinityStamina then
 InfStamina:Disconnect()
 StaminaScript.StaminaLossDisabled = nil
 return
@@ -270,9 +211,9 @@ end
 end)
 end})
 local function AutoViewKiller(v)
-Work = v
+AutoViewKiller = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if Work then
+if AutoViewKiller and game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model") then
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.X, game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.Y, game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.Z))
 end
 end)
