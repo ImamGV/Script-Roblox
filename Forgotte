@@ -140,7 +140,7 @@ Callback = function(v)
 _G.SpeedBoost = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.SpeedBoost then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed + _G.SpeedValue
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 20 + _G.SpeedValue
 end
 end)
 end})
