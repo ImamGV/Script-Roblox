@@ -1,4 +1,6 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/lxte/lates-lib/main/Main.lua"))()
+local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
+
 local Window = Library:CreateWindow({
 	Title = "Forgotten!",
 	Theme = "Dark",
