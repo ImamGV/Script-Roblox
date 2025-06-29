@@ -123,13 +123,13 @@ end})
 Window:AddSection({ Name = "Players & LocalPlayer", Tab = Players })
 Window:AddSlider({
 Title = "Speed Value",
-Tab = Player,
 Description = "",
-MaxValue = 200,
+Tab = Players,
 AllowDecimals = true,
-Callback = function(v) 
+MaxValue = 100,
+Callback = function(v)
 _G.SpeedValue = v
-end})
+end}) 
 Window:AddToggle({
 Title = "Speed",
 Description = "if turn on it will speed boost",
@@ -143,12 +143,12 @@ end
 end)
 end})
 Window:AddSlider({
-Title = "JumpPower",
-Tab = Player,
+Title = "Jump Value",
 Description = "",
-MaxValue = 200,
+Tab = Players,
 AllowDecimals = true,
-Callback = function(v) 
+MaxValue = 100,
+Callback = function(v)
 _G.JumpValue = v
 end})
 Window:AddToggle({
