@@ -1,6 +1,7 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
 
 local Window = Fluent:CreateWindow({
     Title = "Forgotten",
@@ -9,7 +10,7 @@ local Window = Fluent:CreateWindow({
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true,
     Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.LeftShift
+    MinimizeKey = Enum.KeyCode.LeftControl
 })
 
 local Tabs = {
@@ -267,3 +268,26 @@ Window:SelectTab(1)
 
 SaveManager:LoadAutoloadConfig()
 
+local ScreenGui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer.PlayerGui)
+ScreenGui.Name = "Toggle"
+ScreenGui.ResetOnSpawn = true
+local Frame = Instance.new("Frame", ScreenGui)
+Frame.Position = UDim2.new(0.875, 0, 0.3, 0)
+Frame.BackgroundColor3 = Color3.new(0,0,0)
+Frame.BackgroundTransparency = 0.5
+Frame.Size = UDim2.new(0.1,0,0.1,0)
+local ToggleUI = Instance.new("TextButton", Frame)
+ToggleUI.Position = UDim2.new(0,0,0,0)
+ToggleUI.BackgroundColor3 = Color3.new(0,0,0)
+ToggleUI.BackgroundTransparency = 1
+ToggleUI.Size = UDim2.new(1,0,1,0)
+ToggleUI.Text = "Toggle UI"
+ToggleUI.TextSize = "25"
+ToggleUI.Font = "FredokaOne"
+ToggleUI.TextColor3 = Color3.fromRGB(0,255,100)
+local UiStroke = Instance.new("UIStroke", Frame)
+local UiCorner = Instance.new("UICorner", Frame)
+UiStroke.Color = Color3.fromRGB(0,255,100)
+ToggleUI.MouseButton1Click:Connect(function()
+keypress(Enum.KeyCode.LeftControl)
+end)
