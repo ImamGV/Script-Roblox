@@ -7,7 +7,7 @@ local Window = Fluent:CreateWindow({
     Title = "Forgotten",
     SubTitle = "v0.0.1 ( BETA )",
     TabWidth = 160,
-    Size = UDim2.fromOffset(460, 380),
+    Size = UDim2.fromOffset(500, 400),
     Acrylic = true,
     Theme = "Rose",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -60,6 +60,7 @@ end
 end
 end
 end})
+wait(1)
 --// Players Tabs \\
 Tabs.Players:AddSection("Players & LocalPlayer")
 Tabs.Players:AddSlider("MyFeatures", {
@@ -122,6 +123,7 @@ StaminaScript.StaminaLossDisabled = function()
 end
 end)
 end})
+wait(1)
 --// Visual Tab \\
 Tabs.Visual:AddSection("Camera")
 Tabs.Visual:AddSlider("MyFeatures", {
@@ -142,15 +144,6 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.CameraFieldBoost then
 workspace.Camera.FieldOfView = _G.CameraFieldValue
 end
-end)
-end})
-Tabs.Visual:AddToggle("MyFeatures",{
-Title = "Disabled Animated", 
-Default = false,
-Callback = function(v)
-_G.DisabledAnimated = v
-game:GetService("RunService").RenderStepped:Connect(function()
-game.Players.LocalPlayer.Character.Animated.Enabled = not _G.DisabledAnimated
 end)
 end})
 Tabs.Visual:AddToggle("MyFeatures",{
