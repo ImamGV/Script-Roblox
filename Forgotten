@@ -7,7 +7,7 @@ local Window = Fluent:CreateWindow({
     Title = "Forgotten",
     SubTitle = "v0.0.1 ( BETA )",
     TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
+    Size = UDim2.fromOffset(460, 380),
     Acrylic = true,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -270,7 +270,7 @@ SaveManager:LoadAutoloadConfig()
 
 local ScreenGui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer.PlayerGui)
 ScreenGui.Name = "Toggle"
-ScreenGui.ResetOnSpawn = true
+ScreenGui.ResetOnSpawn = false
 local Frame = Instance.new("Frame", ScreenGui)
 Frame.Position = UDim2.new(0.875, 0, 0.3, 0)
 Frame.BackgroundColor3 = Color3.new(0,0,0)
