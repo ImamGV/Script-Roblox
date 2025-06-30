@@ -1,17 +1,115 @@
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Bacon-Library/refs/heads/main/bacon.txt"))()
-local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local Window = Fluent:CreateWindow({
+    Title = "Forgotten",
+    SubTitle = "v0.0.1 ( BETA )",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftShift
+})
 
 local Tabs = {
-Main = Library:CreateWindow("Main"),
-Visual = Library:CreateWindow("Visual"),
-Add = Library:CreateWindow("Add+"),
-Premium = Library:CreateWindow("Free Premium")
+    Main = Window:AddTab({ Title = "Main", Icon = "home" }),
+    Players = Window:AddTab({ Title = "Players", Icon = "user" }),
+    Visual = Window:AddTab({ Title = "Visual", Icon = "eye" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
+
+local Options = Fluent.Options
+
+Fluent:Notify({
+Title = "Forgotten",
+Content = "Loading...",
+Duration = 5
+})
+wait(1)
+--// Main Section \\
+Tabs.Main:AddSection("Generator")
+Tabs.Main:AddToggle("MyFeatures",{
+Title = "Auto Generator ( BETA )", 
+Default = false,
+Callback = function(v)
+_G.AutoGenerator = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoGenerator then
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" then
+if v.Progress.Value < 100 and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Generator") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Instances.Generator.Generator.Position
+v.Remotes.RE:FireServer()
+end
+end
+end
+end
+end)
+end})
+Tabs.Main:AddButton({
+Title = "Fix A Generator",
+Callback = function()
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" then
+if v.Progress.Value < 100 and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Generator") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Instances.Generator.Generator.Position
+v.Remotes.RE:FireServer()
+end
+end
+end
+end})
+--// Players Tabs \\
+Tabs.Players:AddSection("Players & LocalPlayer")
+Tabs.Players:AddSlider("MyFeatures", {
+Title = "Speed Boost",
+Default = 0.1,
+Min = 0.1,
+Max = 5,
+Rounding = 1,
+Callback = function(v)
+_G.SpeedBoostValue = v
+end})
+Tabs.Players:AddToggle("MyFeatures",{
+Title = "Speed Boost", 
+Default = false,
+Callback = function(v)
+_G.SpeedBoost = v
+spawn(function()
+while _G.SpeedBoost do
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+task.wait()
+end
+end)
+end})
+Tabs.Players:AddSlider("MyFeatures", {
+Title = "Jump Boost",
+Default = 50,
+Min = 50,
+Max = 150,
+Rounding = 1,
+Callback = function(v)
+_G.JumpBoostValue = v
+end})
+Tabs.Players:AddToggle("MyFeatures",{
+Title = "Jump Boost", 
+Default = false,
+Callback = function(v)
+_G.JumpBoost = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.JumpBoost then
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpBoostValue or 50
+else
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
+end
+end)
+end})
 local function InfinityStamina(v)
-Work = v
+InfinityStamina = v
 local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
 InfStamina = game:GetService("RunService").Heartbeat:Connect(function()
-if not Work then
+if not InfinityStamina then
 InfStamina:Disconnect()
 StaminaScript.StaminaLossDisabled = nil
 return
@@ -20,208 +118,44 @@ StaminaScript.StaminaLossDisabled = function()
 end
 end)
 end
-Library:CreateToggle(Tabs.Main, "Infinity Stamina", false, function(v)
+Tabs.Players:AddToggle("MyFeatures",{
+Title = "Infinity Stamina", 
+Default = false,
+Callback = function(v)
 InfinityStamina(v)
-end)
-game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 24 then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 24
-end
-end)
-game.Players.LocalPlayer.CharacterAdded:Connect(function()
-game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 24 then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 24
-end
-end)
-end)
-Library:CreateToggle(Tabs.Main, "Disabled Slow & Stun", false, function(v)
-_G.NoStun = V
-end)
-Library:CreateToggle(Tabs.Main, "Speed Boost (Fair)", false, function(v)
-_G.SpeedBoost = v
-while _G.SpeedBoost do
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.25
-game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-wait()
-end
-end)
-Library:CreateToggle(Tabs.Main, "Fullbright", false, function(v)
-_G.Fullbright = v
-_G.NoFog = v
+end})
+--// Visual Tab \\
+Tabs.Visual:AddSection("Camera")
+Tabs.Visual:AddSlider("MyFeatures", {
+Title = "Camera Field",
+Default = 70,
+Min = 70,
+Max = 120,
+Rounding = 1,
+Callback = function(v)
+_G.CameraFieldValue = v
+end})
+Tabs.Visual:AddToggle("MyFeatures",{
+Title = "Camera Field", 
+Default = false,
+Callback = function(v)
+_G.CameraFieldBoost = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
-if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
-game.Lighting.FogStart = _G.NoFog and 0 or game.Lighting:GetAttribute("FogStart")
-game.Lighting.FogEnd = _G.NoFog and math.huge or game.Lighting:GetAttribute("FogEnd")
-local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
-if fog then
-if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
-fog.Density = _G.NoFog and 0 or fog:GetAttribute("Density")
-end
-if _G.Fullbright then
-game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
-game.Lighting.Brightness = 0
-game.Lighting.GlobalShadows = false
-else
-game.Lighting.OutdoorAmbient = Color3.fromRGB(55,55,55)
-game.Lighting.Brightness = 0
-game.Lighting.GlobalShadows = true
+if _G.CameraFieldBoost then
+workspace.Camera.FieldOfView = _G.CameraFieldValue
 end
 end)
-end)
-Library:CreateToggle(Tabs.Main, "Auto Generator [BETA]", false, function(v)
-_G.AutoGenerator = v
-while _G.AutoGenerator == true and game.Players.LocalPlayer.Character.Humanoid.Health > 0 do
-for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" then
-v.Remotes.RE:FireServer()
-end
-end
-wait()
-end
-end)
-
-Library:CreateToggle(Tabs.Visual, "Killer ESP", false, function(v)
-if v then
-for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
-elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
-end
-end
-KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
-if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
-LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
-elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
-end
-end)
-else
-KillersESP:Disconnect()
-LibESP:Delete("Killers_ESP")
-end
-end)
-Library:CreateToggle(Tabs.Visual, "Survivors ESP", false, function(v)
-if v then
-for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
-LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
-end
-end
-SurvivalESP = workspace.Players.Survivors.DescendantAdded:Connect(function(v)
-if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
-LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
-end
-end)
-else
-SurvivalESP:Disconnect()
-LibESP:Delete("Survival_ESP")
-end
-end)
-Library:CreateToggle(Tabs.Visual, "Items ESP", false, function(v)
-if v then
-for _, v in ipairs(workspace:GetDescendants()) do
-if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
-LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
-elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
-LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
-end
-end
-ItemsESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
-LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
-elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
-LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
-end
-end)
-else
-ItemsESP:Disconnect()
-LibESP:Delete("Items_ESP")
-end
-end)
-Library:CreateToggle(Tabs.Visual, "Generator ESP", false, function(v)
-if v then
-for _, v in ipairs(workspace:GetDescendants()) do
-if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
-LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
-end
-end
-GeneratorESP = workspace.Map.Ingame.Map.DescendantAdded:Connect(function(v)
-if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
-LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
-end
-end)
-else
-GeneratorESP:Disconnect()
-LibESP:Delete("Generator_ESP")
-end
-end)
-
-Library:CreateToggle(Tabs.Add, "Jump", false, function(v)
-_G.Jump = v
+end})
+Tabs.Visual:AddToggle("MyFeatures",{
+Title = "Auto View Killers", 
+Default = false,
+Callback = function(v)
+_G.AutoViewKiller = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.Jump then
-game.Players.LocalPlayer.Character.Humanoid.JumpPower = 68
-else
-game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
+if _G.AutoViewKiller and game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model") then
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.X, game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.Y, game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.Z))
 end
 end)
-end)
+end})
 
-Library:CreateToggle(Tabs.Premium, "Fly Gui", false, function(v)
-if v then
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Bacon-Library/refs/heads/main/Fly Gui"))()
-else
-for _,v in ipairs(game.CoreGui:GetDescendants()) do
-if v.Name == "FlyGui" then
-v:Destroy()
-end
-end
-end
-end)
-Library:CreateToggle(Tabs.Premium, "No Accessories", false, function(v)
-local Char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
-local HRP = Char:FindFirstChild("HumanoidRootPart")
-if HRP then
-if v then
-if not PHP then
-PHP = HRP.CustomPhysicalProperties
-end
-HRP.CustomPhysicalProperties = PhysicalProperties.new(100, originalPHProps.Friction, originalPHProps.Elasticity, originalPHProps.FrictionWeight, originalPHProps.ElasticityWeight)
-else
-if PHP then
-HRP.CustomPhysicalProperties = PHP
-PHP = nil
-end
-end
-end
-end)
-local ScreenGui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer.PlayerGui)
-ScreenGui.Name = "ToggleGUI"
-ScreenGui.ResetOnSpawn = false
-local Frame = Instance.new("Frame", ScreenGui)
-Frame.Position = UDim2.new(0.875, 0, 0.3, 0)
-Frame.BackgroundColor3 = Color3.new(0,0,0)
-Frame.BackgroundTransparency = 0
-Frame.Size = UDim2.new(0.1,0,0.1,0)
-local ToggleUI = Instance.new("TextButton", Frame)
-ToggleUI.Position = UDim2.new(0,0,0,0)
-ToggleUI.BackgroundColor3 = Color3.new(0,0,0)
-ToggleUI.BackgroundTransparency = 1
-ToggleUI.Size = UDim2.new(1,0,1,0)
-ToggleUI.Text = "Toggle UI"
-ToggleUI.TextSize = "25"
-ToggleUI.Font = "FredokaOne"
-ToggleUI.TextColor3 = Color3.new(1,1,1)
-local UiStroke10 = Instance.new("UIStroke", Frame)
-local Uiv = Instance.new("UICorner", Frame)
-UiStroke10.Color = Color3.new(1)
-ToggleUI.MouseButton1Click:Connect(function()
-for _,v in ipairs(game.CoreGui:GetDescendants()) do
-if v:IsA("Frame") and v.Name == "TopBar" then
-v.Visible = not v.Visible
-end
-end
-end)
+
