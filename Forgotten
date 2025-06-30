@@ -105,11 +105,14 @@ game.Players.LocalPlayer.Character.Humanoid.JumpPower = 0
 end
 end)
 end})
-local function InfinityStamina(v)
-InfinityStamina = v
+Tabs.Players:AddToggle("MyFeatures",{
+Title = "Infinity Stamina", 
+Default = false,
+Callback = function(v)
+_G.InfinityStamina = v
 local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
-InfStamina = game:GetService("RunService").Heartbeat:Connect(function()
-if not InfinityStamina then
+InfStamina = game:GetService("RunService").RenderStepped:Connect(function()
+if not _G.InfinityStamina then
 InfStamina:Disconnect()
 StaminaScript.StaminaLossDisabled = nil
 return
@@ -117,12 +120,6 @@ end
 StaminaScript.StaminaLossDisabled = function() 
 end
 end)
-end
-Tabs.Players:AddToggle("MyFeatures",{
-Title = "Infinity Stamina", 
-Default = false,
-Callback = function(v)
-InfinityStamina(v)
 end})
 --// Visual Tab \\
 Tabs.Visual:AddSection("Camera")
@@ -147,6 +144,15 @@ end
 end)
 end})
 Tabs.Visual:AddToggle("MyFeatures",{
+Title = "Disabled Animated", 
+Default = false,
+Callback = function(v)
+_G.DisabledAnimated = v
+game:GetService("RunService").RenderStepped:Connect(function()
+game.Players.LocalPlayer.Character.Animated.Enabled = not _G.DisabledAnimated
+end)
+end})
+Tabs.Visual:AddToggle("MyFeatures",{
 Title = "Auto View Killers", 
 Default = false,
 Callback = function(v)
@@ -157,5 +163,107 @@ game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = C
 end
 end)
 end})
+Tabs.Visual:AddSection("ESP")
+Tabs.Visual:AddToggle("MyFeatures",{
+Title = "Killers ESP", 
+Default = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+end
+end
+KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+end
+end)
+else
+KillersESP:Disconnect()
+LibESP:Delete("Killers_ESP")
+end
+end})
+Tabs.Visual:AddToggle("MyFeatures",{
+Title = "Survivors ESP", 
+Default = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
+end
+SurvivalESP = workspace.Players.Survivors.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
+end)
+else
+SurvivalESP:Disconnect()
+LibESP:Delete("Survival_ESP")
+end
+end})
+Tabs.Visual:AddToggle("MyFeatures",{
+Title = "Items ESP", 
+Default = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
+elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
+end
+end
+ItemsESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
+elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
+end
+end)
+else
+ItemsESP:Disconnect()
+LibESP:Delete("Items_ESP")
+end
+end})
+Tabs.Visual:AddToggle("MyFeatures",{
+Title = "Generator ESP", 
+Default = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+end
+end
+GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+end
+end)
+else
+GeneratorESP:Disconnect()
+LibESP:Delete("Generator_ESP")
+end
+end})
+--// Setting Tab \\
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({})
+InterfaceManager:SetFolder("FluentScriptHub")
+SaveManager:SetFolder("FluentScriptHub/specific-game")
 
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+Window:SelectTab(1)
+
+SaveManager:LoadAutoloadConfig()
 
