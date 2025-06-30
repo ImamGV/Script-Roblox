@@ -60,6 +60,88 @@ end
 end
 end
 end})
+local function HakariEmote(state)
+local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+local humanoid = char:WaitForChild("Humanoid")
+local rootPart = char:WaitForChild("HumanoidRootPart")
+hakariactive = state
+if hakariactive then
+humanoid.PlatformStand = true
+humanoid.JumpPower = 0
+    
+            local bodyVelocity = Instance.new("BodyVelocity")
+            bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000)
+            bodyVelocity.Velocity = Vector3.zero
+            bodyVelocity.Parent = rootPart
+    
+            local animation = Instance.new("Animation")
+            animation.AnimationId = "rbxassetid://138019937280193"
+            local animationTrack = humanoid:LoadAnimation(animation)
+            animationTrack:Play()
+    
+            local sound = Instance.new("Sound")
+            sound.SoundId = "rbxassetid://87166578676888"
+            sound.Parent = rootPart
+            sound.Volume = 0.5
+            sound.Looped = true
+            sound:Play()
+    
+            local effect = game.ReplicatedStorage.Assets.Emotes.HakariDance.HakariBeamEffect:Clone()
+            effect.Name = "PlayerEmoteVFX"
+            effect.CFrame = char.PrimaryPart.CFrame * CFrame.new(0, -1, -0.3)
+            effect.WeldConstraint.Part0 = char.PrimaryPart
+            effect.WeldConstraint.Part1 = effect
+            effect.Parent = char
+            effect.CanCollide = false
+    
+            local args = {
+                [1] = "PlayEmote",
+                [2] = "Animations",
+                [3] = "HakariDance"
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Network"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+    
+            animationTrack.Stopped:Connect(function()
+                humanoid.PlatformStand = false
+                if bodyVelocity and bodyVelocity.Parent then
+                    bodyVelocity:Destroy()
+                end
+            end)
+        else
+            humanoid.PlatformStand = false
+            humanoid.JumpPower = 0 
+    
+            local bodyVelocity = rootPart:FindFirstChildOfClass("BodyVelocity")
+            if bodyVelocity then
+                bodyVelocity:Destroy()
+            end
+    
+            local sound = rootPart:FindFirstChildOfClass("Sound")
+            if sound then
+                sound:Stop()
+                sound:Destroy()
+            end
+    
+            local effect = char:FindFirstChild("PlayerEmoteVFX")
+            if effect then
+                effect:Destroy()
+            end
+    
+            for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+                if track.Animation.AnimationId == "rbxassetid://138019937280193" then
+                    track:Stop()
+                end
+            end
+        end
+    end
+Tabs.Main:AddSection("Emote")
+Tabs.Main:AddToggle("MyFeatures",{
+Title = "Hakari Emote", 
+Default = false,
+Callback = function(v)
+HakariEmote(v)
+end})
+
 wait(1)
 --// Players Tabs \\
 Tabs.Players:AddSection("Players & LocalPlayer")
