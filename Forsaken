@@ -7,10 +7,10 @@ local Window = Fluent:CreateWindow({
     Title = "Forsaken",
     SubTitle = "v0.0.1 ( BETA )",
     TabWidth = 160,
-    Size = UDim2.fromOffset(500, 400),
+    Size = UDim2.fromOffset(540, 480),
     Acrylic = true,
     Theme = "Rose",
-    MinimizeKey = Enum.KeyCode.LeftControl
+    MinimizeKey = Enum.KeyCode.RightShift
 })
 
 local Tabs = {
@@ -29,13 +29,18 @@ Duration = 5
 })
 wait(1)
 Tabs.Main:AddSection("Generator")
-Tabs.Main:AddToggle("MyFeatures",{
-Title = "Auto Generator ( BETA )", 
-Default = false,
+Tabs.Main:AddSlider("DelayFixGenerator", {
+Title = "Delay Fix",
+Default = 0.15,
+Min = 0.15,
+Max = 4,
+Rounding = 1,
 Callback = function(v)
-_G.AutoGenerator = v
-task.spawn(function()
-while _G.AutoGenerator do
+_G.DelayFixGenerator = v
+end})
+local function AutoGenerator()
+while true do wait()
+if _G.AutoGenerator then
 for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" and game.Players.LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 if v.Progress.Value < 100 and workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Map"):FindFirstChild("Generator") then
@@ -43,9 +48,16 @@ v.Remotes.RE:FireServer()
 end
 end
 end
-wait(1.5)
 end
-end)
+task.wait(_G.DelayFixGenerator or 1.5)
+end
+end
+spawn(AutoGenerator)
+Tabs.Main:AddToggle("AutoGenerator",{
+Title = "Auto Generator ( BETA )", 
+Default = false,
+Callback = function(v)
+_G.AutoGenerator = v
 end})
 Tabs.Main:AddButton({
 Title = "Teleport to A Generator",
@@ -64,55 +76,55 @@ local humanoid = char:WaitForChild("Humanoid")
 local rootPart = char:WaitForChild("HumanoidRootPart")
 hakariactive = state
 if hakariactive then
-            humanoid.PlatformStand = true
-            humanoid.JumpPower = 0
+humanoid.PlatformStand = true
+humanoid.JumpPower = 0
+
+local bodyVelocity = Instance.new("BodyVelocity")
+bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000)
+bodyVelocity.Velocity = Vector3.zero
+bodyVelocity.Parent = rootPart
     
-            local bodyVelocity = Instance.new("BodyVelocity")
-            bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000)
-            bodyVelocity.Velocity = Vector3.zero
-            bodyVelocity.Parent = rootPart
+local animation = Instance.new("Animation")
+animation.AnimationId = "rbxassetid://138019937280193"
+local animationTrack = humanoid:LoadAnimation(animation)
+animationTrack:Play()
     
-            local animation = Instance.new("Animation")
-            animation.AnimationId = "rbxassetid://138019937280193"
-            local animationTrack = humanoid:LoadAnimation(animation)
-            animationTrack:Play()
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://87166578676888"
+sound.Parent = rootPart
+sound.Volume = 0.5
+sound.Looped = true
+sound:Play()
     
-            local sound = Instance.new("Sound")
-            sound.SoundId = "rbxassetid://87166578676888"
-            sound.Parent = rootPart
-            sound.Volume = 0.5
-            sound.Looped = true
-            sound:Play()
+local effect = game.ReplicatedStorage.Assets.Emotes.HakariDance.HakariBeamEffect:Clone()
+effect.Name = "PlayerEmoteVFX"
+effect.CFrame = char.PrimaryPart.CFrame * CFrame.new(0, -1, -0.3)
+effect.WeldConstraint.Part0 = char.PrimaryPart
+effect.WeldConstraint.Part1 = effect
+effect.Parent = char
+effect.CanCollide = false
     
-            local effect = game.ReplicatedStorage.Assets.Emotes.HakariDance.HakariBeamEffect:Clone()
-            effect.Name = "PlayerEmoteVFX"
-            effect.CFrame = char.PrimaryPart.CFrame * CFrame.new(0, -1, -0.3)
-            effect.WeldConstraint.Part0 = char.PrimaryPart
-            effect.WeldConstraint.Part1 = effect
-            effect.Parent = char
-            effect.CanCollide = false
+local args = {
+[1] = "PlayEmote",
+[2] = "Animations",
+[3] = "HakariDance"
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Network"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
     
-            local args = {
-                [1] = "PlayEmote",
-                [2] = "Animations",
-                [3] = "HakariDance"
-            }
-            game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Network"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+animationTrack.Stopped:Connect(function()
+humanoid.PlatformStand = false
+if bodyVelocity and bodyVelocity.Parent then
+bodyVelocity:Destroy()
+end
+end)
+else
+humanoid.PlatformStand = false
+humanoid.JumpPower = 0 
     
-            animationTrack.Stopped:Connect(function()
-                humanoid.PlatformStand = false
-                if bodyVelocity and bodyVelocity.Parent then
-                    bodyVelocity:Destroy()
-                end
-            end)
-        else
-            humanoid.PlatformStand = false
-            humanoid.JumpPower = 0 
-    
-            local bodyVelocity = rootPart:FindFirstChildOfClass("BodyVelocity")
-            if bodyVelocity then
-                bodyVelocity:Destroy()
-            end
+local bodyVelocity = rootPart:FindFirstChildOfClass("BodyVelocity")
+if bodyVelocity then
+bodyVelocity:Destroy()
+end
     
             local sound = rootPart:FindFirstChildOfClass("Sound")
             if sound then
@@ -141,7 +153,7 @@ HakariEmote(v)
 end})
 local function SillyEmote(state)
     
-        local char = player.Character or player.CharacterAdded:Wait()
+        local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
         local humanoid = char:WaitForChild("Humanoid")
         local rootPart = char:WaitForChild("HumanoidRootPart")
         sillyactive = state
@@ -238,18 +250,21 @@ Rounding = 1,
 Callback = function(v)
 _G.SpeedBoostValue = v
 end})
+local function Speed()
+while true do wait()
+if _G.SpeedBoost then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+end
+wait()
+end
+end
+spawn(Speed)
 Tabs.Players:AddToggle("MyFeatures",{
 Title = "Speed Boost", 
 Default = false,
 Callback = function(v)
 _G.SpeedBoost = v
-spawn(function()
-while _G.SpeedBoost do
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue
-game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-task.wait()
-end
-end)
 end})
 Tabs.Players:AddToggle("MyFeatures",{
 Title = "Infinity Stamina", 
