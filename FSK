@@ -1,1 +1,45 @@
+local Library = loadstring(game:HttpGet("https://github.com/ImamGV/CompKiller/blob/main/Source?raw=true"))();
+local Manager = Library:ConfigManager({Directory = "FSK",Config = "FSK-Configs"})
 
+local Notify = Library.newNotify()
+
+local Window = Library.new({
+	Name = "Forsaken",
+	Keybind = "LeftAlt",
+	Logo = "rbxassetid://",
+	Scale = Library.Scale.Window,
+  TextSize = 15,
+})
+
+local Watermark = Window:Watermark()
+
+local User = Watermark:AddText({
+	Icon = "User",
+	Text = game.Players.LocalPlayer.Name,
+})
+
+local Clock = Watermark:AddText({
+	Icon = "Clock",
+	Text = Library:GetDate(),
+})
+
+local Time = Watermark:AddText({
+	Icon = "Timer",
+	Text = Library:GetTimeNow(),
+});
+
+game:GetService("RunService").Heartbeat:Connect(function()
+Clock:SetText(Library:GetDate())
+Time:SetText(Library:GetTimeNow())
+end)
+
+Window:DrawCategory({
+	Name = "Main"
+})
+
+local Tabs = {
+Main = Window:DrawTab({Name = "Main",Icon = "home",EnableScrolling = true}),
+Players = Window:DrawTab({Name = "Players",Icon = "user",EnableScrolling = true}),
+Exploits = Window:DrawTab({Name = "Exploits",Icon = "book",EnableScrolling = true}),
+Visual = Window:DrawTab({Name = "Visual",Icon = "eye",EnableScrolling = true})
+}
