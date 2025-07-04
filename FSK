@@ -132,7 +132,6 @@ v.CanTouch = true
 end
 end
 end
-end
 end})
 Tab.Exploits:Toggle({
 Title = "Anti-John Doe Stomp",
