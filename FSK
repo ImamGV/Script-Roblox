@@ -1,39 +1,66 @@
--- https://scriptblox.com/script/Universal-Script-Dummy-UI-LIBRARY-43263
-
--- Load UI Library
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/x2zu/OPEN-SOURCE-UI-ROBLOX/refs/heads/main/X2ZU%20UI%20ROBLOX%20OPEN%20SOURCE/DummyUi-leak-by-x2zu/fetching-main/Tools/Framework.luau"))()
 
--- Create Main Window
 local Window = Library:Window({
-    Title = "x2zu [ Stellar ]",
-    Desc = "x2zu on top",
-    Icon = 105059922903197,
+    Title = "Forsaken",
+    Desc = "Forsaken on top",
+    Icon = 11719595129,
     Theme = "Dark",
     Config = {
         Keybind = Enum.KeyCode.LeftControl,
-        Size = UDim2.new(0, 500, 0, 400)
+        Size = UDim2.new(0, 560, 0, 480)
     },
     CloseUIButton = {
         Enabled = true,
-        Text = "x2zu"
+        Text = "Toggle"
     }
 })
-
--- Sidebar Vertical Separator
 local SidebarLine = Instance.new("Frame")
 SidebarLine.Size = UDim2.new(0, 1, 1, 0)
-SidebarLine.Position = UDim2.new(0, 140, 0, 0) -- adjust if needed
+SidebarLine.Position = UDim2.new(0, 140, 0, 0)
 SidebarLine.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 SidebarLine.BorderSizePixel = 0
 SidebarLine.ZIndex = 5
 SidebarLine.Name = "SidebarLine"
-SidebarLine.Parent = game:GetService("CoreGui") -- Or Window.Gui if accessible
+SidebarLine.Parent = game:GetService("CoreGui")
 
--- Tab
-local Tab = Window:Tab({Title = "Main", Icon = "star"}) do
-    -- Section
-    Tab:Section({Title = "All UI Components"})
-
+local Tab = {
+Main = Window:Tab({Title = "Main", Icon = "home"}),
+Players = Window:Tab({Title = "Players", Icon = "user"}),
+Exploit = Window:Tab({Title = "Exploits", Icon = "star"}),
+Visual = Window:Tab({Title = "Visual", Icon = "eye"})
+}
+Tab.Main:Slider({
+Title = "Fix Delay",
+Min = 1.5,
+Max = 12,
+Rounding = 1,
+Value = 1.5,
+Callback = function(v)
+_G.AutoGeneratorDelay = v
+end})
+Tab.Main:Section({Title = "Generator"})
+Tab.Main:Toggle({
+Title = "Auto Fix Generator",
+Value = false,
+Callback = function(v)
+_G.AutoGenerator = v
+end})
+local function AutoGenerator()
+task.spawn(function()
+while _G.AutoGenerator do
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" then
+if v.Progress.Value < 100 and game.Players.LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
+v.Remotes.RE:FireServer()
+end
+end
+end
+wait(_G.AutoGeneratorDelay or 1.5)
+end
+end)
+end
+task.spawn(AutoGenerator)
+--[[
     -- Toggle
     Tab:Toggle({
         Title = "Enable Feature",
@@ -143,3 +170,4 @@ Window:Notify({
     Desc = "All components loaded successfully! Credits leak: @x2zu",
     Time = 4
 })
+]]
