@@ -1,4 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/x2zu/OPEN-SOURCE-UI-ROBLOX/refs/heads/main/X2ZU%20UI%20ROBLOX%20OPEN%20SOURCE/DummyUi-leak-by-x2zu/fetching-main/Tools/Framework.luau"))()
+local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
 
 local Window = Library:Window({
     Title = "Forsaken",
@@ -26,7 +27,7 @@ SidebarLine.Parent = game:GetService("CoreGui")
 local Tab = {
 Main = Window:Tab({Title = "Main", Icon = "book"}),
 Players = Window:Tab({Title = "Players", Icon = "user"}),
-Exploit = Window:Tab({Title = "Exploits", Icon = "star"}),
+Exploits = Window:Tab({Title = "Exploits", Icon = "star"}),
 Visual = Window:Tab({Title = "Visual", Icon = "eye"})
 }
 --// Main Tab \\
@@ -143,7 +144,7 @@ if _G.AntiJohnDoeStomp then
 for _, Player in pairs(game.Players:GetPlayers()) do
 if Player ~= game.Players.LocalPlayer and Player.Character then
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Name == Player.Name .. "Shadows" then
+if v.Name == Player.Name .. "Shadows" and v then
 v.Shadow.CanTouch = false
 end
 end
@@ -153,7 +154,7 @@ else
 for _, Player in pairs(game.Players:GetPlayers()) do
 if Player ~= game.Players.LocalPlayer and Player.Character then
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Name == Player.Name .. "Shadows" then
+if v.Name == Player.Name .. "Shadows" and v then
 v.Shadow.CanTouch = true
 end
 end
@@ -162,7 +163,172 @@ end
 end
 end)
 end})
+--// Visual Tab \\
+Tab.Visual:Section({Title = "Camera"})
+Tab.Visual:Slider({
+Title = "Field Of View",
+Min = 70,
+Max = 120,
+Rounding = 0,
+Value = 70,
+Callback = function(v)
+_G.FieldOfViewValue = v
+end})
+Tab.Visual:Toggle({
+Title = "Apply Field Of View",
+Value = false,
+Callback = function(v)
+_G.FieldOfView = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.FieldOfView then
+workspace.Camera.FieldOfView = _G.FieldOfViewValue
+end
+end)
+end})
+Tab.Visual:Toggle({
+Title = "Always Look Killers",
+Value = false,
+Callback = function(v)
+_G.AutoViewKiller = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoViewKiller and game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model") then
+if not game.Players.LocalPlayer.Name ~= "c00lkidd" or not game.Players.LocalPlayer.Name ~= "Jason" or not game.Players.LocalPlayer.Name ~= "JohnDoe" or not game.Players.LocalPlayer.Name ~= "1x1x1x1" then
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.X, game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.Y, game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.Z))
+end
+end
+end)
+end})
+Tab.Visual:Section({Title = "ESP"})
+local function Cylinder(child, color, title)
+local Adornment = Instance.new("CylinderHandleAdornment")
+Adornment.Height = child.Size.Y * 1.75
+Adornment.Radius = child.Size.X * 1
+Adornment.CFrame = CFrame.new(0,0,0) * CFrame.Angles(math.rad(90), 0, 0)
+Adornment.Color3 = color
+Adornment.Transparency = 0.5
+Adornment.AlwaysOnTop = true
+Adornment.ZIndex = 10
+Adornment.Adornee = child
+Adornment.Name = title
+Adornment.Parent = child
+end
+local function Box(child, color, title)
+local Adornment = Instance.new("BoxHandleAdornment")
+Adornment.Size = child.Size
+Adornment.CFrame = CFrame.new(0,0,0) * CFrame.Angles(math.rad(90), 0, 0)
+Adornment.Color3 = color
+Adornment.Transparency = 0.5
+Adornment.AlwaysOnTop = true
+Adornment.ZIndex = 10
+Adornment.Adornee = child
+Adornment.Name = title
+Adornment.Parent = child
+end
 
+Tab.Visual:Toggle({
+Title = "Killers ESP",
+Value = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+Cylinder(v.HumanoidRootPart, Color3.new(1), "Killer_ESP")
+end
+end
+KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+Cylinder(v.HumanoidRootPart, Color3.new(1), "Killer_ESP")
+end
+end)
+else
+KillersESP:Disconnect()
+LibESP:Delete("Killer_ESP")
+end
+end})
+Tab.Visual:Toggle({
+Title = "Survivors ESP",
+Value = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survivors_ESP") then
+Cylinder(v.HumanoidRootPart, Color3.new(0,1), "Survivors_ESP")
+end
+end
+SurvivorsESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survivors_ESP") then
+Cylinder(v.HumanoidRootPart, Color3.new(0,1), "Survivors_ESP")
+end
+end)
+else
+SurvivorsESP:Disconnect()
+LibESP:Delete("Survivors_ESP")
+end
+end})
+Tab.Visual:Toggle({
+Title = "Items ESP",
+Value = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
+Box(v:FindFirstChildOfClass("Part"), Color3.new(1,1), "Items_ESP")
+elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
+Box(v:FindFirstChildOfClass("Part"), Color3.new(1), "Items_ESP")
+end
+end
+ItemsESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
+Box(v:FindFirstChildOfClass("Part"), Color3.new(1,1), "Items_ESP")
+elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
+Box(v:FindFirstChildOfClass("Part"), Color3.new(1), "Items_ESP")
+end
+end)
+else
+ItemsESP:Disconnect()
+LibESP:Delete("Items_ESP")
+end
+end})
+Tab.Visual:Toggle({
+Title = "Generator ESP",
+Value = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+Box(v:FindFirstChildOfClass("Part"), Color3.new(1,1), "Generator_ESP")
+end
+end
+GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+Box(v:FindFirstChildOfClass("Part"), Color3.new(1,1), "Generator_ESP")
+end
+end)
+else
+GeneratorESP:Disconnect()
+LibESP:Delete("Generator_ESP")
+end
+end})
+Tab.Visual:Toggle({
+Title = "Subspace Tripmine ESP",
+Value = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
+Box(v:FindFirstChildOfClass("Part"), Color3.new(1,0,1), "SubspaceTripmine_ESP")
+end
+end
+SubspaceTripmineESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
+Box(v:FindFirstChildOfClass("Part"), Color3.new(1,0,1), "SubspaceTripmine_ESP")
+end
+end)
+else
+SubspaceTripmineESP:Disconnect()
+LibESP:Delete("SubspaceTripmine_ESP")
+end
+end})
 --[[
     -- Toggle
     Tab:Toggle({
