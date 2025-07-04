@@ -3,7 +3,7 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/x2zu/
 local Window = Library:Window({
     Title = "Forsaken",
     Desc = "Forsaken on top",
-    Icon = 11719595129,
+    Icon = 95073582077930,
     Theme = "Dark",
     Config = {
         Keybind = Enum.KeyCode.LeftControl,
@@ -24,11 +24,13 @@ SidebarLine.Name = "SidebarLine"
 SidebarLine.Parent = game:GetService("CoreGui")
 
 local Tab = {
-Main = Window:Tab({Title = "Main", Icon = "home"}),
+Main = Window:Tab({Title = "Main", Icon = "book"}),
 Players = Window:Tab({Title = "Players", Icon = "user"}),
 Exploit = Window:Tab({Title = "Exploits", Icon = "star"}),
 Visual = Window:Tab({Title = "Visual", Icon = "eye"})
 }
+--// Main Tab \\
+Tab.Main:Section({Title = "Generator"})
 Tab.Main:Slider({
 Title = "Fix Delay",
 Min = 1.5,
@@ -38,28 +40,129 @@ Value = 1.5,
 Callback = function(v)
 _G.AutoGeneratorDelay = v
 end})
-Tab.Main:Section({Title = "Generator"})
 Tab.Main:Toggle({
 Title = "Auto Fix Generator",
 Value = false,
 Callback = function(v)
 _G.AutoGenerator = v
-end})
-local function AutoGenerator()
-task.spawn(function()
 while _G.AutoGenerator do
-for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+for _,v in pairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" then
-if v.Progress.Value < 100 and game.Players.LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
-v.Remotes.RE:FireServer()
-end
+v:WaitForChild("Generator"):WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
 end
 end
 wait(_G.AutoGeneratorDelay or 1.5)
 end
-end)
+end})
+Tab.Main:Section({Title = "Misc"})
+Tab.Main:Toggle({
+Title = "Auto Pizza",
+Value = false,
+Callback = function(v)
+_G.AutoPizza = v
+while _G.AutoPizza and game.Players.LocalPlayer.Character.Humanoid.Health < 80 do
+for _,v in pairs(workspace.Map.Ingame:GetChildren()) do
+if v.Name == "Pizza" then
+v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 end
-task.spawn(AutoGenerator)
+end
+wait()
+end
+--// Players Tab \\
+Tab.Players:Section({Title = "Players"})
+Tab.Players:Slider({
+Title = "Speed Boost",
+Min = 0.1,
+Max = 1,
+Rounding = 1,
+Value = 0.1,
+Callback = function(v)
+_G.SpeedBoostValue = v
+end})
+Tab.Players:Toggle({
+Title = "Apply Speed",
+Value = false,
+Callback = function(v)
+_G.SpeedBoost = v
+while _G.SpeedBoost do
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+wait()
+end
+end})
+Tab.Players:Toggle({
+Title = "Inf Stamina",
+Value = false,
+Callback = function(v)
+_G.InfinityStamina = v
+local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+InfStamina = game:GetService("RunService").RenderStepped:Connect(function()
+if not _G.InfinityStamina then
+InfStamina:Disconnect()
+StaminaScript.StaminaLossDisabled = nil
+return
+end
+StaminaScript.StaminaLossDisabled = function() 
+end
+end)
+end})
+--// Exploits Tab \\
+Tab.Exploits:Section({Title = "Anti"})
+Tab.Exploits:Toggle({
+Title = "Anti-John Doe Trail",
+Value = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Players.Killers:GetDescendants()) do
+if v.Name == "Trail" and v then
+v.CanTouch = false
+end
+end
+AntiJohnDoeTrail = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+if v.Name == "Trail" and v then
+v.CanTouch = false
+end
+end)
+else
+AntiJohnDoeTrail:Disconnect()
+for _,v in ipairs(workspace.Players:GetDescendants()) do
+if v.Name == "Trail" then
+v.CanTouch = true
+end
+end
+end
+end
+end})
+Tab.Exploits:Toggle({
+Title = "Anti-John Doe Stomp",
+Value = false,
+Callback = function(v)
+_G.AntiJohnDoeStomp = v
+game:GetService("RunService").Heartbeat:Connect(function()
+if _G.AntiJohnDoeStomp then
+for _, Player in pairs(game.Players:GetPlayers()) do
+if Player ~= game.Players.LocalPlayer and Player.Character then
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == Player.Name .. "Shadows" then
+v.Shadow.CanTouch = false
+end
+end
+end
+end
+else
+for _, Player in pairs(game.Players:GetPlayers()) do
+if Player ~= game.Players.LocalPlayer and Player.Character then
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == Player.Name .. "Shadows" then
+v.Shadow.CanTouch = true
+end
+end
+end
+end
+end
+end)
+end})
+
 --[[
     -- Toggle
     Tab:Toggle({
