@@ -49,7 +49,7 @@ _G.AutoGenerator = v
 while _G.AutoGenerator do
 for _,v in pairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" then
-v:WaitForChild("Generator"):WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+v:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
 end
 end
 wait(_G.AutoGeneratorDelay or 1.5)
@@ -62,8 +62,8 @@ Value = false,
 Callback = function(v)
 _G.AutoPizza = v
 while _G.AutoPizza and game.Players.LocalPlayer.Character.Humanoid.Health < 80 do
-for _,v in pairs(workspace.Map.Ingame:GetChildren()) do
-if v.Name == "Pizza" then
+for _,v in pairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Parent.Name == "Ingame" and v.Name == "Pizza" then
 v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 end
 end
@@ -172,8 +172,8 @@ end})
 Tab.Visual:Section({Title = "ESP"})
 local function Cylinder(child, color, title)
 local Adornment = Instance.new("CylinderHandleAdornment")
-Adornment.Height = child.Size.Y * 1.75
-Adornment.Radius = child.Size.X * 1
+Adornment.Height = child.Size.Y * 2
+Adornment.Radius = child.Size.X * 1.5
 Adornment.CFrame = CFrame.new(0,0,0) * CFrame.Angles(math.rad(90), 0, 0)
 Adornment.Color3 = color
 Adornment.Transparency = 0.5
@@ -226,7 +226,7 @@ if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Sur
 Cylinder(v.HumanoidRootPart, Color3.new(0,1), "Survivors_ESP")
 end
 end
-SurvivorsESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+SurvivorsESP = workspace.Players.Survivors.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survivors_ESP") then
 Cylinder(v.HumanoidRootPart, Color3.new(0,1), "Survivors_ESP")
 end
@@ -243,16 +243,16 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
-Box(v:FindFirstChildOfClass("Part"), Color3.new(1,1), "Items_ESP")
+LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
 elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
-Box(v:FindFirstChildOfClass("Part"), Color3.new(1), "Items_ESP")
+LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
 end
 end
 ItemsESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
-Box(v:FindFirstChildOfClass("Part"), Color3.new(1,1), "Items_ESP")
+LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
 elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
-Box(v:FindFirstChildOfClass("Part"), Color3.new(1), "Items_ESP")
+LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
 end
 end)
 else
@@ -267,12 +267,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
-Box(v.Main, Color3.new(1,1), "Generator_ESP")
+LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end
 GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
-Box(v.Main, Color3.new(1,1), "Generator_ESP")
+LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end)
 else
