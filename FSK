@@ -134,35 +134,6 @@ end
 end
 end
 end})
-Tab.Exploits:Toggle({
-Title = "Anti-John Doe Stomp",
-Value = false,
-Callback = function(v)
-_G.AntiJohnDoeStomp = v
-game:GetService("RunService").Heartbeat:Connect(function()
-if _G.AntiJohnDoeStomp then
-for _, Player in pairs(game.Players:GetPlayers()) do
-if Player ~= game.Players.LocalPlayer and Player.Character then
-for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Name == Player.Name .. "Shadows" and v then
-v.Shadow.CanTouch = false
-end
-end
-end
-end
-else
-for _, Player in pairs(game.Players:GetPlayers()) do
-if Player ~= game.Players.LocalPlayer and Player.Character then
-for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Name == Player.Name .. "Shadows" and v then
-v.Shadow.CanTouch = true
-end
-end
-end
-end
-end
-end)
-end})
 --// Visual Tab \\
 Tab.Visual:Section({Title = "Camera"})
 Tab.Visual:Slider({
@@ -296,12 +267,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
-Box(v:FindFirstChildOfClass("Part"), Color3.new(1,1), "Generator_ESP")
+Box(v.Main, Color3.new(1,1), "Generator_ESP")
 end
 end
 GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
-Box(v:FindFirstChildOfClass("Part"), Color3.new(1,1), "Generator_ESP")
+Box(v.Main, Color3.new(1,1), "Generator_ESP")
 end
 end)
 else
