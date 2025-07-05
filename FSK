@@ -165,7 +165,7 @@ while _G.AutoPlay do
                 print("âœ… Stamina sufficient (", stamina, ") â€” attempting to sprint...")
             else
                 print("đŸ›‘ Conditions not met for sprinting. Stamina:", stamina, " | Busy:", tostring(busy))
-                wait(0.1)
+                wait()
                 return
             end
             if busy then
@@ -231,7 +231,6 @@ if isInGame then
                     end
                 s, f = pcall(function()
                     for _, killer in ipairs(game.Workspace.Players.Killers:GetDescendants()) do
-                      if killer.Parent.Name == "Killers" and v:IsA("Model") then
                         local dist = (killer.HumanoidRootPart.Position - currentCharacter.HumanoidRootPart.Position).Magnitude
                         if dist <= 100 then
                             print("â ï¸ Killer nearby! Running...")
@@ -274,8 +273,7 @@ if isInGame then
                             end
                         end
                     end
-                end
-            end)
+                end)
                 wait()
             end
             print(s)
@@ -414,9 +412,58 @@ end
 end)
 end})
 --// Exploits Tab \\
-Tab.Exploits:Section({Title = "Anti"})
+Tab.Exploits:Section({Title = "Anti Ability John Doe"})
 Tab.Exploits:Toggle({
-Title = "Anti-John Doe Trail",
+Title = "Anti-Stomp Trap",
+Value = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == "Shadow" and v then
+v.CanTouch = false
+end
+end
+else
+AntiJohnDoeStompTrap = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v.Name == "Shadow" and v then
+v.CanTouch = false
+end
+end)
+else
+AntiJohnDoeStompTrap:Disconnect()
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == "Shadow" and v then
+v.CanTouch = true
+end
+end
+end
+end})
+Tab.Exploits:Toggle({
+Title = "Anti-Spike",
+Value = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
+if v.Name == "Spike" and v then
+v.Spike.CanTouch = false
+end
+end
+AntiJohnDoeSpike = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v.Name == "Spike" and v then
+v.Spike.CanTouch = false
+end
+end)
+else
+AntiJohnDoeSpike:Disconnect()
+for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
+if v.Name == "Spike" and v then
+v.Spike.CanTouch = true
+end
+end
+end
+end})
+Tab.Exploits:Toggle({
+Title = "Anti-Trail",
 Value = false,
 Callback = function(v)
 if v then
@@ -435,6 +482,31 @@ AntiJohnDoeTrail:Disconnect()
 for _,v in ipairs(workspace.Players:GetDescendants()) do
 if v.Name == "Trail" then
 v.CanTouch = true
+end
+end
+end
+end})
+Tab.Exploits:Section({Title = "Anti Ability 1x1x1x1"})
+Tab.Exploits:Toggle({
+Title = "Anti-Mass Infection (Test)",
+Value = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
+if v.Name == "Shockwave" and v then
+v.Decor.MeshPart.CanTouch = false
+end
+end
+AntiMassInfection = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v.Name == "Shockwave" and v then
+v.Decor.MeshPart.CanTouch = false
+end
+end)
+else
+AntiJohnDoeTrail:Disconnect()
+for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
+if v.Name == "Shockwave" and v then
+v.Decor.MeshPart.CanTouch = false
 end
 end
 end
