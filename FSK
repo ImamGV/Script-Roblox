@@ -46,6 +46,7 @@ end
 end
 end
 task.delay(_G.AutoGeneratorDelay or 1.5, function() debounce[v] = nil end)
+wait()
 end
 end
             
@@ -154,7 +155,6 @@ if v.Name == "Shadow" and v then
 v.CanTouch = false
 end
 end
-else
 AntiJohnDoeStompTrap = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 if v.Name == "Shadow" and v then
 v.CanTouch = false
