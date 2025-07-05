@@ -12,7 +12,7 @@ local Window = Library:Window({
     },
     CloseUIButton = {
         Enabled = true,
-        Text = "Toggle"
+        Text = "\nToggle UI\n"
     }
 })
 local SidebarLine = Instance.new("Frame")
@@ -31,6 +31,23 @@ Exploits = Window:Tab({Title = "Exploits", Icon = "star"}),
 Visual = Window:Tab({Title = "Visual", Icon = "eye"})
 }
 --// Main Tab \\
+local function AutoGenerator(v)
+AutoGen = v
+local debounce = {}
+while AutoGen do
+task.wait()
+for _, v in pairs(game.Workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" then
+if not debounce[v] then
+debounce[v] = true
+v:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+task.delay(_G.AutoGeneratorDelay or 1.5, function() debounce[v] = nil end)
+end
+end
+end
+end
+end
+            
 Tab.Main:Section({Title = "Generator"})
 Tab.Main:Slider({
 Title = "Fix Delay",
@@ -46,14 +63,6 @@ Title = "Auto Fix Generator",
 Value = false,
 Callback = function(v)
 _G.AutoGenerator = v
-while _G.AutoGenerator do
-for _,v in pairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" then
-v:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
-end
-end
-wait(_G.AutoGeneratorDelay or 1.5)
-end
 end})
 Tab.Main:Section({Title = "Misc"})
 Tab.Main:Toggle({
@@ -61,14 +70,11 @@ Title = "Auto Pizza",
 Value = false,
 Callback = function(v)
 _G.AutoPizza = v
-while _G.AutoPizza and game.Players.LocalPlayer.Character.Humanoid.Health < 80 do
-for _,v in pairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Parent.Name == "Ingame" and v.Name == "Pizza" then
-v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+game:GetService("RunService").RenderStepped:Connect(function()
+if game.Players.LocalPlayer.Character.Humanoid.Health < 80 then
+workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 end
-end
-wait()
-end
+end)
 end})
 --// Players Tab \\
 Tab.Players:Section({Title = "Players"})
