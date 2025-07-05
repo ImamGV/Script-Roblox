@@ -503,10 +503,35 @@ v.Decor.MeshPart.CanTouch = false
 end
 end)
 else
-AntiJohnDoeTrail:Disconnect()
+AntiMassInfection:Disconnect()
 for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
 if v.Name == "Shockwave" and v then
 v.Decor.MeshPart.CanTouch = false
+end
+end
+end
+end})
+Tab.Exploits:Section({Title = "Anti Ability c00lkidd"})
+Tab.Exploits:Toggle({
+Title = "Anti-Launch",
+Value = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
+if v:IsA("Part") then
+v.CanTouch = false
+end
+end
+AntiLaunch = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Part") then
+v.CanTouch = false
+end
+end)
+else
+AntiLaunch:Disconnect()
+for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
+if v:IsA("Part") then
+v.CanTouch = true
 end
 end
 end
