@@ -62,7 +62,7 @@ Tab.Main:Toggle({
 Title = "Auto Fix Generator",
 Value = false,
 Callback = function(v)
-_G.AutoGenerator = v
+AutoGenerator(v)
 end})
 Tab.Main:Section({Title = "Misc"})
 Tab.Main:Toggle({
@@ -71,7 +71,7 @@ Value = false,
 Callback = function(v)
 _G.AutoPizza = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if game.Players.LocalPlayer.Character.Humanoid.Health < 80 then
+if _G.AutoPizza and game.Players.LocalPlayer.Character.Humanoid.Health < 80 then
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 end
 end)
@@ -209,12 +209,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-Cylinder(v.HumanoidRootPart, Color3.new(1), "Killer_ESP")
+Box(v.Character, Color3.new(1), "Killer_ESP")
 end
 end
 KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-Cylinder(v.HumanoidRootPart, Color3.new(1), "Killer_ESP")
+Box(v.Character, Color3.new(1), "Killer_ESP")
 end
 end)
 else
@@ -229,12 +229,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survivors_ESP") then
-Cylinder(v.HumanoidRootPart, Color3.new(0,1), "Survivors_ESP")
+Box(v.Character, Color3.new(0,1), "Survivors_ESP")
 end
 end
 SurvivorsESP = workspace.Players.Survivors.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survivors_ESP") then
-Cylinder(v.HumanoidRootPart, Color3.new(0,1), "Survivors_ESP")
+Box(v.Character, Color3.new(0,1), "Survivors_ESP")
 end
 end)
 else
@@ -293,12 +293,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
-Box(v:FindFirstChildOfClass("Part"), Color3.new(1,0,1), "SubspaceTripmine_ESP")
+Cylinder(v:FindFirstChildOfClass("Part"), Color3.new(1,0,1), "SubspaceTripmine_ESP")
 end
 end
 SubspaceTripmineESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
-Box(v:FindFirstChildOfClass("Part"), Color3.new(1,0,1), "SubspaceTripmine_ESP")
+Cylinder(v:FindFirstChildOfClass("Part"), Color3.new(1,0,1), "SubspaceTripmine_ESP")
 end
 end)
 else
