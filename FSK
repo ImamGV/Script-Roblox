@@ -34,17 +34,18 @@ Visual = Window:Tab({Title = "Visual", Icon = "eye"})
 local function AutoGenerator(v)
 AutoGen = v
 local debounce = {}
-while true and AutoGen do
-task.wait()
+while true do
+if AutoGen then
 for _, v in pairs(game.Workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" then
 if not debounce[v] and v.Progress.Value ~= 100 then
 debounce[v] = true
 v:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+end
+end
+end
+end
 task.delay(_G.AutoGeneratorDelay or 1.5, function() debounce[v] = nil end)
-end
-end
-end
 end
 end
             
@@ -376,10 +377,10 @@ end})
 Tab.Players:Section({Title = "Players"})
 Tab.Players:Slider({
 Title = "Speed Boost",
-Min = 0,
+Min = 0.1,
 Max = 5,
 Rounding = 1,
-Value = 0,
+Value = 0.1,
 Callback = function(v)
 _G.SpeedBoostValue = v
 end})
@@ -388,10 +389,11 @@ Title = "Apply Speed",
 Value = false,
 Callback = function(v)
 _G.SpeedBoost = v
-while true and _G.SpeedBoost do
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue
+while true do
+if _G.SpeedBoost then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue or 0.1
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-task.wait()
+end
 wait()
 end
 end})
