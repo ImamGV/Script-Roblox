@@ -179,7 +179,7 @@ Tab.Visual:Section({Title = "ESP"})
 local function Cylinder(child, color, title)
 local Adornment = Instance.new("CylinderHandleAdornment")
 Adornment.Height = child.Size.Y * 2
-Adornment.Radius = child.Size.X * 1.5
+Adornment.Radius = child.Size.X * 1.75
 Adornment.CFrame = CFrame.new(0,0,0) * CFrame.Angles(math.rad(90), 0, 0)
 Adornment.Color3 = color
 Adornment.Transparency = 0.5
@@ -209,12 +209,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-Box(v.Character, Color3.new(1), "Killer_ESP")
+Cylinder(v:FindFirstChild("HumanoidRoorPart"), Color3.new(1), "Killer_ESP")
 end
 end
 KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-Box(v.Character, Color3.new(1), "Killer_ESP")
+Cylinder(v:FindFirstChild("HumanoidRoorPart"), Color3.new(1), "Killer_ESP")
 end
 end)
 else
@@ -228,18 +228,18 @@ Value = false,
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survivors_ESP") then
-Box(v.Character, Color3.new(0,1), "Survivors_ESP")
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end
-SurvivorsESP = workspace.Players.Survivors.DescendantAdded:Connect(function(v)
-if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survivors_ESP") then
-Box(v.Character, Color3.new(0,1), "Survivors_ESP")
+SurvivalESP = workspace.Players.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end)
 else
-SurvivorsESP:Disconnect()
-LibESP:Delete("Survivors_ESP")
+SurvivalESP:Disconnect()
+LibESP:Delete("Survival_ESP")
 end
 end})
 Tab.Visual:Toggle({
