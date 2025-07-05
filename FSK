@@ -371,7 +371,6 @@ if isInGame then
 end
 wait()
 end
-end)
 end})
 --// Players Tab \\
 Tab.Players:Section({Title = "Players"})
