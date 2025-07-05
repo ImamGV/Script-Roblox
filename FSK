@@ -34,7 +34,7 @@ Visual = Window:Tab({Title = "Visual", Icon = "eye"})
 local function AutoGenerator(v)
 AutoGen = v
 local debounce = {}
-while AutoGen do
+while true and AutoGen do
 task.wait()
 for _, v in pairs(game.Workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" then
@@ -377,7 +377,7 @@ Tab.Players:Section({Title = "Players"})
 Tab.Players:Slider({
 Title = "Speed Boost",
 Min = 0,
-Max = 6,
+Max = 5,
 Rounding = 1,
 Value = 0,
 Callback = function(v)
@@ -388,11 +388,12 @@ Title = "Apply Speed",
 Value = false,
 Callback = function(v)
 _G.SpeedBoost = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.SpeedBoost then
-game.Players.LocalPlayer.Character.SpeedMultipliers.Sprinting.Value = _G.SpeedBoostValue or 28
+while true and _G.SpeedBoost do
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+task.wait()
+wait()
 end
-end)
 end})
 Tab.Players:Toggle({
 Title = "Inf Stamina",
