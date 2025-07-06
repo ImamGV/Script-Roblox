@@ -26,7 +26,7 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao1
 			Library.Themes.Darker["Color Text"] = Color3.fromRGB(255,255,255)
 			Library.Themes.Darker["Color Dark Text"] = Color3.fromRGB(0,255)
 
-local LibraryESP = loadstring(game:HttpGet("https://github.com/RGV-devid/Scripts/blob/main/ESP?raw=true"))()
+local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
 
 local Window = Library:MakeWindow({"YOUHUB | Evade", "v0.0.1", "testando | redz lib v5.lua"})
 
@@ -79,12 +79,35 @@ end
 end
 end})
 Tabs.Main:AddToggle({
+	Name = "Auto Respawn",
+	Description = "Auto Respawn",
+        Callback = function(value)
+_G.AutoRespawn = value
+while _G.AutoRespawn do wait(0.5)
+if workspace.Game.Players:WaitForChild(game.Players.LocalPlayer.Name):GetAttribute('Downed') then
+game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
+end
+end
+end})
+Tabs.Main:AddToggle({
 	Name = "Ticket ESP",
 	Description = "Ticket ESP",
 	Callback = function(v)
 if v then
-    for _,v in ipairs(workspace.Game.Effects.Tickets:GetDescendants()) do
-    if v.Parent.Name == "Tickets" then
-    LibESP:AddESP(v, "Tickets", Color3.fromRGB(0,255), 15, "Tickets_ESP")
-  end
-  end
+for _,v in ipairs(workspace.Game.Effects.Tickets:GetDescendants()) do
+if v.Parent.Name == "Tickets" then
+LibESP:AddESP(v, "Tickets", Color3.fromRGB(0,255), 15, "Tickets_ESP")
+getgenv().DistanceESP = true
+end
+end
+TicketESP = workspace.Game.Effects.Tickets.DescendantAdded:Connect(function(v)
+if v.Parent.Name == "Tickets" then
+LibESP:AddESP(v, "Tickets", Color3.fromRGB(0,255), 15, "Tickets_ESP")
+end
+end)
+else
+TicketESP:Disconnect()
+LibESP:Delete("Tickets_ESP")
+getgenv().DistanceESP = false
+end
+end})
