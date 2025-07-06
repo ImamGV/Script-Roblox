@@ -33,12 +33,10 @@ Visual = Window:Tab({Title = "Visual", Icon = "eye"})
 --// Main Tab \\
 local function AutoGenerator(v)
 AutoGen = v
-while true do
-if AutoGen then
+while AutoGen do
 for _, v in ipairs(game.Workspace.Map.Ingame:WaitForChild("Map"):GetChildren()) do
 if v.Name == "Generator" then
 v:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
-end
 end
 end
 wait(_G.AutoGeneratorDelay or 1.5)
