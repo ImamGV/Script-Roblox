@@ -36,9 +36,9 @@ AutoGen = v
 local debounce = {}
 while true do
 if AutoGen then
-for _, v in pairs(game.Workspace.Map.Ingame.Map:GetChildren()) do
+for _, v in ipairs(game.Workspace.Map.Ingame:WaitForChild("Map"):GetChildren()) do
 if v.Name == "Generator" then
-if not debounce[v] and v.Progress.Value ~= 100 then
+if not debounce[v] and v.Progress.Value < 100 then
 debounce[v] = true
 v:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
 end
