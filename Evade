@@ -1,0 +1,90 @@
+local GC = getconnections or get_signal_cons
+if GC then
+for i,v in pairs(GC(game.Players.LocalPlayer.Idled)) do
+if v["Disable"] then
+v["Disable"](v)
+elseif v["Disconnect"] then
+v["Disconnect"](v)
+end
+end
+else
+game.Players.LocalPlayer.Idled:Connect(function()
+local VirtualUser = game:GetService("VirtualUser")
+VirtualUser:CaptureController()
+VirtualUser:ClickButton2(Vector2.new())
+end)
+end
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/Library-ui/refs/heads/main/Redzhubui"))()
+      Library.Themes.Darker["Color Hub 1"] = ColorSequence.new({
+				ColorSequenceKeypoint.new(0.00, Color3.fromRGB()),
+				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(5,5,5)),
+				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(2,2,2))
+			})
+			Library.Themes.Darker["Color Hub 2"] = Color3.fromRGB(20,20,20)
+			Library.Themes.Darker["Color Stroke"] = Color3.fromRGB(15,15,15)
+			Library.Themes.Darker["Color Theme"] = Color3.fromRGB(0,255,100)
+			Library.Themes.Darker["Color Text"] = Color3.fromRGB(255,255,255)
+			Library.Themes.Darker["Color Dark Text"] = Color3.fromRGB(0,255)
+
+local LibraryESP = loadstring(game:HttpGet("https://github.com/RGV-devid/Scripts/blob/main/ESP?raw=true"))()
+
+local Window = Library:MakeWindow({"YOUHUB | Evade", "v0.0.1", "testando | redz lib v5.lua"})
+
+local Button = Window:AddMinimizeButton({
+Button = { ImageColor3 = Color3.fromRGB(0,255,100), Image = "rbxassetid://95869322194132", BackgroundColor3 = Color3.fromRGB(), BackgroundTransparency = 0 },
+Corner = { CornerRadius = UDim.new(0, 5) },
+})
+Instance.new("UIStroke", game:GetService("CoreGui")["redz Library V5"].Hub).Color = Color3.fromRGB(0,255,100)
+Instance.new("UIStroke", game:GetService("CoreGui")["redz Library V5"].ImageButton).Color = Color3.fromRGB(0,255,100)
+local Tabs = {
+Main = Window:MakeTab({"Main", "Home"}),
+Visual = Window:MakeTab({"Visual", "Camera"})
+}
+Tabs.Main:AddSection({"Farm"})
+Tabs.Main:AddToggle({
+	Name = "AFK Farm",
+	Description = "Teleport Far to AFK",
+	Callback = function(v)
+_G.AFK = v
+if v then
+local part = Instance.new("Part", workspace)
+   part.Anchored = true
+   part.CFrame = CFrame.new(100, 1996, 100)
+   part.Material = "Neon"
+   part.Transparency = 0
+   part.Size = Vector3.new(10000,1,10000)
+endt
+task.spawn(function()
+while _G.AFK do wait(0.3)
+local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+local hrp = char:WaitForChild("HumanoidRootPart", 3)
+hrp.CFrame = CFrame.new(100, 2000, 100)
+end
+end)
+while task.wait(0.1) and _G.AFK do
+if not v then
+break
+end
+local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+local tickets = workspace.Game.Effects.Tickets
+local hrp = char:WaitForChild("HumanoidRootPart", 3)
+if hrp == nil then
+return
+end
+for i, v in next, tickets:GetDescendants() do
+if v.IsA(v, "BasePart") and v.Name == "HumanoidRootPart" then
+hrp.CFrame = CFrame.new(v.Position)
+end
+end
+end
+end})
+Tabs.Main:AddToggle({
+	Name = "Ticket ESP",
+	Description = "Ticket ESP",
+	Callback = function(v)
+if v then
+    for _,v in ipairs(workspace.Game.Effects.Tickets:GetDescendants()) do
+    if v.Parent.Name == "Tickets" then
+    LibESP:AddESP(v, "Tickets", Color3.fromRGB(0,255), 15, "Tickets_ESP")
+  end
+  end
