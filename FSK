@@ -8,7 +8,7 @@ local Window = Library:Window({
     Theme = "Dark",
     Config = {
         Keybind = Enum.KeyCode.LeftControl,
-        Size = UDim2.new(0, 480, 0, 400)
+        Size = UDim2.new(0, 400, 0, 320)
     },
     CloseUIButton = {
         Enabled = true,
@@ -34,7 +34,7 @@ Visual = Window:Tab({Title = "Visual", Icon = "eye"})
 local function AutoGenerator(v)
 AutoGen = v
 while AutoGen do
-for _, v in ipairs(game.Workspace.Map.Ingame.Map:GetChildren()) do
+for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" then
 if v.Parent.Name == "Map" and v.Parent then
 v:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
@@ -44,7 +44,6 @@ end
 wait(_G.AutoGeneratorDelay or 1.5)
 end
 end
-            
 Tab.Main:Section({Title = "Generator"})
 Tab.Main:Slider({
 Title = "Fix Delay",
@@ -68,7 +67,7 @@ Value = false,
 Callback = function(v)
 _G.AutoPizza = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoPizza and game.Players.LocalPlayer.Character.Humanoid.Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth then
+if _G.AutoPizza and game.Players.LocalPlayer.Character.Humanoid.Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth - 15 then
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 end
 end)
@@ -89,14 +88,12 @@ Title = "Hide Bar",
 Value = false,
 Callback = function(v)
 _G.HideBar = v
-game:GetService("RunService").RenderStepped:Connect(function()
 if _G.HideBar then
 game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors.Visible = false
 game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.PlayerIcon.Image = "rbxassetid://12549056837"
 else
 game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors.Visible = true
 end
-end)
 end})
 --// Players Tab \\
 Tab.Players:Section({Title = "Players"})
@@ -104,7 +101,7 @@ Tab.Players:Slider({
 Title = "Speed Boost",
 Min = 0.1,
 Max = 5,
-Rounding = 1,
+Rounding = 2,
 Value = 0.1,
 Callback = function(v)
 _G.SpeedBoostValue = v
@@ -165,30 +162,6 @@ end
 end
 end})
 Tab.Exploits:Toggle({
-Title = "Anti-Spike",
-Value = false,
-Callback = function(v)
-if v then
-for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
-if v.Name == "Spike" and v then
-v.Spike.CanTouch = false
-end
-end
-AntiJohnDoeSpike = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v.Name == "Spike" and v then
-v.Spike.CanTouch = false
-end
-end)
-else
-AntiJohnDoeSpike:Disconnect()
-for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
-if v.Name == "Spike" and v then
-v.Spike.CanTouch = true
-end
-end
-end
-end})
-Tab.Exploits:Toggle({
 Title = "Anti-Trail",
 Value = false,
 Callback = function(v)
@@ -212,56 +185,7 @@ end
 end
 end
 end})
-Tab.Exploits:Section({Title = "Anti Ability 1x1x1x1"})
-Tab.Exploits:Toggle({
-Title = "Anti-Mass Infection (Test)",
-Value = false,
-Callback = function(v)
-if v then
-for _,v in ipairs(workspace.Map.Ingame:GetChildren()) do
-if v.Name == "Shockwave" then
-v.Decor["MeshPart"].CanTouch = false
-end
-end
-AntiMassInfection = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v.Name == "Shockwave" then
-v.Decor["MeshPart"].CanTouch = false
-end
-end)
-else
-AntiMassInfection:Disconnect()
-for _,v in ipairs(workspace.Map.Ingame:GetChildren()) do
-if v.Name == "Shockwave" then
-v.Decor["MeshPart"].CanTouch = true
-end
-end
-end
-end})
-Tab.Exploits:Section({Title = "Anti Ability c00lkidd"})
-Tab.Exploits:Toggle({
-Title = "Anti-Launch",
-Value = false,
-Callback = function(v)
-if v then
-for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
-if v:IsA("Part") then
-v.CanTouch = false
-end
-end
-AntiLaunch = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v:IsA("Part") then
-v.CanTouch = false
-end
-end)
-else
-AntiLaunch:Disconnect()
-for _,v in ipairs(workspace.Ingame.Map:GetDescendants()) do
-if v:IsA("Part") then
-v.CanTouch = true
-end
-end
-end
-end})
+
 --// Visual Tab \\
 Tab.Visual:Section({Title = "Camera"})
 Tab.Visual:Slider({
