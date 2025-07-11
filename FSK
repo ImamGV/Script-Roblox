@@ -111,11 +111,9 @@ Title = "Apply Speed",
 Value = false,
 Callback = function(v)
 _G.SpeedBoost = v
-while true do
-if _G.SpeedBoost then
+while _G.SpeedBoost do
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue or 0.1
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-end
 wait()
 end
 end})
