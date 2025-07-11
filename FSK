@@ -5,7 +5,7 @@ local Window = Library:Window({
     Title = "Forsaken",
     Desc = "v0.0.1",
     Icon = 95073582077930,
-    Theme = "Dark",
+    Theme = "Amethyst",
     Config = {
         Keybind = Enum.KeyCode.LeftControl,
         Size = UDim2.new(0, 400, 0, 320)
@@ -209,15 +209,36 @@ end
 end)
 end})
 Tab.Visual:Toggle({
-Title = "Always Look Killers",
+Title = "No Fog",
 Value = false,
 Callback = function(v)
-_G.AutoViewKiller = v
+_G.NoFog = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoViewKiller and game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model") then
-if not game.Players.LocalPlayer.Name ~= "c00lkidd" or not game.Players.LocalPlayer.Name ~= "Jason" or not game.Players.LocalPlayer.Name ~= "JohnDoe" or not game.Players.LocalPlayer.Name ~= "1x1x1x1" then
-game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.X, game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.Y, game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model").HumanoidRootPart.Position.Z))
+if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
+if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
+game.Lighting.FogStart = _G.NoFog and 0 or game.Lighting:GetAttribute("FogStart")
+game.Lighting.FogEnd = _G.NoFog and math.huge or game.Lighting:GetAttribute("FogEnd")
+local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
+if fog then
+if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
+fog.Density = _G.NoFog and 0 or fog:GetAttribute("Density")
 end
+end)
+end})
+Tab.Visual:Toggle({
+Title = "Fullbright",
+Value = false,
+Callback = function(v)
+_G.Fullbright = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.Fullbright then
+game.Lighting.OutdoorAmbient = Color3.fromRGB(120,120,120)
+game.Lighting.Brightness = 0
+game.Lighting.GlobalShadows = false
+else
+game.Lighting.OutdoorAmbient = Color3.fromRGB(55,55,55)
+game.Lighting.Brightness = 0
+game.Lighting.GlobalShadows = true
 end
 end)
 end})
@@ -287,6 +308,25 @@ end)
 else
 SurvivalESP:Disconnect()
 LibESP:Delete("Survival_ESP")
+end
+end})
+Tab.Visual:Toggle({
+Title = "Trap ESP",
+Value = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == "Shadow" and v then
+Box(v, Color3.new(1), "Trap_ESP")
+end
+end
+TrapESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v.Name == "Shadow" and v then
+Box(v, Color3.new(1), "Trap_ESP")
+end
+end)
+else
+TrapESP:Disconnect()
 end
 end})
 Tab.Visual:Toggle({
