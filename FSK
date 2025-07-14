@@ -12,7 +12,7 @@ local Window = Library:Window({
     },
     CloseUIButton = {
         Enabled = true,
-        Text = "\nToggle UI\n"
+        Text = "Toggle UI"
     }
 })
 local SidebarLine = Instance.new("Frame")
@@ -35,22 +35,22 @@ local function AutoGenerator(v)
 AutoGen = v
 while AutoGen do
 for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" then
+if v.Name == "Generator" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 if v.Parent.Name == "Map" and v.Parent then
-v:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+v:FindFirstChild("Remotes"):FindFirstChild("RE"):FireServer()
 end
 end
 end
-wait(_G.AutoGeneratorDelay or 1.5)
+wait(_G.AutoGeneratorDelay or 2.5)
 end
 end
 Tab.Main:Section({Title = "Generator"})
 Tab.Main:Slider({
 Title = "Fix Delay",
-Min = 1.5,
-Max = 12,
+Min = 2.5,
+Max = 10,
 Rounding = 1,
-Value = 1.5,
+Value = 2.5,
 Callback = function(v)
 _G.AutoGeneratorDelay = v
 end})
@@ -67,7 +67,7 @@ Value = false,
 Callback = function(v)
 _G.AutoPizza = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoPizza and game.Players.LocalPlayer.Character.Humanoid.Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth - 15 then
+if _G.AutoPizza and game.Players.LocalPlayer.Character.Humanoid.Health < game.Players.LocalPlayer.Character.Humanoid.MaxHealth - 30 then
 workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild("Pizza").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 end
 end)
@@ -88,21 +88,23 @@ Title = "Hide Bar",
 Value = false,
 Callback = function(v)
 _G.HideBar = v
+game:GetService("RunService").RenderStepped:Connect(function()
 if _G.HideBar then
 game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors.Visible = false
 game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.PlayerIcon.Image = "rbxassetid://12549056837"
 else
 game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors.Visible = true
 end
+end)
 end})
 --// Players Tab \\
 Tab.Players:Section({Title = "Players"})
 Tab.Players:Slider({
 Title = "Speed Boost",
-Min = 0.1,
-Max = 5,
+Min = 0,
+Max = 1,
 Rounding = 2,
-Value = 0.1,
+Value = 0.05,
 Callback = function(v)
 _G.SpeedBoostValue = v
 end})
@@ -112,7 +114,7 @@ Value = false,
 Callback = function(v)
 _G.SpeedBoost = v
 while _G.SpeedBoost do
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue or 0.1
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue or 0.05
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
 wait()
 end
@@ -164,12 +166,12 @@ Title = "Anti-Trail",
 Value = false,
 Callback = function(v)
 if v then
-for _,v in ipairs(workspace.Players.Killers:GetDescendants()) do
+for _,v in ipairs(workspace.Players:GetDescendants()) do
 if v.Name == "Trail" and v then
 v.CanTouch = false
 end
 end
-AntiJohnDoeTrail = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+AntiJohnDoeTrail = workspace.Players.DescendantAdded:Connect(function(v)
 if v.Name == "Trail" and v then
 v.CanTouch = false
 end
@@ -230,8 +232,8 @@ Callback = function(v)
 _G.Fullbright = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.Fullbright then
-game.Lighting.OutdoorAmbient = Color3.fromRGB(120,120,120)
-game.Lighting.Brightness = 0
+game.Lighting.OutdoorAmbient = Color3.fromRGB(255,255,255)
+game.Lighting.Brightness = 1
 game.Lighting.GlobalShadows = false
 else
 game.Lighting.OutdoorAmbient = Color3.fromRGB(55,55,55)
@@ -239,6 +241,25 @@ game.Lighting.Brightness = 0
 game.Lighting.GlobalShadows = true
 end
 end)
+end})
+Tab.Visual:Section({Title = "Notify"})
+Tab.Visual:Toggle({
+Title = "Notify Killer",
+Value = false,
+Callback = function(v)
+if v then
+NotifyKillers = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+if v.Parent.Name == "Killers" and v:IsA("Model") and v.Parent:FindFirstChild(v) then
+Window:Notify({
+Title = "Forsaken | Warning",
+Desc = v.Name .. " is killer in group.",
+Time = 3
+})
+end
+end)
+else
+NotifyKillers:Disconnect()
+end
 end})
 Tab.Visual:Section({Title = "ESP"})
 local function Cylinder(child, color, title)
@@ -314,12 +335,13 @@ Value = false,
 Callback = function(v)
 if v then
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Name == "Shadow" and v then
+if v.Name == "Shadow" and not v:FindFirstChild("Trap_ESP") and v then
 Box(v, Color3.new(1), "Trap_ESP")
 end
 end
-TrapESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v.Name == "Shadow" and v then
+TrapESP = workspace.Map.DescendantAdded:Connect(function(v)
+wait(1)
+if v.Name == "Shadow" and not v:FindFirstChild("Trap_ESP") and v then
 Box(v, Color3.new(1), "Trap_ESP")
 end
 end)
@@ -382,6 +404,7 @@ Cylinder(v:FindFirstChildOfClass("Part"), Color3.new(1,0,1), "SubspaceTripmine_E
 end
 end
 SubspaceTripmineESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+wait(1)
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
 Cylinder(v:FindFirstChildOfClass("Part"), Color3.new(1,0,1), "SubspaceTripmine_ESP")
 end
