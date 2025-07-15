@@ -3,7 +3,7 @@ local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV
 
 local Window = Library:Window({
     Title = "Forsaken",
-    Desc = "v0.0.1",
+    Desc = "v0.0.2 (BETA)",
     Icon = 95073582077930,
     Theme = "Amethyst",
     Config = {
@@ -24,6 +24,12 @@ SidebarLine.ZIndex = 5
 SidebarLine.Name = "SidebarLine"
 SidebarLine.Parent = game:GetService("CoreGui")
 
+Window:Notify({
+Title = "Forsaken | Warning",
+Desc = "Loaded.",
+Time = 5
+})
+
 local Tab = {
 Main = Window:Tab({Title = "Main", Icon = "book"}),
 Players = Window:Tab({Title = "Players", Icon = "user"}),
@@ -36,9 +42,9 @@ AutoGen = v
 while AutoGen do
 for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
-wait(_G.AutoGeneratorDelay or 2.5)
 if v.Parent.Name == "Map" and v.Parent then
-v["Remotes"]["RE"]:FireServer()
+wait(_G.AutoGeneratorDelay or 2.5)
+v.Remotes.RE:FireServer()
 end
 end
 end
@@ -249,12 +255,12 @@ Title = "Notify Killer",
 Value = false,
 Callback = function(v)
 if v then
-NotifyKillers = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+NotifyKillers = workspace.Players.DescendantAdded:Connect(function(v)
 if v.Parent.Name == "Killers" then
 Window:Notify({
 Title = "Forsaken | Warning",
 Desc = v.Name .. " is killer in group.",
-Time = 3
+Time = 5
 })
 end
 end)
