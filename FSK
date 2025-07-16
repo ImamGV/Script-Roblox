@@ -43,12 +43,11 @@ while AutoGen do
 for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 if v.Parent.Name == "Map" and v.Parent then
-wait(_G.AutoGeneratorDelay or 2.5)
 v.Remotes.RE:FireServer()
 end
 end
 end
-wait()
+wait(_G.AutoGeneratorDelay or 2.5)
 end
 end
 Tab.Main:Section({Title = "Generator"})
@@ -97,10 +96,9 @@ Callback = function(v)
 _G.HideBar = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.HideBar then
-game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors.Visible = false
-game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.PlayerIcon.Image = "rbxassetid://12549056837"
+game.Players.LocalPlayer.PlayerGui.TemporaryUI:FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors").Visible = false
 else
-game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors.Visible = true
+game.Players.LocalPlayer.PlayerGui.TemporaryUI:FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors").Visible = true
 end
 end)
 end})
