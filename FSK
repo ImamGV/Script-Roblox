@@ -1,5 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/x2zu/OPEN-SOURCE-UI-ROBLOX/refs/heads/main/X2ZU%20UI%20ROBLOX%20OPEN%20SOURCE/DummyUi-leak-by-x2zu/fetching-main/Tools/Framework.luau"))()
-local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
+local LibESP = loadstring(game:HttpGet("https://github.com/RGV-devid/Scripts/blob/main/ESP?raw=true"))()
 
 local Window = Library:Window({
     Title = "Forsaken",
@@ -331,13 +331,13 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, "", Color3.new(1), "Killer_ESP")
+LibESP:AddESP(v, "", Color3.new(1), 20, "Killer_ESP")
 end
 end
 KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 wait(1)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, "", Color3.new(1), "Killer_ESP")
+LibESP:AddESP(v, "", Color3.new(1), 20, "Killer_ESP")
 end
 end)
 else
@@ -436,13 +436,13 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
-LibESP:AddESP(v, "", Color3.new(1,0,1), "SubspaceTripmine_ESP")
+LibESP:AddESP(v, "", Color3.new(1,0,1), 14,"SubspaceTripmine_ESP")
 end
 end
 SubspaceTripmineESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 wait(1)
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
-LibESP:AddESP(v, "", Color3.new(1,0,1), "SubspaceTripmine_ESP")
+LibESP:AddESP(v, "", Color3.new(1,0,1), 14, "SubspaceTripmine_ESP")
 end
 end)
 else
