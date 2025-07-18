@@ -415,12 +415,12 @@ Value = false,
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
-if v:IsA("Model") v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
 LibESP:AddESP(v, "Generator\n" .. v.Progress.Value .. "%", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end
 GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v:IsA("Model") v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
 LibESP:AddESP(v, "Generator\n" .. v.Progress.Value .. "%", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end)
