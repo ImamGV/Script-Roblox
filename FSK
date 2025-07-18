@@ -37,19 +37,6 @@ Exploits = Window:Tab({Title = "Exploits", Icon = "star"}),
 Visual = Window:Tab({Title = "Visual", Icon = "eye"})
 }
 --// Main Tab \\
-local function AutoGenerator(v)
-AutoGen = v
-while AutoGen do
-for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
-if v.Parent.Name == "Map" and v.Parent then
-v.Remotes.RE:FireServer()
-end
-end
-end
-wait(_G.AutoGeneratorDelay or 2.5)
-end
-end
 Tab.Main:Section({Title = "Generator"})
 Tab.Main:Slider({
 Title = "Fix Delay",
@@ -64,7 +51,17 @@ Tab.Main:Toggle({
 Title = "Auto Fix Generator",
 Value = false,
 Callback = function(v)
-AutoGenerator(v)
+_G.AutoGen = v
+while _G.AutoGen do
+for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
+if v.Parent.Name == "Map" and v.Parent then
+v.Remotes.RE:FireServer()
+end
+end
+end
+task.wait(_G.AutoGeneratorDelay or 2.5)
+end
 end})
 Tab.Main:Section({Title = "Misc"})
 Tab.Main:Toggle({
@@ -129,11 +126,15 @@ Title = "Apply Speed",
 Value = false,
 Callback = function(v)
 _G.SpeedBoost = v
+task.pcall(function()
+task.spawn(function()
 while _G.SpeedBoost do
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue or 0.05
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-wait()
+task.wait()
 end
+end)
+end)
 end})
 Tab.Players:Toggle({
 Title = "Inf Stamina",
@@ -331,13 +332,13 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, "", Color3.new(1), 20, "Killer_ESP")
+LibESP:AddESP(v, v.Name, Color3.new(1), 20, "Killer_ESP")
 end
 end
 KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 wait(1)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, "", Color3.new(1), 20, "Killer_ESP")
+LibESP:AddESP(v, v.Name, Color3.new(1), 20, "Killer_ESP")
 end
 end)
 else
@@ -409,6 +410,13 @@ ItemsESP:Disconnect()
 LibESP:Delete("Items_ESP")
 end
 end})
+game:GetService("RunService").RenderStepped:Connect(function()
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" then
+v:FindFirstChild("Generator_ESP").Text = v.Progress.Value
+end
+end
+end)
 Tab.Visual:Toggle({
 Title = "Generator ESP",
 Value = false,
@@ -436,13 +444,13 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
-LibESP:AddESP(v, "", Color3.new(1,0,1), 14,"SubspaceTripmine_ESP")
+LibESP:AddESP(v, "Subspace Tripmine", Color3.new(1,0,1), 14,"SubspaceTripmine_ESP")
 end
 end
 SubspaceTripmineESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 wait(1)
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
-LibESP:AddESP(v, "", Color3.new(1,0,1), 14, "SubspaceTripmine_ESP")
+LibESP:AddESP(v, "Subspace Tripmine", Color3.new(1,0,1), 14, "SubspaceTripmine_ESP")
 end
 end)
 else
