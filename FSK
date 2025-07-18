@@ -90,6 +90,17 @@ end
 end)
 end})
 Tab.Main:Toggle({
+Title = "Always Remove Builderman Dispenser",
+Value = false,
+Callback = function(v)
+_G.AutoRemoveBuildermanDispenser = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoRemoveBuildermanDispenser and workspace.Map.Ingame:FindFirstChild("BuildermanDispenser") then
+workspace.Map.Ingame.BuildermanDispenser:Destroy()
+end
+end)
+end})
+Tab.Main:Toggle({
 Title = "Hide Bar",
 Value = false,
 Callback = function(v)
@@ -292,21 +303,41 @@ Adornment.Adornee = child
 Adornment.Name = title
 Adornment.Parent = child
 end
-
 Tab.Visual:Toggle({
-Title = "Killers ESP",
+Title = "Killers ESP (Box)",
+Value = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("KillerBox_ESP") then
+Cylinder(v.HumanoidRootPart, Color3.new(1), "KillerBox_ESP")
+end
+end
+KillersBoxESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+wait(1)
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("KillerBox_ESP") then
+Cylinder(v.HumanoidRootPart, Color3.new(1), "KillerBox_ESP")
+end
+end)
+else
+KillersBoxESP:Disconnect()
+LibESP:Delete("KillerBox_ESP")
+end
+end})
+Tab.Visual:Toggle({
+Title = "Killers ESP (Highlight)",
 Value = false,
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-Cylinder(v.HumanoidRootPart, Color3.new(1), "Killer_ESP")
+LibESP:AddESP(v, "", Color3.new(1), "Killer_ESP")
 end
 end
 KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 wait(1)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-Cylinder(v.HumanoidRootPart, Color3.new(1), "Killer_ESP")
+LibESP:AddESP(v, "", Color3.new(1), "Killer_ESP")
 end
 end)
 else
@@ -344,7 +375,7 @@ if v.Name == "Shadow" and not v:FindFirstChild("Trap_ESP") and v then
 Box(v, Color3.new(1), "Trap_ESP")
 end
 end
-TrapESP = workspace.Map.DescendantAdded:Connect(function(v)
+TrapESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 wait(1)
 if v.Name == "Shadow" and not v:FindFirstChild("Trap_ESP") and v then
 Box(v, Color3.new(1), "Trap_ESP")
@@ -384,13 +415,13 @@ Value = false,
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
-if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
-LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+if v:IsA("Model") v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+LibESP:AddESP(v, "Generator\n" .. v.Progress.Value .. "%", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end
 GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v:IsA("Model") and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
-LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+if v:IsA("Model") v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+LibESP:AddESP(v, "Generator\n" .. v.Progress.Value .. "%", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end)
 else
@@ -405,13 +436,13 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
-Cylinder(v:FindFirstChildOfClass("Part"), Color3.new(1,0,1), "SubspaceTripmine_ESP")
+LibESP:AddESP(v, "", Color3.new(1,0,1), "SubspaceTripmine_ESP")
 end
 end
 SubspaceTripmineESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 wait(1)
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
-Cylinder(v:FindFirstChildOfClass("Part"), Color3.new(1,0,1), "SubspaceTripmine_ESP")
+LibESP:AddESP(v, "", Color3.new(1,0,1), "SubspaceTripmine_ESP")
 end
 end)
 else
