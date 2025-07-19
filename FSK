@@ -360,12 +360,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
-LibESP:AddESP(v, v.Name, Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+LibESP:AddESP(v, v.Name .. "\n" .. v.Humanoid.Health .. "%", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end
 SurvivalESP = workspace.Players.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
-LibESP:AddESP(v, v.Name, Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+LibESP:AddESP(v, v.Name .. "\n" .. v.Humanoid.Health .. "%", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end)
 else
