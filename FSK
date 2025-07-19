@@ -406,13 +406,6 @@ ItemsESP:Disconnect()
 LibESP:Delete("Items_ESP")
 end
 end})
-game:GetService("RunService").RenderStepped:Connect(function()
-for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" then
-v:FindFirstChild("Generator_ESP").Text = v.Progress.Value
-end
-end
-end)
 Tab.Visual:Toggle({
 Title = "Generator ESP",
 Value = false,
@@ -420,17 +413,104 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
-LibESP:AddESP(v, "Generator\n" .. v.Progress.Value .. "%", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+local Billboard = Instance.new("BillboardGui", v)
+local Text = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", Text)
+local Highlight = Instance.new('Highlight', Child)
+        Billboard.AlwaysOnTop = true
+        Billboard.Size = UDim2.new(0,400,0,100)
+        Billboard.Adornee = v
+        Billboard.Name = "Generator_ESP"
+        Billboard.Active = true
+        Text.AnchorPoint = Vector2.new(0.5,0.5)
+        Text.BackgroundTransparency = 1
+        Text.BackgroundColor3 = Color3.new(0,0,0)
+        Text.TextColor3 = Color3.new(1,1)
+        Text.Font = "RobotoMono"
+        Text.TextSize = 14
+        Text.TextTransparency = 0
+        Text.Visible = true
+        Text.Text = "Generator\n" .. v.Progress.Value .. "%"
+        Text.Size = UDim2.new(1,0,0,0)
+        Text.Position = UDim2.new(0.5,0,0.7,-35)
+        UIStroke.Thickness = 1.5
+        UIStroke.Color = Color3.new()
+        UIStroke.Transparency = 0
+        Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        Highlight.FillColor = Color3.new(1,1)
+        Highlight.OutlineColor = Color3.new(1,1)
+        Highlight.FillTransparency = 1
+        Highlight.OutlineTransparency =  0
+        Highlight.Name = "Generator_ESP"
+task.spawn(function()
+while wait(0.0001) do
+Text.Text = "Generator\n" .. v.Progress.Value .. "%"
+end
+end)
 end
 end
 GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
-LibESP:AddESP(v, "Generator\n" .. v.Progress.Value .. "%", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+local Billboard = Instance.new("BillboardGui", v)
+local Text = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", Text)
+local Highlight = Instance.new('Highlight', Child)
+        Billboard.AlwaysOnTop = true
+        Billboard.Size = UDim2.new(0,400,0,100)
+        Billboard.Adornee = v
+        Billboard.Name = "Generator_ESP"
+        Billboard.Active = true
+        Text.AnchorPoint = Vector2.new(0.5,0.5)
+        Text.BackgroundTransparency = 1
+        Text.BackgroundColor3 = Color3.new(0,0,0)
+        Text.TextColor3 = Color3.new(1,1)
+        Text.Font = "RobotoMono"
+        Text.TextSize = 14
+        Text.TextTransparency = 0
+        Text.Visible = true
+        Text.Text = "Generator\n" .. v.Progress.Value .. "%"
+        Text.Size = UDim2.new(1,0,0,0)
+        Text.Position = UDim2.new(0.5,0,0.7,-35)
+        UIStroke.Thickness = 1.5
+        UIStroke.Color = Color3.new()
+        UIStroke.Transparency = 0
+        Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        Highlight.FillColor = Color3.new(1,1)
+        Highlight.OutlineColor = Color3.new(1,1)
+        Highlight.FillTransparency = 1
+        Highlight.OutlineTransparency =  0
+        Highlight.Name = "Generator_ESP"
+task.spawn(function()
+while wait(0.0001) do
+Text.Text = "Generator\n" .. v.Progress.Value .. "%"
+end
+end)
 end
 end)
 else
 GeneratorESP:Disconnect()
 LibESP:Delete("Generator_ESP")
+end
+end})
+Tab.Visual:Toggle({
+Title = "Trip Wire ESP",
+Value = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "mr_whatnowbruhTaphTripwire" and not v:FindFirstChild("TripWire_ESP") then
+LibESP:AddESP(v, "Trip Wire", Color3.new(0,1,0), 14,"TripWire_ESP")
+end
+end
+TripWireESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+wait(1)
+if v:IsA("Model") and v.Name == "mr_whatnowbruhTaphTripwire" and not v:FindFirstChild("TripWire_ESP") then
+LibESP:AddESP(v, "Trip Wire", Color3.new(0,1,0), 14,"TripWire_ESP")
+end
+end)
+else
+TripWireESP:Disconnect()
+LibESP:Delete("TripWire_ESP")
 end
 end})
 Tab.Visual:Toggle({
