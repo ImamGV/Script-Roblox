@@ -126,15 +126,11 @@ Title = "Apply Speed",
 Value = false,
 Callback = function(v)
 _G.SpeedBoost = v
-task.pcall(function()
-task.spawn(function()
 while _G.SpeedBoost do
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue or 0.05
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-task.wait()
+wait()
 end
-end)
-end)
 end})
 Tab.Players:Toggle({
 Title = "Inf Stamina",
