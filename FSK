@@ -569,13 +569,13 @@ Value = false,
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
-if v:IsA("Model") and v.Name == "mr_whatnowbruhTaphTripwire" and not v:FindFirstChild("TripWire_ESP") then
+if v.Name == "mr_whatnowbruhTaphTripwire" and not v:FindFirstChild("TripWire_ESP") then
 LibESP:AddESP(v, "Trip Wire", Color3.new(0,1,0), 14,"TripWire_ESP")
 end
 end
 TripWireESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 wait(1)
-if v:IsA("Model") and v.Name == "mr_whatnowbruhTaphTripwire" and not v:FindFirstChild("TripWire_ESP") then
+if v.Name == "mr_whatnowbruhTaphTripwire" and not v:FindFirstChild("TripWire_ESP") then
 LibESP:AddESP(v, "Trip Wire", Color3.new(0,1,0), 14,"TripWire_ESP")
 end
 end)
