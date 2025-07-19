@@ -185,30 +185,6 @@ end
 end
 end
 end})
-Tab.Exploits:Toggle({
-Title = "Anti-Trail",
-Value = false,
-Callback = function(v)
-if v then
-for _,v in ipairs(workspace.Players:GetDescendants()) do
-if v.Name == "Trail" and v then
-v.CanTouch = false
-end
-end
-AntiJohnDoeTrail = workspace.Players.DescendantAdded:Connect(function(v)
-if v.Name == "Trail" and v then
-v.CanTouch = false
-end
-end)
-else
-AntiJohnDoeTrail:Disconnect()
-for _,v in ipairs(workspace.Players:GetDescendants()) do
-if v.Name == "Trail" then
-v.CanTouch = true
-end
-end
-end
-end})
 
 --// Visual Tab \\
 Tab.Visual:Section({Title = "Camera"})
@@ -339,13 +315,13 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, v.Name, Color3.new(1), 14, "Killer_ESP")
+LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
 end
 end
 KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 wait(1)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, v.Name, Color3.new(1), 14, "Killer_ESP")
+LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
 end
 end)
 else
@@ -360,12 +336,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
-LibESP:AddESP(v, v.Name .. "\n" .. v.Humanoid.Health .. "%", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end
 SurvivalESP = workspace.Players.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
-LibESP:AddESP(v, v.Name .. "\n" .. v.Humanoid.Health .. "%", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end)
 else
@@ -441,7 +417,7 @@ local Highlight = Instance.new('Highlight', v)
         Text.TextSize = 14
         Text.TextTransparency = 0
         Text.Visible = true
-        Text.Text = "Generator\n" .. v.Progress.Value .. "%"
+        Text.Text = "Generator\n" .. v:FindFirstChild("Progress").Value .. "%"
         Text.Size = UDim2.new(1,0,0,0)
         Text.Position = UDim2.new(0.5,0,0.7,-35)
         UIStroke.Thickness = 1.5
@@ -455,7 +431,7 @@ local Highlight = Instance.new('Highlight', v)
         Highlight.Name = "Generator_ESP"
 task.spawn(function()
 while wait(0.0001) do
-Text.Text = "Generator\n" .. v.Progress.Value .. "%"
+Text.Text = "Generator\n" .. v:FindFirstChild("Progress").Value .. "%"
 end
 end)
 end
@@ -479,7 +455,7 @@ local Highlight = Instance.new('Highlight', v)
         Text.TextSize = 14
         Text.TextTransparency = 0
         Text.Visible = true
-        Text.Text = "Generator\n" .. v.Progress.Value .. "%"
+        Text.Text = "Generator\n" .. v:FindFirstChild("Progress").Value .. "%"
         Text.Size = UDim2.new(1,0,0,0)
         Text.Position = UDim2.new(0.5,0,0.7,-35)
         UIStroke.Thickness = 1.5
@@ -493,7 +469,7 @@ local Highlight = Instance.new('Highlight', v)
         Highlight.Name = "Generator_ESP"
 task.spawn(function()
 while wait(0.0001) do
-Text.Text = "Generator\n" .. v.Progress.Value .. "%"
+Text.Text = "Generator\n" .. v:FindFirstChild("Progress").Value .. "%"
 end
 end)
 end
@@ -509,13 +485,13 @@ Value = false,
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
-if v.Name == "mr_whatnowbruhTaphTripwire" and not v:FindFirstChild("TripWire_ESP") then
+if v:match("TaphTripwire") and not v:FindFirstChild("TripWire_ESP") then
 LibESP:AddESP(v, "Trip Wire", Color3.new(0,1,0), 14,"TripWire_ESP")
 end
 end
 TripWireESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 wait(1)
-if v.Name == "mr_whatnowbruhTaphTripwire" and not v:FindFirstChild("TripWire_ESP") then
+if v:match("TaphTripwire") and not v:FindFirstChild("TripWire_ESP") then
 LibESP:AddESP(v, "Trip Wire", Color3.new(0,1,0), 14,"TripWire_ESP")
 end
 end)
