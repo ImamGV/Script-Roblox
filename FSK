@@ -338,74 +338,14 @@ Value = false,
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v:IsA("Model") and v.Parent.Name == "Killers" and not v.Name == "JohnDoe" and not v:FindFirstChild("Killer_ESP") then
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v, v.Name, Color3.new(1), 14, "Killer_ESP")
-elseif v:IsA("Model") and v.Parent.Name == "Killers" and v.Name == "JohnDoe" and not v:FindFirstChild("Killer_ESP") then
-local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
-local Text = Instance.new("TextLabel", Billboard)
-local UIStroke = Instance.new("UIStroke", Text)
-local Highlight = Instance.new('Highlight', v)
-        Billboard.AlwaysOnTop = true
-        Billboard.Size = UDim2.new(0,400,0,100)
-        Billboard.Adornee = v
-        Billboard.Name = "Generator_ESP"
-        Billboard.Active = true
-        Text.AnchorPoint = Vector2.new(0.5,0.5)
-        Text.BackgroundTransparency = 1
-        Text.BackgroundColor3 = Color3.new(0,0,0)
-        Text.TextColor3 = Color3.new(1)
-        Text.Font = "RobotoMono"
-        Text.TextSize = 14
-        Text.TextTransparency = 0
-        Text.Visible = true
-        Text.Text = v.Name
-        Text.Size = UDim2.new(1,0,0,0)
-        Text.Position = UDim2.new(0.5,0,0.7,-35)
-        UIStroke.Thickness = 1.5
-        UIStroke.Color = Color3.new()
-        UIStroke.Transparency = 0
-        Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-        Highlight.FillColor = Color3.new(1)
-        Highlight.OutlineColor = Color3.new(1)
-        Highlight.FillTransparency = 1
-        Highlight.OutlineTransparency =  0
-        Highlight.Name = "Killers_ESP"
 end
 end
 KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 wait(1)
-if v:IsA("Model") and v.Parent.Name == "Killers" and not v.Name == "JohnDoe" and not v:FindFirstChild("Killer_ESP") then
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v, v.Name, Color3.new(1), 14, "Killer_ESP")
-elseif v:IsA("Model") and v.Parent.Name == "Killers" and v.Name == "JohnDoe" and not v:FindFirstChild("Killer_ESP") then
-local Billboard = Instance.new("BillboardGui", v.HumanoidRootPart)
-local Text = Instance.new("TextLabel", Billboard)
-local UIStroke = Instance.new("UIStroke", Text)
-local Highlight = Instance.new('Highlight', v)
-        Billboard.AlwaysOnTop = true
-        Billboard.Size = UDim2.new(0,400,0,100)
-        Billboard.Adornee = v
-        Billboard.Name = "Generator_ESP"
-        Billboard.Active = true
-        Text.AnchorPoint = Vector2.new(0.5,0.5)
-        Text.BackgroundTransparency = 1
-        Text.BackgroundColor3 = Color3.new(0,0,0)
-        Text.TextColor3 = Color3.new(1)
-        Text.Font = "RobotoMono"
-        Text.TextSize = 14
-        Text.TextTransparency = 0
-        Text.Visible = true
-        Text.Text = v.Name
-        Text.Size = UDim2.new(1,0,0,0)
-        Text.Position = UDim2.new(0.5,0,0.7,-35)
-        UIStroke.Thickness = 1.5
-        UIStroke.Color = Color3.new()
-        UIStroke.Transparency = 0
-        Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-        Highlight.FillColor = Color3.new(1)
-        Highlight.OutlineColor = Color3.new(1)
-        Highlight.FillTransparency = 1
-        Highlight.OutlineTransparency =  0
-        Highlight.Name = "Killers_ESP"
 end
 end)
 else
