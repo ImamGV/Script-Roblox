@@ -91,7 +91,7 @@ end)
 end})
 Generator:AddButton("Teleport to Generator",function()
 for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" and not v.Progress.Value > 100 then
+if v.Name == "Generator" and v["Progress"].Value < 100 then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v:FindFirstChild("Main").Position
 end
 end
@@ -278,7 +278,7 @@ end})
 local ESP = Tabs.Main:AddRightGroupbox('ESP')
 
 ESP:AddToggle("KE",{
-Text = "Killers ESP (Highlight)",
+Text = "Killers ESP",
 Default = false,
 Callback = function(v)
 if v then
