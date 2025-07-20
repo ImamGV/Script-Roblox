@@ -167,7 +167,6 @@ Text = "Speed Boost",
 Default = false,
 Callback = function(v)
 _G.SpeedBoost = v
-task.spawn(function()
 while _G.SpeedBoost do
 if Options.SpeedBoostValue.Value["1"] then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.1
@@ -187,7 +186,6 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
 end
 wait()
 end
-end)
 end})
 Players:AddDivider()
 Players:AddToggle("InfStamina",{
@@ -264,4 +262,220 @@ game.Lighting.Brightness = 1.5
 game.Lighting.GlobalShadows = true
 end
 end)
+end})
+
+local ESP = Tabs.Main:AddRightGroupbox('ESP')
+
+ESP:AddToggle({
+Text = "Killers ESP (Highlight)",
+Default = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
+end
+end
+KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+wait(1)
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
+end
+end)
+else
+KillersESP:Disconnect()
+LibESP:Delete("Killer_ESP")
+end
+end})
+ESP:AddToggle("SE",{
+Text = "Survivors ESP",
+Default = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
+end
+SurvivalESP = workspace.Players.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
+end)
+else
+SurvivalESP:Disconnect()
+LibESP:Delete("Survival_ESP")
+end
+end})
+ESP:AddToggle("TE",{
+Text = "Trap ESP",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == "Shadow" and not v:FindFirstChild("Trap_ESP") and v then
+Box(v, Color3.new(1), "Trap_ESP")
+end
+end
+TrapESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+wait(1)
+if v.Name == "Shadow" and not v:FindFirstChild("Trap_ESP") and v then
+Box(v, Color3.new(1), "Trap_ESP")
+end
+end)
+else
+TrapESP:Disconnect()
+end
+end})
+ESP:AddToggle("IE",{
+Text = "Items ESP",
+Default = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
+elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
+end
+end
+ItemsESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Name == "BloxyCola" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "Items_ESP")
+elseif v:IsA("Model") and v.Name == "Medkit" and not v:FindFirstChild("Items_ESP") then
+LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Items_ESP")
+end
+end)
+else
+ItemsESP:Disconnect()
+LibESP:Delete("Items_ESP")
+end
+end})
+ESP:AddToggle("GE",{
+Text = "Generator ESP",
+Default = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local Text = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", Text)
+local Highlight = Instance.new('Highlight', v)
+        Billboard.AlwaysOnTop = true
+        Billboard.Size = UDim2.new(0,400,0,100)
+        Billboard.Adornee = v
+        Billboard.Name = "Generator_ESP"
+        Billboard.Active = true
+        Text.AnchorPoint = Vector2.new(0.5,0.5)
+        Text.BackgroundTransparency = 1
+        Text.BackgroundColor3 = Color3.new(0,0,0)
+        Text.TextColor3 = Color3.new(1,1)
+        Text.Font = "RobotoMono"
+        Text.TextSize = 14
+        Text.TextTransparency = 0
+        Text.Visible = true
+        Text.Text = "Generator\n" .. v:FindFirstChild("Progress").Value .. "%"
+        Text.Size = UDim2.new(1,0,0,0)
+        Text.Position = UDim2.new(0.5,0,0.7,-35)
+        UIStroke.Thickness = 1.5
+        UIStroke.Color = Color3.new()
+        UIStroke.Transparency = 0
+        Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        Highlight.FillColor = Color3.new(1,1)
+        Highlight.OutlineColor = Color3.new(1,1)
+        Highlight.FillTransparency = 1
+        Highlight.OutlineTransparency =  0
+        Highlight.Name = "Generator_ESP"
+task.spawn(function()
+while wait(0.0001) do
+Text.Text = "Generator\n" .. v:FindFirstChild("Progress").Value .. "%"
+end
+end)
+end
+end
+GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
+local Billboard = Instance.new("BillboardGui", v)
+local Text = Instance.new("TextLabel", Billboard)
+local UIStroke = Instance.new("UIStroke", Text)
+local Highlight = Instance.new('Highlight', v)
+        Billboard.AlwaysOnTop = true
+        Billboard.Size = UDim2.new(0,400,0,100)
+        Billboard.Adornee = v
+        Billboard.Name = "Generator_ESP"
+        Billboard.Active = true
+        Text.AnchorPoint = Vector2.new(0.5,0.5)
+        Text.BackgroundTransparency = 1
+        Text.BackgroundColor3 = Color3.new(0,0,0)
+        Text.TextColor3 = Color3.new(1,1)
+        Text.Font = "RobotoMono"
+        Text.TextSize = 14
+        Text.TextTransparency = 0
+        Text.Visible = true
+        Text.Text = "Generator\n" .. v:FindFirstChild("Progress").Value .. "%"
+        Text.Size = UDim2.new(1,0,0,0)
+        Text.Position = UDim2.new(0.5,0,0.7,-35)
+        UIStroke.Thickness = 1.5
+        UIStroke.Color = Color3.new()
+        UIStroke.Transparency = 0
+        Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        Highlight.FillColor = Color3.new(1,1)
+        Highlight.OutlineColor = Color3.new(1,1)
+        Highlight.FillTransparency = 1
+        Highlight.OutlineTransparency =  0
+        Highlight.Name = "Generator_ESP"
+task.spawn(function()
+while wait(0.0001) do
+Text.Text = "Generator\n" .. v:FindFirstChild("Progress").Value .. "%"
+end
+end)
+end
+end)
+else
+GeneratorESP:Disconnect()
+LibESP:Delete("Generator_ESP")
+end
+end})
+ESP:AddToggle("TWE",{
+Text = "Trip Wire ESP",
+Default = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:match("TaphTripwire") and not v:FindFirstChild("TripWire_ESP") then
+LibESP:AddESP(v, "Trip Wire", Color3.new(0,1,0), 14,"TripWire_ESP")
+end
+end
+TripWireESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+wait(1)
+if v:match("TaphTripwire") and not v:FindFirstChild("TripWire_ESP") then
+LibESP:AddESP(v, "Trip Wire", Color3.new(0,1,0), 14,"TripWire_ESP")
+end
+end)
+else
+TripWireESP:Disconnect()
+LibESP:Delete("TripWire_ESP")
+end
+end})
+ESP:AddToggle("SSTME",{
+Text = "Subspace Tripmine ESP",
+Default = false,
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
+LibESP:AddESP(v, "Subspace Tripmine", Color3.new(1,0,1), 14,"SubspaceTripmine_ESP")
+end
+end
+SubspaceTripmineESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+wait(1)
+if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
+LibESP:AddESP(v, "Subspace Tripmine", Color3.new(1,0,1), 14, "SubspaceTripmine_ESP")
+end
+end)
+else
+SubspaceTripmineESP:Disconnect()
+LibESP:Delete("SubspaceTripmine_ESP")
+end
 end})
