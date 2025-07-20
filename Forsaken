@@ -306,8 +306,7 @@ if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Kille
 LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
 end
 end
-KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
-wait(1)
+KillersESP = workspace.Players.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
 end
@@ -392,7 +391,6 @@ LibESP:AddESP(v, "Subspace Tripmine", Color3.new(1,0,1), 14,"SubspaceTripmine_ES
 end
 end
 SubspaceTripmineESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-wait(1)
 if v:IsA("Model") and v.Name == "SubspaceTripmine" and not v:FindFirstChild("SubspaceTripmine_ESP") then
 LibESP:AddESP(v, "Subspace Tripmine", Color3.new(1,0,1), 14, "SubspaceTripmine_ESP")
 end
@@ -413,6 +411,9 @@ Interact:AddDropdown('InteractItems', {
 	Searchable = false,
 })
 
+local MedkitPrompt = workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ProximityPrompt")
+local BloxyColaPrompt = workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ProximityPrompt")
+
 Interact:AddToggle("AutoInteract",{
 Text = "Auto Interact",
 Default = false,
@@ -421,17 +422,9 @@ _G.AutoInteract = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AutoInteract then
 if Options.InteractItems.Value["Medkit"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Medkit") then
-for _,v in ipairs(workspace.Map:FindFirstChild("Ingame"):GetChildren()) do
-if v.Name == "Medkit" then
-fireproximityprompt(v:FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
-end
-end
+fireproximityprompt(MedkitPrompt)
 elseif Options.InteractItems.Value["BloxyCola"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("BloxyCola") then
-for _,v in ipairs(workspace.Map:FindFirstChild("Ingame"):GetChildren()) do
-if v.Name == "BloxyCola" then
-fireproximityprompt(v:FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
-end
-end
+fireproximityprompt(BloxyColaPrompt)
 end
 end
 end)
