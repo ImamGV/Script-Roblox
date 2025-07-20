@@ -92,7 +92,7 @@ end})
 Generator:AddButton("Teleport to Generator",function()
 for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" and not v.Progress.Value > 100 then
-game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Instances.Generator.Generator.Position
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v:FindFirstChild("Main").Position
 end
 end
 end)
