@@ -98,6 +98,23 @@ end
 end)
 end)
 end})
+Generator:AddToggle("AutoFarm",{
+Text = "Auto Farm",
+Default = false,
+Callback = function(v)
+_G.AutoFarm = v
+while _G.AutoFarm do
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" then
+if v.Progress.Value < 100 and not game.Players.LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v:FindFirstChild("Main").Position
+fireproximityprompt(v:FindFirstChild("Main").Prompt)
+end
+end
+end
+wait(1)
+end
+end})
 Generator:AddButton("Teleport to Generator",function()
 _G.TTG = true
 task.spawn(function()
@@ -411,8 +428,8 @@ Interact:AddDropdown('InteractItems', {
 	Searchable = false,
 })
 
-local MedkitPrompt = workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ProximityPrompt")
-local BloxyColaPrompt = workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ProximityPrompt")
+local MedkitPrompt = workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt")
+local BloxyColaPrompt = workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt")
 
 Interact:AddToggle("AutoInteract",{
 Text = "Auto Interact",
