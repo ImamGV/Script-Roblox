@@ -428,9 +428,6 @@ Interact:AddDropdown('InteractItems', {
 	Searchable = false,
 })
 
-local MedkitPrompt = workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt")
-local BloxyColaPrompt = workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt")
-
 Interact:AddToggle("AutoInteract",{
 Text = "Auto Interact",
 Default = false,
@@ -439,9 +436,9 @@ _G.AutoInteract = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AutoInteract then
 if Options.InteractItems.Value["Medkit"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Medkit") then
-fireproximityprompt(MedkitPrompt)
+fireproximityprompt(workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
 elseif Options.InteractItems.Value["BloxyCola"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("BloxyCola") then
-fireproximityprompt(BloxyColaPrompt)
+fireproximityprompt(workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
 end
 end
 end)
