@@ -90,11 +90,19 @@ end
 end)
 end})
 Generator:AddButton("Teleport to Generator",function()
+_G.TTG = true
+task.spawn(function()
+while _G.TTG do
 for _,v in ipairs(workspace.Map:FindFirstChild("Ingame").Map:GetChildren()) do
 if v.Name == "Generator" and v["Progress"].Value < 100 then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v:FindFirstChild("Main").Position
 end
 end
+wait()
+end
+end)
+wait(1)
+_G.TTG = false
 end)
 local Misc = Tabs.Main:AddLeftGroupbox('Misc')
 
@@ -449,6 +457,31 @@ SubspaceTripmineESP:Disconnect()
 LibESP:Delete("SubspaceTripmine_ESP")
 end
 end})
+
+local Interact = Tabs.Main:AddLeftGroupbox('Interact')
+
+Interact:AddDropdown('InteractItems', {
+	Values = {'Medkit', 'BloxyCola'},
+	Default = 0,
+	Multi = true,
+	Text = 'Select Interact',
+	Searchable = false,
+})
+
+Interact:AddToggle("AutoInteract",{
+Text = "Auto Interact",
+Default = false,
+Callback = function(v)
+_G.AutoInteract = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if Options.InteractItems.Value["Medkit"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Medkit") then
+fireproximityprompt(workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+elseif Options.InteractItems.Value["BloxyCola"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("BloxyCola") then
+fireproximityprompt(workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+end
+end)
+end})
+
 local MenuGroup = Tabs.Settings:AddLeftGroupbox("Menu")
 local CreditsGroup = Tabs.Settings:AddRightGroupbox("Credits")
 
