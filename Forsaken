@@ -56,7 +56,7 @@ local Generator = Tabs.Main:AddRightGroupbox('Generator')
 Generator:AddDropdown('FixMode', {
 	Values = {'Danger', 'Safe'},
 	Default = 2,
-	Multi = true,
+	Multi = false,
 	Text = 'Fix Mode',
 	Searchable = false,
 })
@@ -83,6 +83,126 @@ end
 end
 end
 wait()
+end
+end)
+end})
+
+local Misc = Tabs.Main:AddLeftGroupbox('Misc')
+
+Misc:AddSlider("HealthEatPizza",{
+Text = "Health Eat Pizza",
+Min = 1,
+Default = 50,
+Max = 50,
+Rounding = 1,
+Compact = true,
+Callback = function(v)
+_G.HealthEatPizza = v
+end})
+Misc:AddSlider("DistanceEatPizza",{
+Text = "Distance Eat Pizza",
+Min = 10,
+Default = 10,
+Max = 50,
+Rounding = 1,
+Compact = true,
+Callback = function(v)
+_G.DistanceEatPizza = v
+end})
+
+_G.HealthEatPizza = 50
+_G.DistanceEatPizza = 10
+
+Misc:AddToggle("AlwaysEatPizza",{
+Text = "Always Eat Pizza",
+Default = false,
+Callback = function(v)
+_G.AlwaysEatPizza = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AlwaysEatPizza and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Pizza") then
+if game.Players.LocalPlayer.Character.Humanoid.Health < _G.HealthEatPizza and (workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Pizza").Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < _G.DistanceEatPizza then
+workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Pizza").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+end
+end
+end)
+end})
+Misc:AddDivider()
+Misc:AddToggle("AlwaysCoinFlip",{
+Text = "Always Flip Coin",
+Default = false,
+Callback = function(v)
+_G.AutoFlipCoins = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoFlipCoins then
+game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Network"):WaitForChild("RemoteEvent"):FireServer("UseActorAbility", "CoinFlip")
+end
+end)
+end})
+Misc:AddToggle("AlwaysHideBar",{
+Text = "Always Hide Bar",
+Default = false,
+Callback = function(v)
+_G.HideBar = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.HideBar then
+game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors").Visible = false
+else
+game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors").Visible = true
+end
+end)
+end})
+
+local Players = Tabs.Main:AddRightGroupbox('Player')
+
+Players:AddDropdown('SpeedBoostValue', {
+	Values = {'1', '2', '3', '4', '5'},
+	Default = 2,
+	Multi = false,
+	Text = 'Speed Boost',
+	Searchable = false,
+})
+
+Players:AddToggle("SpeedBoost",{
+Text = "Speed Boost",
+Default = false,
+Callback = function(v)
+_G.SpeedBoost = v
+task.spawn(function()
+while _G.SpeedBoost do
+if Options.SpeedBoostValue.Value["1"] then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.1
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+elseif Options.SpeedBoostValue.Value["2"] then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.2
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+elseif Options.SpeedBoostValue.Value["3"] then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.3
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+elseif Options.SpeedBoostValue.Value["4"] then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.4
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+elseif Options.SpeedBoostValue.Value["5"] then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.5
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+end
+wait()
+end
+end)
+end})
+Players:AddDivider()
+Players:AddToggle("InfStamina",{
+Text = "Inf Stamina",
+Default = false,
+Callback = function(v)
+_G.InfinityStamina = v
+local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+InfStamina = game:GetService("RunService").RenderStepped:Connect(function()
+if not _G.InfinityStamina then
+InfStamina:Disconnect()
+StaminaScript.StaminaLossDisabled = nil
+return
+end
+StaminaScript.StaminaLossDisabled = function() 
 end
 end)
 end})
