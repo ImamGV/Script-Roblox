@@ -24,7 +24,7 @@ local Window = Library:CreateWindow({
 
 local Tabs = {
 	Main = Window:AddTab('Main'),
-	Setting = Window:AddTab('Setting')
+	Settings = Window:AddTab('Settings')
 }
 
 local FPS = Tabs.Main:AddLeftGroupbox('FPS')
@@ -89,7 +89,13 @@ wait()
 end
 end)
 end})
-
+Generator:AddButton("Teleport to Generator",function()
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" and not v.Progress.Value > 100 then
+game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v.Instances.Generator.Generator.Position
+end
+end
+end)
 local Misc = Tabs.Main:AddLeftGroupbox('Misc')
 
 Misc:AddSlider("HealthEatPizza",{
@@ -173,19 +179,19 @@ Default = false,
 Callback = function(v)
 _G.SpeedBoost = v
 while _G.SpeedBoost do
-if _G.SpeedBoostValue == 1 then
+if _G.SpeedBoostValue == '1' then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.1
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif _G.SpeedBoostValue == 2 then
+elseif _G.SpeedBoostValue == '2' then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.2
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif _G.SpeedBoostValue == 3 then
+elseif _G.SpeedBoostValue == '3' then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.3
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif _G.SpeedBoostValue == 4 then
+elseif _G.SpeedBoostValue == '4' then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.4
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif _G.SpeedBoostValue == 5 then
+elseif _G.SpeedBoostValue == '5' then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.5
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
 end
@@ -312,26 +318,6 @@ SurvivalESP:Disconnect()
 LibESP:Delete("Survival_ESP")
 end
 end})
-ESP:AddToggle("TE",{
-Text = "Trap ESP",
-Default = false,
-Callback = function(v)
-if v then
-for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Name == "Shadow" and not v:FindFirstChild("Trap_ESP") and v then
-Box(v, Color3.new(1), "Trap_ESP")
-end
-end
-TrapESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-wait(1)
-if v.Name == "Shadow" and not v:FindFirstChild("Trap_ESP") and v then
-Box(v, Color3.new(1), "Trap_ESP")
-end
-end)
-else
-TrapESP:Disconnect()
-end
-end})
 ESP:AddToggle("IE",{
 Text = "Items ESP",
 Default = false,
@@ -442,27 +428,6 @@ GeneratorESP:Disconnect()
 LibESP:Delete("Generator_ESP")
 end
 end})
-ESP:AddToggle("TWE",{
-Text = "Trip Wire ESP",
-Default = false,
-Callback = function(v)
-if v then
-for _, v in ipairs(workspace:GetDescendants()) do
-if v:match("TaphTripwire") and not v:FindFirstChild("TripWire_ESP") then
-LibESP:AddESP(v, "Trip Wire", Color3.new(0,1,0), 14,"TripWire_ESP")
-end
-end
-TripWireESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-wait(1)
-if v:match("TaphTripwire") and not v:FindFirstChild("TripWire_ESP") then
-LibESP:AddESP(v, "Trip Wire", Color3.new(0,1,0), 14,"TripWire_ESP")
-end
-end)
-else
-TripWireESP:Disconnect()
-LibESP:Delete("TripWire_ESP")
-end
-end})
 ESP:AddToggle("SSTME",{
 Text = "Subspace Tripmine ESP",
 Default = false,
@@ -484,3 +449,29 @@ SubspaceTripmineESP:Disconnect()
 LibESP:Delete("SubspaceTripmine_ESP")
 end
 end})
+local MenuGroup = Tabs.Settings:AddLeftGroupbox("Menu")
+local CreditsGroup = Tabs.Settings:AddRightGroupbox("Credits")
+
+MenuGroup:AddToggle("KeybindMenuOpen", { Default = false, Text = "Open Keybind Menu", Callback = function(v) Library.KeybindFrame.Visible = v end})
+MenuGroup:AddToggle("ShowCustomCursor", {Text = "Custom Cursor", Default = true, Callback = function(v) Library.ShowCustomCursor = v end})
+MenuGroup:AddDivider()
+MenuGroup:AddLabel("Keybind"):AddKeyPicker("MenuKeybind", { Default = "RightShift", NoUI = true, Text = "Menu keybind" })
+MenuGroup:AddButton("Unload", function() Library:Unload() end)
+
+CreditsGroup:AddLabel("Developers:")
+CreditsGroup:AddLabel("Owner | rechedmcvn")
+CreditsGroup:AddLabel("Reviewer:")
+CreditsGroup:AddLabel("Not Found.")
+
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+
+SaveManager:IgnoreThemeSettings()
+
+ThemeManager:SetFolder("MyScriptHub")
+SaveManager:SetFolder("MyScriptHub/specific-game")
+SaveManager:SetSubFolder("specific-place") 
+
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+ThemeManager:ApplyToTab(Tabs.Settings)
