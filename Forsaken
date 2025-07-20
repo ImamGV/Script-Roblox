@@ -206,3 +206,62 @@ StaminaScript.StaminaLossDisabled = function()
 end
 end)
 end})
+
+local Camera = Tabs.Main:AddLeftGroupbox('Camera')
+
+Camera:AddSlider("FieldOfViewValue",{
+Text = "Field Of View",
+Min = 80,
+Default = 80,
+Max = 120,
+Rounding = 1,
+Compact = true,
+Callback = function(v)
+_G.FieldOfViewValue = v
+end})
+Camera:AddToggle("FOV",{
+Text = "Field Of View",
+Default = false,
+Callback = function(v)
+_G.FieldOfView = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.FieldOfView then
+workspace.Camera.FieldOfView = _G.FieldOfViewValue or 80
+end
+end)
+end})
+Camera:AddDivider()
+Camera:AddToggle("NoFog",{
+Text = "No Fog",
+Default = false,
+Callback = function(v)
+_G.NoFog = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
+if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
+game.Lighting.FogStart = _G.NoFog and 0 or game.Lighting:GetAttribute("FogStart")
+game.Lighting.FogEnd = _G.NoFog and math.huge or game.Lighting:GetAttribute("FogEnd")
+local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
+if fog then
+if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
+fog.Density = _G.NoFog and 0 or fog:GetAttribute("Density")
+end
+end)
+end})
+Camera:AddToggle("Fullbright",{
+Text = "Fullbright",
+Default = false,
+Callback = function(v)
+_G.Fullbright = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.Fullbright then
+game.Lighting.OutdoorAmbient = Color3.fromRGB(255,255,255)
+game.Lighting.Brightness = 1.5
+game.Lighting.GlobalShadows = false
+else
+game.Lighting.OutdoorAmbient = Color3.fromRGB(55,55,55)
+game.Lighting.Brightness = 1.5
+game.Lighting.GlobalShadows = true
+end
+end)
+end})
