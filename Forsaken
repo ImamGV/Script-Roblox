@@ -375,7 +375,6 @@ GeneratorESP = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Map" and v.Name == "Generator" and not v:FindFirstChild("Generator_ESP") then
 LibESP:AddESP(v, "Generator", Color3.new(1,1), 14, "Generator_ESP")
 end
-end
 end)
 else
 GeneratorESP:Disconnect()
