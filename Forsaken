@@ -59,7 +59,9 @@ Generator:AddDropdown('FixMode', {
 	Multi = false,
 	Text = 'Fix Mode',
 	Searchable = false,
-})
+        Callback = function(v)
+_G.FixMode = v
+end})
 Generator:AddToggle("AutoGenerator",{
 Text = "Auto Generator",
 Default = false,
@@ -67,14 +69,14 @@ Callback = function(v)
 _G.AutoGen = v
 task.spawn(function()
 while _G.AutoGen do
-if Options.FixMode.Value["Danger"] and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
+if _G.FixMode == "Danger" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 wait(2.5)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
 v["Remotes"]["RE"]:FireServer()
 end
 end
-elseif Options.FixMode.Value["Safe"] and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
+elseif _G.FixMode == "Safe" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 wait(5)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
@@ -160,7 +162,9 @@ Players:AddDropdown('SpeedBoostValue', {
 	Multi = false,
 	Text = 'Speed Boost',
 	Searchable = false,
-})
+        Callback = function(v)
+_G.SpeedBoostValue = v
+end})
 
 Players:AddToggle("SpeedBoost",{
 Text = "Speed Boost",
@@ -168,19 +172,19 @@ Default = false,
 Callback = function(v)
 _G.SpeedBoost = v
 while _G.SpeedBoost do
-if Options.SpeedBoostValue.Value["1"] then
+if _G.SpeedBoostValue == 1 then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.1
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif Options.SpeedBoostValue.Value["2"] then
+elseif _G.SpeedBoostValue == 2 then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.2
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif Options.SpeedBoostValue.Value["3"] then
+elseif _G.SpeedBoostValue == 3 then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.3
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif Options.SpeedBoostValue.Value["4"] then
+elseif _G.SpeedBoostValue == 4 then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.4
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-elseif Options.SpeedBoostValue.Value["5"] then
+elseif _G.SpeedBoostValue == 5 then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * 0.5
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
 end
@@ -266,20 +270,20 @@ end})
 
 local ESP = Tabs.Main:AddRightGroupbox('ESP')
 
-ESP:AddToggle({
+ESP:AddToggle("KE",{
 Text = "Killers ESP (Highlight)",
 Default = false,
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
+LibESP:AddESP(v, v.Name, Color3.new(1), 14, "Killer_ESP")
 end
 end
 KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 wait(1)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
+LibESP:AddESP(v, v.Name, Color3.new(1), 14, "Killer_ESP")
 end
 end)
 else
