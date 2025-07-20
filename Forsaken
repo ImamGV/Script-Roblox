@@ -1,4 +1,5 @@
 local repo = 'https://raw.githubusercontent.com/mstudio45/LinoriaLib/main/'
+local LibESP = loadstring(game:HttpGet("https://github.com/RGV-devid/Scripts/blob/main/ESP?raw=true"))()
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
@@ -60,7 +61,7 @@ Generator:AddDropdown('FixMode', {
 	Text = 'Fix Mode',
 	Searchable = false,
         Callback = function(v)
-_G.FixMode = v
+_G.FixMode = v or "Safe"
 end})
 Generator:AddToggle("AutoGenerator",{
 Text = "Auto Generator",
@@ -73,14 +74,14 @@ if _G.FixMode == "Danger" and game:GetService("Players").LocalPlayer.PlayerGui:F
 wait(2.5)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
-v["Remotes"]["RE"]:FireServer()
+v.Remotes.RE:FireServer()
 end
 end
 elseif _G.FixMode == "Safe" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 wait(5)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
-v["Remotes"]["RE"]:FireServer()
+v.Remotes.RE:FireServer()
 end
 end
 end
@@ -163,7 +164,7 @@ Players:AddDropdown('SpeedBoostValue', {
 	Text = 'Speed Boost',
 	Searchable = false,
         Callback = function(v)
-_G.SpeedBoostValue = v
+_G.SpeedBoostValue = v or 2
 end})
 
 Players:AddToggle("SpeedBoost",{
