@@ -90,7 +90,7 @@ end
 end)
 end})
 Generator:AddButton("Teleport to Generator",function()
-for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+for _,v in ipairs(workspace.Map:FindFirstChild("Ingame").Map:GetChildren()) do
 if v.Name == "Generator" and v["Progress"].Value < 100 then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v:FindFirstChild("Main").Position
 end
@@ -284,13 +284,13 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, v.Name, Color3.new(1), 14, "Killer_ESP")
+LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
 end
 end
 KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 wait(1)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, v.Name, Color3.new(1), 14, "Killer_ESP")
+LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
 end
 end)
 else
