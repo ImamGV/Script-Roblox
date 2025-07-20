@@ -189,7 +189,7 @@ Players:AddDropdown('SpeedBoostValue', {
 	Text = 'Speed Boost',
 	Searchable = false,
         Callback = function(v)
-_G.SpeedBoostValue = v or 2
+_G.SpeedBoostValue = v or '2'
 end})
 
 Players:AddToggle("SpeedBoost",{
@@ -430,6 +430,34 @@ end
 end)
 end})
 
+local Anti = Tabs.Main:AddRightGroupbox('Anti')
+
+game:GetService("RunService").RenderStepped:Connect(function()
+for _,v in ipairs(workspace.Players.Killers:FindFirstChild("JohnDoe").JohnDoeTrail:GetChildren()) do
+if v.Name == "Trail" then
+v.CanTouch = not _G.AntiTrail or true
+end
+end
+end)
+Anti:AddToggle("AntiTrail",{
+Text = "Anti Trail",
+Default = false,
+Callback = function(v)
+_G.AntiTrail = v
+end})
+game:GetService("RunService").RenderStepped:Connect(function()
+for _,v in ipairs(workspace.Map:FindFirstChild("Ingame"):GetDescendants()) do
+if v.Parent.Parent.Name == "Ingame" and v.Name == "Shadow" then
+v.CanTouch = not _G.AntiStompTrap or true
+end
+end
+end)
+Anti:AddToggle("AntiStompTrap",{
+Text = "Anti Stomp Trap",
+Default = false,
+Callback = function(v)
+_G.AntiStompTrap = v
+end})
 local MenuGroup = Tabs.Settings:AddLeftGroupbox("Menu")
 local CreditsGroup = Tabs.Settings:AddRightGroupbox("Credits")
 
