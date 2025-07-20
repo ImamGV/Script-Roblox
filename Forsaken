@@ -475,9 +475,17 @@ Callback = function(v)
 _G.AutoInteract = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if Options.InteractItems.Value["Medkit"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Medkit") then
-fireproximityprompt(workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+for _,v in ipairs(workspace.Map:FindFirstChild("Ingame"):GetChildren()) do
+if v.Name == "Medkit" then
+fireproximityprompt(v:FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+end
+end
 elseif Options.InteractItems.Value["BloxyCola"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("BloxyCola") then
-fireproximityprompt(workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+for _,v in ipairs(workspace.Map:FindFirstChild("Ingame"):GetChildren()) do
+if v.Name == "BloxyCola" then
+fireproximityprompt(v:FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+end
+end
 end
 end)
 end})
