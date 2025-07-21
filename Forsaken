@@ -107,7 +107,7 @@ pcall(function()
 task.spawn(function()
 while _G.AutoFarm do
 for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" and game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox"). then
+if v.Name == "Generator" and game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox") then
 if v.Progress.Value < 100 and not game.Players.LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v:FindFirstChild("Main").Position
 game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
@@ -125,7 +125,7 @@ _G.TTG = true
 task.spawn(function()
 while _G.TTG do
 for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" and game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox"). then
+if v.Name == "Generator" and game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox") then
 if v.Progress.Value < 100 and not game.Players.LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v:FindFirstChild("Main").Position
 game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
