@@ -444,33 +444,6 @@ end
 end)
 end})
 
-local Anti = Tabs.Main:AddRightGroupbox('Anti')
-Anti:AddToggle("AntiTrail",{
-Text = "Anti Trail",
-Default = false,
-Callback = function(v)
-_G.AntiTrail = v
-game:GetService("RunService").RenderStepped:Connect(function()
-for _,v in ipairs(workspace.Players.Killers:FindFirstChild("JohnDoe"):FindFirstChild("JohnDoeTrail"):GetChildren()) do
-if v.Name == "Trail" and v then
-v.CanTouch = not _G.AntiTrail or true
-end
-end
-end)
-end})
-Anti:AddToggle("AntiStompTrap",{
-Text = "Anti Stomp Trap",
-Default = false,
-Callback = function(v)
-_G.AntiStompTrap = v
-game:GetService("RunService").RenderStepped:Connect(function()
-for _,v in ipairs(workspace.Map:FindFirstChild("Ingame"):GetDescendants()) do
-if v.Parent.Parent.Name == "Ingame" and v.Name == "Shadow" then
-v.CanTouch = not _G.AntiStompTrap or true
-end
-end
-end)
-end})
 local MenuGroup = Tabs.Settings:AddLeftGroupbox("Menu")
 local CreditsGroup = Tabs.Settings:AddRightGroupbox("Credits")
 
