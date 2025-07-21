@@ -56,7 +56,7 @@ local Generator = Tabs.Main:AddRightGroupbox('Generator')
 
 Generator:AddDropdown('FixMode', {
 	Values = {'Cheat', 'Danger', 'Safe'},
-	Default = 2,
+	Default = 3,
 	Multi = false,
 	Text = 'Fix Mode',
 	Searchable = false,
@@ -103,25 +103,33 @@ Text = "Auto Farm",
 Default = false,
 Callback = function(v)
 _G.AutoFarm = v
+pcall(function()
+task.spawn(function()
 while _G.AutoFarm do
 for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" then
+if v.Name == "Generator" and game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox"). then
 if v.Progress.Value < 100 and not game.Players.LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v:FindFirstChild("Main").Position
+game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 fireproximityprompt(v:FindFirstChild("Main").Prompt)
 end
 end
 end
 wait(1)
 end
+end)
+end)
 end})
 Generator:AddButton("Teleport to Generator",function()
 _G.TTG = true
 task.spawn(function()
 while _G.TTG do
-for _,v in ipairs(workspace.Map:FindFirstChild("Ingame").Map:GetChildren()) do
-if v.Name == "Generator" and v["Progress"].Value < 100 then
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" and game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox"). then
+if v.Progress.Value < 100 and not game.Players.LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Position = v:FindFirstChild("Main").Position
+game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+end
 end
 end
 wait()
@@ -170,30 +178,24 @@ end
 end)
 end})
 Misc:AddDivider()
-_G.AutoFlipCoins = false
 Misc:AddToggle("AlwaysCoinFlip",{
 Text = "Always Flip Coin",
 Default = false,
 Callback = function(v)
-_G.AutoFlipCoins = v
+_G.AutoFlipCoins = v or false
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AutoFlipCoins then
 game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Network"):WaitForChild("RemoteEvent"):FireServer("UseActorAbility", "CoinFlip")
 end
 end)
 end})
-_G.HideBar = false
 Misc:AddToggle("AlwaysHideBar",{
 Text = "Always Hide Bar",
 Default = false,
 Callback = function(v)
-_G.HideBar = v
+_G.HideBar = v or false
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.HideBar then
-game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors").Visible = false
-else
-game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors").Visible = true
-end
+game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors").Visible = not _G.HideBar
 end)
 end})
 
@@ -324,6 +326,7 @@ LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
 end
 end
 KillersESP = workspace.Players.DescendantAdded:Connect(function(v)
+wait(1)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
 end
@@ -436,14 +439,141 @@ _G.AutoInteract = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AutoInteract then
 if Options.InteractItems.Value["Medkit"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Medkit") then
-fireproximityprompt(workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+if workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") and (workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ItemRoot").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 20 then
+fireproximityprompt(workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+end
+if workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") and (workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ItemRoot").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 20 then
+fireproximityprompt(workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+end
 elseif Options.InteractItems.Value["BloxyCola"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("BloxyCola") then
-fireproximityprompt(workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") or workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+if workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") and (workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 20 then
+fireproximityprompt(workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+end
+if workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") and (workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 20 then
+fireproximityprompt(workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
+end
 end
 end
 end)
 end})
+Interact:AddDivider()
+Interact:AddToggle("Reach",{
+Text = "Remote Interact",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.MaxActivationDistance = 15
+end
+end
+IncreasedDistance = workspace.DescendantAdded:Connect(function(v)
+if v:IsA("ProximityPrompt") then
+v.MaxActivationDistance = 15
+end
+end)
+else
+IncreasedDistance:Disconnect()
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.MaxActivationDistance = 8
+end
+end
+end
+end})
+Interact:AddToggle("ThroughInteract",{
+Text = "Through Interact",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.RequiresLineOfSight = false
+end
+end
+ThroughInteract = workspace.DescendantAdded:Connect(function(v)
+if v:IsA("ProximityPrompt") then
+v.RequiresLineOfSight = false
+end
+end)
+else
+ThroughInteract:Disconnect()
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.RequiresLineOfSight = true
+end
+end
+end
+end})
+Interact:AddToggle("InstanceInteract",{
+Text = "Instance Interact",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end
+InstanceInteract = workspace.DescendantAdded:Connect(function(v)
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end)
+else
+InstanceInteract:Disconnect()
+end
+end})
+local Anti = Tabs.Main:AddRightGroupbox('Anti')
 
+Anti:AddToggle("AntiTrail",{
+Text = "Anti-Trail",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Players.Killers:FindFirstChild("JohnDoe").JohnDoeTrail:GetChildren()) do
+if v.Name == "Trail" then
+v.CanTouch = false
+end
+end
+AntiTrail = workspace.Players.Killers:FindFirstChild("JohnDoe").DescendantAdded:Connect(function(v)
+if v.Name == "Trail" then
+v.CanTouch = false
+end
+end)
+else
+AntiTrail:Disconnect()
+for _,v in ipairs(workspace.Players.Killers:FindFirstChild("JohnDoe").JohnDoeTrail:GetChildren()) do
+if v.Name == "Trail" then
+v.CanTouch = true
+end
+end
+end
+end})
+Anti:AddToggle("AntiTrap",{
+Text = "Anti-Trap",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Map:FindFirstChild("Ingame"):GetDescendants()) do
+if v.Parent.Parent.Name == "Ingame" and v.Name == "Shadow" and v then
+v.CanTouch = false
+end
+end
+AntiTrap = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v.Parent.Parent.Name == "Ingame" and v.Name == "Shadow" and v then
+v.CanTouch = false
+end
+end)
+else
+AntiTrap:Disconnect()
+for _,v in ipairs(workspace.Map:FindFirstChild("Ingame"):GetDescendants()) do
+if v.Parent.Parent.Name == "Ingame" and v.Name == "Shadow" then
+v.CanTouch = true
+end
+end
+end
+end})
 local MenuGroup = Tabs.Settings:AddLeftGroupbox("Menu")
 local CreditsGroup = Tabs.Settings:AddRightGroupbox("Credits")
 
