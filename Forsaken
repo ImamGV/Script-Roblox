@@ -423,40 +423,6 @@ end})
 
 local Interact = Tabs.Main:AddLeftGroupbox('Interact')
 
-Interact:AddDropdown('InteractItems', {
-	Values = {'Medkit', 'BloxyCola'},
-	Default = 0,
-	Multi = true,
-	Text = 'Select Interact',
-	Searchable = false,
-})
-
-Interact:AddToggle("AutoInteract",{
-Text = "Auto Interact",
-Default = false,
-Callback = function(v)
-_G.AutoInteract = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoInteract then
-if Options.InteractItems.Value["Medkit"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Medkit") then
-if workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") and (workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ItemRoot").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 20 then
-fireproximityprompt(workspace.Map.Ingame:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
-end
-if workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") and (workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ItemRoot").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 20 then
-fireproximityprompt(workspace.Map.Ingame.Map:FindFirstChild("Medkit"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
-end
-elseif Options.InteractItems.Value["BloxyCola"] and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("BloxyCola") then
-if workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") and (workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 20 then
-fireproximityprompt(workspace.Map.Ingame:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
-end
-if workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt") and (workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 20 then
-fireproximityprompt(workspace.Map.Ingame.Map:FindFirstChild("BloxyCola"):FindFirstChild("ItemRoot"):FindFirstChild("ProximityPrompt"))
-end
-end
-end
-end)
-end})
-Interact:AddDivider()
 Interact:AddToggle("Reach",{
 Text = "Remote Interact",
 Default = false,
@@ -522,56 +488,6 @@ end
 end)
 else
 InstanceInteract:Disconnect()
-end
-end})
-local Anti = Tabs.Main:AddRightGroupbox('Anti')
-
-Anti:AddToggle("AntiTrail",{
-Text = "Anti-Trail",
-Default = false,
-Callback = function(v)
-if v then
-for _,v in ipairs(workspace.Players.Killers:FindFirstChild("JohnDoe").JohnDoeTrail:GetChildren()) do
-if v.Name == "Trail" then
-v.CanTouch = false
-end
-end
-AntiTrail = workspace.Players.Killers:FindFirstChild("JohnDoe").DescendantAdded:Connect(function(v)
-if v.Name == "Trail" then
-v.CanTouch = false
-end
-end)
-else
-AntiTrail:Disconnect()
-for _,v in ipairs(workspace.Players.Killers:FindFirstChild("JohnDoe").JohnDoeTrail:GetChildren()) do
-if v.Name == "Trail" then
-v.CanTouch = true
-end
-end
-end
-end})
-Anti:AddToggle("AntiTrap",{
-Text = "Anti-Trap",
-Default = false,
-Callback = function(v)
-if v then
-for _,v in ipairs(workspace.Map:FindFirstChild("Ingame"):GetDescendants()) do
-if v.Parent.Parent.Name == "Ingame" and v.Name == "Shadow" and v then
-v.CanTouch = false
-end
-end
-AntiTrap = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v.Parent.Parent.Name == "Ingame" and v.Name == "Shadow" and v then
-v.CanTouch = false
-end
-end)
-else
-AntiTrap:Disconnect()
-for _,v in ipairs(workspace.Map:FindFirstChild("Ingame"):GetDescendants()) do
-if v.Parent.Parent.Name == "Ingame" and v.Name == "Shadow" then
-v.CanTouch = true
-end
-end
 end
 end})
 local MenuGroup = Tabs.Settings:AddLeftGroupbox("Menu")
