@@ -165,9 +165,9 @@ _G.HealthEatPizza = 50
 _G.DistanceEatPizza = 10
 
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AlwaysEatPizza and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Pizza") then
+if _G.AlwaysEatPizza and workspace.Map.Ingame:FindFirstChild("Pizza") then
 if game.Players.LocalPlayer.Character.Humanoid.Health < _G.HealthEatPizza and (workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Pizza").Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < _G.DistanceEatPizza then
-workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Pizza").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+workspace.Map.Ingame:FindFirstChild("Pizza").Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 end
 end
 end)
@@ -190,7 +190,7 @@ end
 end)
 end})
 game:GetService("RunService").RenderStepped:Connect(function()
-game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors").Visible = not _G.HideBar
+game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors.Visible = not _G.HideBar
 end)
 Misc:AddToggle("AlwaysHideBar",{
 Text = "Always Hide Bar",
