@@ -105,7 +105,7 @@ Callback = function(v)
 _G.AutoFarm = v
 pcall(function()
 task.spawn(function()
-while _G.AutoFarm do
+while _G.AutoFarm == true do
 for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" and game.Players.LocalPlayer.Character:FindFirstChild("CollisionHitbox") then
 if v.Progress.Value < 100 and not game.Players.LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
@@ -135,7 +135,7 @@ end
 wait()
 end
 end)
-wait(1)
+wait(0.5)
 _G.TTG = false
 end)
 local Misc = Tabs.Main:AddLeftGroupbox('Misc')
@@ -164,11 +164,6 @@ end})
 _G.HealthEatPizza = 50
 _G.DistanceEatPizza = 10
 
-Misc:AddToggle("AlwaysEatPizza",{
-Text = "Always Eat Pizza",
-Default = false,
-Callback = function(v)
-_G.AlwaysEatPizza = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AlwaysEatPizza and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Pizza") then
 if game.Players.LocalPlayer.Character.Humanoid.Health < _G.HealthEatPizza and (workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Pizza").Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < _G.DistanceEatPizza then
@@ -176,6 +171,11 @@ workspace.Map:FindFirstChild("Ingame"):FindFirstChild("Pizza").Position = game.P
 end
 end
 end)
+Misc:AddToggle("AlwaysEatPizza",{
+Text = "Always Eat Pizza",
+Default = false,
+Callback = function(v)
+_G.AlwaysEatPizza = v
 end})
 Misc:AddDivider()
 Misc:AddToggle("AlwaysCoinFlip",{
@@ -189,14 +189,14 @@ game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Netwo
 end
 end)
 end})
+game:GetService("RunService").RenderStepped:Connect(function()
+game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors").Visible = not _G.HideBar
+end)
 Misc:AddToggle("AlwaysHideBar",{
 Text = "Always Hide Bar",
 Default = false,
 Callback = function(v)
 _G.HideBar = v or false
-game:GetService("RunService").RenderStepped:Connect(function()
-game.Players.LocalPlayer.PlayerGui:FindFirstChild("TemporaryUI"):FindFirstChild("PlayerInfo"):FindFirstChild("CurrentSurvivors").Visible = not _G.HideBar
-end)
 end})
 
 local Players = Tabs.Main:AddRightGroupbox('Player')
