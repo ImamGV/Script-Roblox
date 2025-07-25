@@ -314,6 +314,18 @@ end)
 end})
 
 local ESP = Tabs.Main:AddRightGroupbox('ESP')
+local function Box(child, color, title)
+local Adornment = Instance.new("BoxHandleAdornment")
+Adornment.Size = child.Size
+Adornment.CFrame = CFrame.new(0,0,0)
+Adornment.Color3 = color
+Adornment.Transparency = 0.75
+Adornment.AlwaysOnTop = true
+Adornment.ZIndex = 10
+Adornment.Adornee = child
+Adornment.Name = title
+Adornment.Parent = child
+end
 
 ESP:AddToggle("KE",{
 Text = "Killers ESP",
@@ -321,14 +333,24 @@ Default = false,
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
+if v:IsA("Model") and v.Parent.Name == "Killers" then
+Box(v.Head, Color3.new(1), "Killers_ESP")
+Box(v.Torso, Color3.new(1), "Killers_ESP")
+Box(v["Right Arm"], Color3.new(1), "Killers_ESP")
+Box(v["Left Arm"], Color3.new(1), "Killers_ESP")
+Box(v["Right Leg"], Color3.new(1), "Killers_ESP")
+Box(v["Left Leg"], Color3.new(1), "Killers_ESP")
 end
 end
-KillersESP = workspace.Players.DescendantAdded:Connect(function(v)
-wait(1)
-if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
-LibESP:AddESP(v, "", Color3.new(1), 14, "Killer_ESP")
+KillersESP = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+wait(2)
+if v:IsA("Model") and v.Parent.Name == "Killers" then
+Box(v.Head, Color3.new(1), "Killers_ESP")
+Box(v.Torso, Color3.new(1), "Killers_ESP")
+Box(v["Right Arm"], Color3.new(1), "Killers_ESP")
+Box(v["Left Arm"], Color3.new(1), "Killers_ESP")
+Box(v["Right Leg"], Color3.new(1), "Killers_ESP")
+Box(v["Left Leg"], Color3.new(1), "Killers_ESP")
 end
 end)
 else
