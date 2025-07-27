@@ -23,73 +23,84 @@ local Window = Library:CreateWindow({
 })
 
 local Tabs = {
-	Main = Window:AddTab('Main'),
-	Settings = Window:AddTab('Settings')
+	Main = Window:AddTab('Chính'),
+	Settings = Window:AddTab('Cài đặt')
 }
 
 local FPS = Tabs.Main:AddLeftGroupbox('FPS')
 
 FPS:AddDropdown('DestroyLag', {
-	Values = {'Builderman Sentry', 'Builderman Dispenser'},
+	Values = {'Trụ Bắn', 'Trụ Máu'},
 	Default = 0,
 	Multi = true,
-	Text = 'Destroy Lag',
+	Text = 'Giảm thiểu lag ',
 	Searchable = false,
 })
 FPS:AddToggle("AlwaysDestroy",{
-Text = "Always Destroy",
+Text = "Luôn giảm thiểu",
 Default = false,
 Callback = function(v)
 _G.AlwaysDestroy = v
 game:GetService("RunService").Heartbeat:Connect(function()
 if _G.AlwaysDestroy then
-if Options.DestroyLag.Value["Builderman Sentry"] and workspace.Map.Ingame:FindFirstChild("BuildermanSentry") then
-workspace.Map.Ingame:FindFirstChild("BuildermanSentry"):Destroy()
-elseif Options.DestroyLag.Value["Builderman Dispenser"] and workspace.Map.Ingame:FindFirstChild("BuildermanDispenser") then
-workspace.Map.Ingame:FindFirstChild("BuildermanDispenser"):Destroy()
+if Options.DestroyLag.Value["Trụ Bắn"] and workspace.Map.Ingame:FindFirstChild("BuildermanSentry") then
+for _,v in ipairs(workspace.Map.Ingame:GetChildren()) do
+if v.Name == "BuildermanSentry" then
+v:Destroy()
+end
+end
+elseif Options.DestroyLag.Value["Trụ Máu"] and workspace.Map.Ingame:FindFirstChild("BuildermanDispenser") then
+for _,v in ipairs(workspace.Map.Ingame:GetChildren()) do
+if v.Name == "BuildermanDispenser" then
+v:Destroy()
+end
+end
 end
 end
 end)
 end})
 
-local Generator = Tabs.Main:AddRightGroupbox('Generator')
+local Generator = Tabs.Main:AddRightGroupbox('Máy phát điện')
 
 Generator:AddDropdown('FixMode', {
-	Values = {'Cheat', 'Danger', 'Safe'},
+	Values = {'Siêu nhanh (Premium)', 'Nguy hiểm', 'An toàn'},
 	Default = 3,
 	Multi = false,
-	Text = 'Fix Mode',
+	Text = 'Chế độ sửa',
 	Searchable = false,
         Callback = function(v)
-_G.FixMode = v or "Safe"
+_G.FixMode = v or "An toàn"
 end})
 Generator:AddToggle("AutoGenerator",{
-Text = "Auto Generator",
+Text = "Sửa máy phát điện",
 Default = false,
 Callback = function(v)
 _G.AutoGen = v
 pcall(function()
 task.spawn(function()
 while _G.AutoGen do
-if _G.FixMode == "Cheat" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
+if _G.FixMode == "Siêu nhanh (Premium)" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 wait(1.4)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
+Library:Notify("Đã xử lí một giai đoạn!")
 end
 end
-elseif _G.FixMode == "Danger" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
+elseif _G.FixMode == "Nguy hiểm" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 wait(2.5)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
+Library:Notify("Đã xử lí một giai đoạn!")
 end
 end
-elseif _G.FixMode == "Safe" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
+elseif _G.FixMode == "An toàn" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
 wait(5)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
+Library:Notify("Đã xử lí một giai đoạn!")
 end
 end
 end
@@ -99,7 +110,7 @@ end)
 end)
 end})
 Generator:AddToggle("AutoFarm",{
-Text = "Auto Farm",
+Text = "Luôn tới máy phát điện",
 Default = false,
 Callback = function(v)
 _G.AutoFarm = v
@@ -120,7 +131,7 @@ end
 end)
 end)
 end})
-Generator:AddButton("Teleport to Generator",function()
+Generator:AddButton("Tới máy phát điện",function()
 _G.TTG = true
 task.spawn(function()
 while _G.TTG do
@@ -138,10 +149,10 @@ end)
 wait(0.5)
 _G.TTG = false
 end)
-local Misc = Tabs.Main:AddLeftGroupbox('Misc')
+local Misc = Tabs.Main:AddLeftGroupbox('Tiên ích')
 
 Misc:AddSlider("HealthEatPizza",{
-Text = "Health Eat Pizza",
+Text = "Máu dùng pizza",
 Min = 1,
 Default = 50,
 Max = 50,
@@ -151,7 +162,7 @@ Callback = function(v)
 _G.HealthEatPizza = v
 end})
 Misc:AddSlider("DistanceEatPizza",{
-Text = "Distance Eat Pizza",
+Text = "Khoảng cách dùng pizza",
 Min = 10,
 Default = 10,
 Max = 50,
@@ -172,14 +183,14 @@ end
 end
 end)
 Misc:AddToggle("AlwaysEatPizza",{
-Text = "Always Eat Pizza",
+Text = "Luôn ăn pizza",
 Default = false,
 Callback = function(v)
 _G.AlwaysEatPizza = v
 end})
 Misc:AddDivider()
 Misc:AddToggle("AlwaysCoinFlip",{
-Text = "Always Flip Coin",
+Text = "Luôn lật xu",
 Default = false,
 Callback = function(v)
 _G.AutoFlipCoins = v or false
@@ -193,7 +204,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors.Visible = not _G.HideBar
 end)
 Misc:AddToggle("AlwaysHideBar",{
-Text = "Always Hide Bar",
+Text = "Xoá hiện thị sống sót",
 Default = false,
 Callback = function(v)
 _G.HideBar = v or false
@@ -205,14 +216,14 @@ Players:AddDropdown('SpeedBoostValue', {
 	Values = {'1', '2', '3', '4', '5'},
 	Default = 2,
 	Multi = false,
-	Text = 'Speed Boost',
+	Text = 'Tốc độ',
 	Searchable = false,
         Callback = function(v)
 _G.SpeedBoostValue = v or '2'
 end})
 
 Players:AddToggle("SpeedBoost",{
-Text = "Speed Boost",
+Text = "Nhận tốc độ",
 Default = false,
 Callback = function(v)
 _G.SpeedBoost = v
@@ -238,7 +249,7 @@ end
 end})
 Players:AddDivider()
 Players:AddToggle("InfStamina",{
-Text = "Inf Stamina",
+Text = "Vô hạn sức bền",
 Default = false,
 Callback = function(v)
 _G.InfinityStamina = v
@@ -254,10 +265,10 @@ end
 end)
 end})
 
-local Camera = Tabs.Main:AddLeftGroupbox('Camera')
+local Camera = Tabs.Main:AddLeftGroupbox('Máy Ảnh')
 
 Camera:AddSlider("FieldOfViewValue",{
-Text = "Field Of View",
+Text = "Góc sâu",
 Min = 80,
 Default = 80,
 Max = 120,
@@ -267,7 +278,7 @@ Callback = function(v)
 _G.FieldOfViewValue = v
 end})
 Camera:AddToggle("FOV",{
-Text = "Field Of View",
+Text = "Nhận góc",
 Default = false,
 Callback = function(v)
 _G.FieldOfView = v
@@ -279,7 +290,7 @@ end)
 end})
 Camera:AddDivider()
 Camera:AddToggle("NoFog",{
-Text = "No Fog",
+Text = "Xoá sương",
 Default = false,
 Callback = function(v)
 _G.NoFog = v
@@ -296,7 +307,7 @@ end
 end)
 end})
 Camera:AddToggle("Fullbright",{
-Text = "Fullbright",
+Text = "Phủ sáng",
 Default = false,
 Callback = function(v)
 _G.Fullbright = v
@@ -313,7 +324,7 @@ end
 end)
 end})
 
-local ESP = Tabs.Main:AddRightGroupbox('ESP')
+local ESP = Tabs.Main:AddRightGroupbox('Định vị')
 local function Box(child, color, title)
 local Adornment = Instance.new("BoxHandleAdornment")
 Adornment.Size = child.Size
@@ -328,7 +339,7 @@ Adornment.Parent = child
 end
 
 ESP:AddToggle("KE",{
-Text = "Killers ESP",
+Text = "Định vị xác nhân",
 Default = false,
 Callback = function(v)
 if v then
@@ -359,7 +370,7 @@ LibESP:Delete("Killer_ESP")
 end
 end})
 ESP:AddToggle("SE",{
-Text = "Survivors ESP",
+Text = "Định vị người sống",
 Default = false,
 Callback = function(v)
 if v then
@@ -379,7 +390,7 @@ LibESP:Delete("Survival_ESP")
 end
 end})
 ESP:AddToggle("IE",{
-Text = "Items ESP",
+Text = "Định vị vật phẩm",
 Default = false,
 Callback = function(v)
 if v then
@@ -403,7 +414,7 @@ LibESP:Delete("Items_ESP")
 end
 end})
 ESP:AddToggle("GE",{
-Text = "Generator ESP",
+Text = "Định vị máy phát điện",
 Default = false,
 Callback = function(v)
 if v then
@@ -423,7 +434,7 @@ LibESP:Delete("Generator_ESP")
 end
 end})
 ESP:AddToggle("SSTME",{
-Text = "Subspace Tripmine ESP",
+Text = "Định vị bẫy không gian",
 Default = false,
 Callback = function(v)
 if v then
@@ -443,10 +454,10 @@ LibESP:Delete("SubspaceTripmine_ESP")
 end
 end})
 
-local Interact = Tabs.Main:AddLeftGroupbox('Interact')
+local Interact = Tabs.Main:AddLeftGroupbox('Tương tác')
 
 Interact:AddToggle("Reach",{
-Text = "Remote Interact",
+Text = "Tương tác xa",
 Default = false,
 Callback = function(v)
 if v then
@@ -470,7 +481,7 @@ end
 end
 end})
 Interact:AddToggle("ThroughInteract",{
-Text = "Through Interact",
+Text = "Tương tác xuyên",
 Default = false,
 Callback = function(v)
 if v then
@@ -494,7 +505,7 @@ end
 end
 end})
 Interact:AddToggle("InstanceInteract",{
-Text = "Instance Interact",
+Text = "Tương tác nhanh chóng",
 Default = false,
 Callback = function(v)
 if v then
