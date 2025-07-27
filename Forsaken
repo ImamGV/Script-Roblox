@@ -12,7 +12,7 @@ Library.ShowCustomCursor = true
 Library.NotifySide = "Left"
 
 local Window = Library:CreateWindow({
-	Title = 'Forsaken | v0.0.1 (BETA)',
+	Title = 'Forsaken | v0.0.1 (BETA) [FREE PREMIUM]',
 	Center = true,
 	AutoShow = true,
 	Resizable = true,
@@ -84,7 +84,6 @@ wait(1.4)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
-Library:Notify("Đã xử lí một giai đoạn!")
 end
 end
 elseif _G.FixMode == "Nguy hiểm" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
@@ -92,7 +91,6 @@ wait(2.5)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
-Library:Notify("Đã xử lí một giai đoạn!")
 end
 end
 elseif _G.FixMode == "An toàn" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
@@ -100,7 +98,6 @@ wait(5)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
-Library:Notify("Đã xử lí một giai đoạn!")
 end
 end
 end
@@ -248,6 +245,54 @@ wait()
 end
 end})
 Players:AddDivider()
+game:GetService("RunService").RenderStepped:Connect(function()
+local MS = require(game:GetService("ReplicatedStorage").Systems.Character.Game.Sprinting)
+MS.MaxStamina = _G.MaxStamina or 100
+MS.StaminaGain = _G.StaminaGain or 30
+MS.StaminaLoss = _G.StaminaLoss or 10
+MS.SprintSpeed = _G.SpeedSprint or 28
+end)
+Players:AddSlider("MaxStamina",{
+Text = "Sức bền tối đa",
+Min = 100,
+Default = 100,
+Max = 400,
+Rounding = 1,
+Compact = true,
+Callback = function(v)
+_G.MaxStamina = v
+end})
+Players:AddSlider("StaminaGain",{
+Text = "Sức bền thêm",
+Min = 30,
+Default = 30,
+Max = 50,
+Rounding = 1,
+Compact = true,
+Callback = function(v)
+_G.StaminaGain = v
+end})
+Players:AddSlider("StaminaLoss",{
+Text = "Sức bền mất",
+Min = 1,
+Default = 10,
+Max = 15,
+Rounding = 1,
+Compact = true,
+Callback = function(v)
+_G.StaminaLoss = v
+end})
+Players:AddSlider("StaminaSprint",{
+Text = "Tốc độ chạy",
+Min = 24,
+Default = 28,
+Max = 32,
+Rounding = 1,
+Compact = true,
+Callback = function(v)
+_G.SpeedSprint = v
+end})
+Players:AddDivider()
 Players:AddToggle("InfStamina",{
 Text = "Vô hạn sức bền",
 Default = false,
@@ -264,7 +309,12 @@ StaminaScript.StaminaLossDisabled = function()
 end
 end)
 end})
-
+Players:AddButton("Xoá hiệu ứng mù", function()
+game:GetService("ReplicatedStorage").Modules.StatusEffects.Blindness:Destroy()
+end)
+Players:AddButton("Xoá hiệu ứng chậm", function()
+game:GetService("ReplicatedStorage").Modules.StatusEffects.Slowness:Destroy()
+end)
 local Camera = Tabs.Main:AddLeftGroupbox('Máy Ảnh')
 
 Camera:AddSlider("FieldOfViewValue",{
