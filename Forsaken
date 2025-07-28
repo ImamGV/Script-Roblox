@@ -27,39 +27,6 @@ local Tabs = {
 	Settings = Window:AddTab('Cài đặt')
 }
 
-local FPS = Tabs.Main:AddLeftGroupbox('FPS')
-
-FPS:AddDropdown('DestroyLag', {
-	Values = {'Trụ Bắn', 'Trụ Máu'},
-	Default = 0,
-	Multi = true,
-	Text = 'Giảm thiểu lag ',
-	Searchable = false,
-})
-FPS:AddToggle("AlwaysDestroy",{
-Text = "Luôn giảm thiểu",
-Default = false,
-Callback = function(v)
-_G.AlwaysDestroy = v
-game:GetService("RunService").Heartbeat:Connect(function()
-if _G.AlwaysDestroy then
-if Options.DestroyLag.Value["Trụ Bắn"] and workspace.Map.Ingame:FindFirstChild("BuildermanSentry") then
-for _,v in ipairs(workspace.Map.Ingame:GetChildren()) do
-if v.Name == "BuildermanSentry" then
-v:Destroy()
-end
-end
-elseif Options.DestroyLag.Value["Trụ Máu"] and workspace.Map.Ingame:FindFirstChild("BuildermanDispenser") then
-for _,v in ipairs(workspace.Map.Ingame:GetChildren()) do
-if v.Name == "BuildermanDispenser" then
-v:Destroy()
-end
-end
-end
-end
-end)
-end})
-
 local Generator = Tabs.Main:AddRightGroupbox('Máy phát điện')
 
 Generator:AddDropdown('FixMode', {
@@ -80,21 +47,21 @@ pcall(function()
 task.spawn(function()
 while _G.AutoGen do
 if _G.FixMode == "Siêu nhanh (Premium)" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
-wait(1.4)
+wait(2)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
 end
 end
 elseif _G.FixMode == "Nguy hiểm" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
-wait(2.5)
+wait(4)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
 end
 end
 elseif _G.FixMode == "An toàn" and game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PuzzleUI") then
-wait(5)
+wait(6)
 for _,v in ipairs(workspace["Map"]["Ingame"]["Map"]:GetChildren()) do
 if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
@@ -245,12 +212,12 @@ wait()
 end
 end})
 Players:AddDivider()
+StaminaScript = require(game:GetService("ReplicatedStorage").Systems.Character.Game.Sprinting)
 game:GetService("RunService").RenderStepped:Connect(function()
-local MS = require(game:GetService("ReplicatedStorage").Systems.Character.Game.Sprinting)
-MS.MaxStamina = _G.MaxStamina or 100
-MS.StaminaGain = _G.StaminaGain or 30
-MS.StaminaLoss = _G.StaminaLoss or 10
-MS.SprintSpeed = _G.SpeedSprint or 28
+StaminaScript.MaxStamina = _G.MaxStamina or 100
+StaminaScript.StaminaGain = _G.StaminaGain or 30
+StaminaScript.StaminaLoss = _G.StaminaLoss or 10
+StaminaScript.SprintSpeed = _G.SpeedSprint or 28
 end)
 Players:AddSlider("MaxStamina",{
 Text = "Sức bền tối đa",
@@ -298,7 +265,6 @@ Text = "Vô hạn sức bền",
 Default = false,
 Callback = function(v)
 _G.InfinityStamina = v
-local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
 InfStamina = game:GetService("RunService").RenderStepped:Connect(function()
 if not _G.InfinityStamina then
 InfStamina:Disconnect()
