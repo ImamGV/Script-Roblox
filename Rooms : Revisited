@@ -1,0 +1,37 @@
+--// Library //
+local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
+local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
+local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
+local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
+
+local LibraryESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/RGV-devid/Scripts/refs/heads/main/ESP"))()
+
+Library:Notify("ĐÃ HOẠT ĐỘNG")
+Library:Notify("🟢 THÔNG BÁO THỰC THỂ")
+Library:Notify("🟢 ĐỊNH VỊ THỰC THỂ")
+--// Notify Entity //
+workspace.Entities.DescendantAdded:Connect(function(v)
+  if v.Parent.Name == "Entities" then
+  Library:Notify("Entities\n" .. v.Name .. " has spawn!")
+  end
+end)
+--// ESP Entity \\
+workspace.Entities.DescendantAdded:Connect(function(v)
+  if v.Parent.Name == "Entities" and v:IsA("Part") then
+  for i = 1, 100 do
+    if v:FindFirstChildOfClass("Part") then
+      break
+    end
+    if i == 100 then
+      return
+    end
+  end
+v:FindFirstChildOfClass("Part").Transparency = 0.99
+Instance.new("Humanoid",v)
+  end
+end)
+workspace.Entities.DescendantAdded:Connect(function(v)
+  if v.Parent.Name == "Entities" then
+  LibraryESP:AddESP(v, v.Name, Color3.new(1), 15, "Entity_ESP")
+  end
+end
