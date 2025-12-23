@@ -260,7 +260,7 @@ Window:SelectTab(1)
 
 SaveManager:LoadAutoloadConfig()
 
-local ScreenGui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer.PlayerGui)
+local ScreenGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
 ScreenGui.Name = "Toggle"
 ScreenGui.ResetOnSpawn = false
 local Frame = Instance.new("Frame", ScreenGui)
